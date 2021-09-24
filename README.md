@@ -1,4 +1,4 @@
-Less Player
+Less Player 是一款基于JavaFX开发的“轻量级本地”音乐播放器
 
 一、界面参考
 * Dopamine 3 (开源)  
