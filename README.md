@@ -7,7 +7,7 @@ Less Player
    
 * Right-Player(C++ Qt)  
 	作者: 蔡姬MrBeanC（b站UP主）
-   [Github源码 https://github.com/digimezzo/dopamine](https://github.com/MrBeanCpp/Right-Player)
+   [Github源码 https://github.com/MrBeanCpp/Right-Player](https://github.com/MrBeanCpp/Right-Player)
 
 二、开发环境
 * Windows平台
