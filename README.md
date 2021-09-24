@@ -1,12 +1,12 @@
 Less Player
 
 一、界面参考
-* Dopamine 3(开源)
-   [官方网站 https://www.digimezzo.com/](https://www.digimezzo.com/)
+* Dopamine 3 (开源)  
+   [官方网站 https://www.digimezzo.com/](https://www.digimezzo.com/)  
    [Github源码 https://github.com/digimezzo/dopamine](https://github.com/digimezzo/dopamine)  
    
-* Right-Player(C++ Qt)  
-	作者: 蔡姬MrBeanC（b站UP主）
+* Right-Player (C++ Qt)  
+   作者: 蔡姬MrBeanC（B站UP主）  
    [Github源码 https://github.com/MrBeanCpp/Right-Player](https://github.com/MrBeanCpp/Right-Player)
 
 二、开发环境
