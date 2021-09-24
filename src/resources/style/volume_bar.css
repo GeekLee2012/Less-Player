@@ -1,0 +1,22 @@
+#volume_bar .track {
+	-fx-pref-height: 3;
+	-fx-max-height: 3;
+	-fx-background-color: #464646;
+	-fx-background-radius: 0;
+	-fx-background-image: url("/resources/images/music_volume_track.png");
+	-fx-background-size: 1;
+	-fx-background-repeat: repeat-y;
+}
+
+#volume_bar {
+	-fx-orientation: horizontal;
+	-fx-pref-width: 100;
+	-fx-cursor: hand;
+}
+
+#volume_bar .thumb {
+	-fx-pref-width: 12;
+	-fx-pref-height: 12;
+	-fx-background-color: #fff;
+	-fx-opacity: 1;
+}
