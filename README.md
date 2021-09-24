@@ -23,7 +23,7 @@ Less Player 是一款基于JavaFX开发的“轻量级本地”音乐播放器
 * 仅供喜欢GUI开发的童鞋学习交流
 * 可使用exe4j打包成.exe文件
 
-五、界面预览
-![snap 01.png](https://github.com/GeekLee2012/Less-Player/blob/main/snapshot/snap%2001.png)
-![snap 02.png](https://github.com/GeekLee2012/Less-Player/blob/main/snapshot/snap%2002.png)
-![snap 03.png](https://github.com/GeekLee2012/Less-Player/blob/main/snapshot/snap%2003.png)
+五、界面预览  
+![snap 01.png](https://github.com/GeekLee2012/Less-Player/blob/main/snapshot/snap%2001.png)  
+![snap 02.png](https://github.com/GeekLee2012/Less-Player/blob/main/snapshot/snap%2002.png)  
+![snap 03.png](https://github.com/GeekLee2012/Less-Player/blob/main/snapshot/snap%2003.png)  
