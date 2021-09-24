@@ -14,7 +14,16 @@ Less Player 是一款基于JavaFX开发的“轻量级本地”音乐播放器
 * JDK版本: 1.8.0_291
 * IDE: Eclipse 2021-09 (4.21.0)
 
-三、补充说明
+三、目前功能
+* 最基本的播放器功能 [/汗]
+* 支持播放音频类型: mp3、m4a、部分wav, 基于JavaFX默认播器API，十分受限
+
+四、补充说明
 * 源码均为本人开发
 * 仅供喜欢GUI开发的童鞋学习交流
 * 可使用exe4j打包成.exe文件
+
+五、界面预览
+![snap 01.png](https://github.com/GeekLee2012/Less-Player/blob/main/snapshot/snap%2001.png)
+![snap 02.png](https://github.com/GeekLee2012/Less-Player/blob/main/snapshot/snap%2002.png)
+![snap 03.png](https://github.com/GeekLee2012/Less-Player/blob/main/snapshot/snap%2003.png)
