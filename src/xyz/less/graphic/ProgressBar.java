@@ -43,7 +43,7 @@ public class ProgressBar extends HBox {
 	}
 
 	public void addListener(ChangeListener<? super Number> listener) {
-		valueProperty.addListener(listener);;
+		valueProperty.addListener(listener);
 	}
 
 	public double getMin() {
