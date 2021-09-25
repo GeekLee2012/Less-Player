@@ -10,7 +10,7 @@ import java.util.concurrent.Future;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import xyz.less.async.AsyncServices;
-import xyz.less.util.FileScanTask;
+import xyz.less.async.FileScanTask;
 import xyz.less.util.FileUtil;
 import xyz.less.util.StringUtil;
 

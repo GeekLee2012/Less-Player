@@ -19,17 +19,18 @@ import xyz.less.util.StringUtil;
 public class PlaylistView extends StageView {
 	private FxMediaPlayer mediaPlayer;
 	
-	private double ownerX;
-	private double ownerY;
+	private double openerX;
+	private double openerY;
 	
 	private Label logoSizeLbl;
 	private ListView<Node> listView;
 	
 	private boolean attach = true;
+	private boolean lyricOn = false;
 	private boolean autoTarget = true;
 	
-	public PlaylistView(Stage owner, FxMediaPlayer mediaPlayer) {
-		super(owner, 366, 520);
+	public PlaylistView(Stage opener, FxMediaPlayer mediaPlayer) {
+		super(opener, 366, 520);
 		this.mediaPlayer = mediaPlayer;
 		
 		initGraph();
@@ -38,16 +39,16 @@ public class PlaylistView extends StageView {
 
 	private void initEvents() {
 		setOnShowing(e -> {
-			locateToOwner();
+			locate2Opener();
 			//TODO
 			highlightCurrentPlaying();
 		});
 		setOnHiding(e -> {
-			owner.setX(ownerX);
+			opener.setX(openerX);
 		});
 	}
 
-	private void initGraph() {
+	protected void initGraph() {
 		setSceneRoot(Guis.loadFxml(Fxmls.PLAYLIST_VIEW));
 		addStyle(Styles.PLAYLIST_VIEW);
 		
@@ -198,19 +199,24 @@ public class PlaylistView extends StageView {
 
 	public void attach() {
 		if(attach) {
-			locateToOwner();
+			locate2Opener();
 		}
 	}
 	
-	private void locateToOwner() {
-		ownerX = owner.getX();
-		ownerY = owner.getY();
-		double padding = 6;
+	private void locate2Opener() {
+		openerX = opener.getX();
+		openerY = opener.getY();
+		double paddingX = 6;
+		double paddingY = lyricOn ? 10 : 88;
 		if(!attach) {
-			owner.setX(ownerX - getWidth() / 2 - padding);
+			opener.setX(openerX - getWidth() / 2 - paddingX);
 		}
-		setX(owner.getX() + owner.getWidth() + padding);
-		setY(ownerY - 88);
+		setX(opener.getX() + opener.getWidth() + paddingX);
+		setY(openerY - paddingY);
+	}
+
+	public void setLyricOn(boolean value) {
+		this.lyricOn = value;
 	}
 	
 }

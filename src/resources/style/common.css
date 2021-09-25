@@ -54,6 +54,11 @@
 	-fx-background-color: #464646 !important;
 }
 
+.label-hover-tran {
+	-fx-background-color: #fff !important;
+	-fx-opacity: 0.65;
+}
+
 .label-hover-red {
 	-fx-background-color: #ec4141 !important;
 }

@@ -5,8 +5,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
 
-import xyz.less.util.FileScanTask;
-
 public class AsyncServices {
 	private static final ExecutorService executorService = Executors.newFixedThreadPool(4);
 	private static final ForkJoinPool fjPool = new ForkJoinPool();

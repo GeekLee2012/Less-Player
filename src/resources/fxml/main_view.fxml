@@ -60,6 +60,7 @@
 				<HBox alignment="CENTER_LEFT">
 					<children>
 						<Label fx:id="audio_time" />
+						<ImageView fx:id="lyric_btn" />
 					</children>
 				</HBox>
 			</left>

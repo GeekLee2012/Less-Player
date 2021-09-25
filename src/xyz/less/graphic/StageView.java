@@ -5,18 +5,18 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-public class StageView extends Stage {
-	protected Stage owner;
+public abstract class StageView extends Stage {
+	protected Stage opener;
 	private int count;
 	
-	public StageView(Stage owner) {
-		this.owner = owner;
-		initOwner(owner);
+	public StageView(Stage opener) {
+		this.opener = opener;
+		initOwner(opener);
 		initStyle(StageStyle.TRANSPARENT);
 	}
 	
 	public StageView(Stage owner, double width, double height) {
-		this.owner = owner;
+		this.opener = owner;
 		setWidth(width);
 		setHeight(height);
 		initOwner(owner);
@@ -35,6 +35,10 @@ public class StageView extends Stage {
 		setScene(new Scene(parent));
 	}
 	
+	public void setSceneTransparent() {
+		getScene().setFill(null);
+	}
+	
 	public void addStyle(String stylesheet) {
 		Guis.addStylesheet(stylesheet, this);
 	}
@@ -50,4 +54,6 @@ public class StageView extends Stage {
 	public void increaseCount() {
 		++count;
 	}
+	
+	protected abstract void initGraph();
 }

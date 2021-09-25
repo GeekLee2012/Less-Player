@@ -17,11 +17,13 @@ public final class Resources {
 	public static final class Fxmls {
 		public final static URL MAIN_VIEW = ResourcesEngine.getFxml("main_view");
 		public final static URL PLAYLIST_VIEW = ResourcesEngine.getFxml("playlist_view");
+		public final static URL LYRIC_VIEW = ResourcesEngine.getFxml("lyric_view");
 	}
 	
 	public static final class Styles {
 		public final static String MAIN_VIEW = ResourcesEngine.getStyle("main_view");
 		public final static String PLAYLIST_VIEW = ResourcesEngine.getStyle("playlist_view");
+		public final static String LYRIC_VIEW = ResourcesEngine.getStyle("lyric_view");
 	}
 	
 	public static final class Images {
@@ -38,6 +40,11 @@ public final class Resources {
 		public final static Image[] PIN = { 
 				ResourcesEngine.getImage("pin_16px.png"), 
 				ResourcesEngine.getImage("pin_on_16px.png") 
+			};
+		
+		public final static Image[] LYRIC = { 
+				ResourcesEngine.getImage("text_32px.png"), 
+				ResourcesEngine.getImage("text_on_32px.png") 
 			};
 		
 		public final static Image[] REPEAT = { 
@@ -75,6 +82,11 @@ public final class Resources {
 		public final static Image[] TARGET = {
 				ResourcesEngine.getImage("target_16px.png"),
 				ResourcesEngine.getImage("target_on_16px.png")
+			};
+		
+		public final static Image[] LOCK = {
+				ResourcesEngine.getImage("unlock_16px.png"),
+				ResourcesEngine.getImage("lock_16px.png")
 			};
 	}
 }

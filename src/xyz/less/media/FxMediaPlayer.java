@@ -3,19 +3,22 @@ package xyz.less.media;
 import java.io.File;
 import java.io.IOException;
 import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Future;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
+import javafx.scene.media.MediaView;
 import javafx.util.Duration;
+import xyz.less.bean.ConfigConstant;
 import xyz.less.bean.Playlist;
 import xyz.less.engine.ResourcesEngine;
-import xyz.less.graphic.PlayerView;
 
-//TODO
 public class FxMediaPlayer {
-	private PlayerView playerView;
+	private MediaView mediaView;
+	private List<MediaPlayerListener> playerListeners = new ArrayList<>();
 	private MediaPlayer delegatePlayer;
 	private Media media;
 	private Playlist<String> playlist = new Playlist<>();
@@ -25,11 +28,27 @@ public class FxMediaPlayer {
 	private int repeatMode = 0;
 	private static final int DEFAULT_CURRENT_INDEX = -1;
 	private int currentIndex = DEFAULT_CURRENT_INDEX;
-	
 	private SecureRandom random = new SecureRandom();
 	
-	public void setPlayerView(PlayerView playerView) {
-		this.playerView = playerView;
+	public FxMediaPlayer() {
+		//TODO
+		playlist.sizeProperty().addListener((o,ov,nv) -> {
+			if(playlist.isEmpty()) {
+				playerListeners.forEach(listener -> {
+					listener.onNoMedia();
+				});
+//				playerView.updatePlayBtn(false);
+//				playerView.updateProgress(0, 0);
+			}
+		});
+	}
+	
+	public void setMediaView(MediaView mediaView) {
+		this.mediaView = mediaView;
+	}
+
+	public void addPlayerListener(MediaPlayerListener listener) {
+		this.playerListeners.add(listener);
 	}
 
 	public Playlist<String> getPlaylist() {
@@ -139,11 +158,9 @@ public class FxMediaPlayer {
 			delegatePlayer.dispose();
 			delegatePlayer = null;
 			
-			if(playlist.isEmpty()) {
-				playerView.updatePlayBtn(false);
-				playerView.updateProgressBar(0);
-				playerView.updateTimeText(0, 0);
-			}
+			playerListeners.forEach(listener -> {
+				listener.onReset();
+			});
 		}
 	}
 	
@@ -152,26 +169,34 @@ public class FxMediaPlayer {
 		try {
 			media = new Media(getCurrentSource());
 			delegatePlayer = new MediaPlayer(media);
-			playerView.getMediaView().setMediaPlayer(delegatePlayer);
+			bindMediaView(delegatePlayer);
 			delegatePlayer.setVolume(volume);
 			
 			delegatePlayer.setOnReady(() -> {
-				playerView.updateMetadata(media);
-				playerView.highlightPlaylist();
+				playerListeners.forEach(listener -> {
+					listener.onReady(media);
+				});
+//				playerView.updateMetadata(media);
+//				playerView.highlightPlaylist();
 			});
 			
 			delegatePlayer.setOnPlaying(() -> {
-				playerView.updatePlayBtn(true);
+				playerListeners.forEach(listener -> {
+					listener.onPlaying();
+				});
 			});
 			
 			delegatePlayer.setOnPaused(() -> {
-				playerView.updatePlayBtn(false);
+				playerListeners.forEach(listener -> {
+					listener.onPaused();
+				});
 			});
 			
 			delegatePlayer.currentTimeProperty().addListener((o,ov,nv) -> {
 				Duration duration = media.getDuration();
-				playerView.updateProgressBar(nv.toSeconds() / duration.toSeconds());
-				playerView.updateTimeText(nv.toMinutes(), duration.toMinutes());
+				playerListeners.forEach(listener -> {
+					listener.onCurrentChanged(nv.toMinutes(), duration.toMinutes());
+				});
 			});
 			delegatePlayer.setOnEndOfMedia(() -> {
 				resetPlayer();
@@ -187,12 +212,18 @@ public class FxMediaPlayer {
 		}
 	}
 	
+	private void bindMediaView(MediaPlayer delegatePlayer2) {
+		if(mediaView != null) {
+			mediaView.setMediaPlayer(delegatePlayer);
+		}
+	}
+
 	private String getCurrentSource() {
 		if(currentIndex < 0) {
 			nextIndex();
 		}
 		String currentUrl = playlist.get(currentIndex);
-		if(currentUrl.startsWith("file:/")) {
+		if(currentUrl.startsWith(ConfigConstant.FILE_PREFIX)) {
 			return currentUrl;
 		}
 		return ResourcesEngine.getAudio(currentUrl);
@@ -239,5 +270,5 @@ public class FxMediaPlayer {
 	public boolean isInit() {
 		return delegatePlayer != null;
 	}
-
+	
 }

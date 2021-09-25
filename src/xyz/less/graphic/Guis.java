@@ -20,9 +20,9 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import xyz.less.action.DndAction;
-import xyz.less.action.DnmAction;
-import xyz.less.action.DnmAction.DnmOffset;
+import xyz.less.graphic.action.DndAction;
+import xyz.less.graphic.action.DnmAction;
+import xyz.less.graphic.action.DnmAction.DnmOffset;
 
 public final class Guis {
 	
@@ -141,7 +141,11 @@ public final class Guis {
 	}
 	
 	public static void removeStyleClass(String styleClass, Node... nodes) {
-		applyNodes(node -> node.getStyleClass().remove(styleClass), nodes);
+		applyNodes(node -> {
+			while(node.getStyleClass().contains(styleClass)) {
+				node.getStyleClass().remove(styleClass);
+			}
+		}, nodes);
 	}
 	
 	public static void addHoverStyleClass(String styleClass, Node... nodes) {
@@ -151,6 +155,17 @@ public final class Guis {
 			});
 			node.setOnMouseExited(e -> {
 				removeStyleClass(styleClass, node);
+			});
+		}, nodes);
+	}
+	
+	public static void removeHover(Node... nodes) {
+		applyNodes(node -> {
+			node.setOnMouseEntered(e -> {
+				//TODO
+			});
+			node.setOnMouseExited(e -> {
+				//TODO
 			});
 		}, nodes);
 	}
@@ -225,12 +240,12 @@ public final class Guis {
 	}
 	
 	public static DnmAction addDnmAction(Stage target, Node trigger, Consumer<DnmOffset> action, Node... ignoreTriggers) {
-		return new DnmAction(target)
-					.enable(trigger, action, ignoreTriggers);
+		return new DnmAction(target, trigger, action, ignoreTriggers)
+					.enable(true);
 	}
 	
 	public static DndAction addDndAction(Node node, Consumer<Dragboard> action) {
-		return new DndAction().enable(node, action);
+		return new DndAction(node, action).enable(true);
 	}
 	
 	

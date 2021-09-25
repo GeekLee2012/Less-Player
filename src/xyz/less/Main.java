@@ -32,7 +32,6 @@ public class Main extends Application {
 	private void initStage() {
 		FxMediaPlayer mediaPlayer = new FxMediaPlayer();
 		PlayerView mainView = new MainView(mainStage, 666, 333);
-		mediaPlayer.setPlayerView(mainView);
 		mainView.setMediaPlayer(mediaPlayer);
 		
 		Scene rootScene = new Scene(mainView, mainView.getWidth(), mainView.getHeight());

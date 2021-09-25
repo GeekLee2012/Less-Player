@@ -23,13 +23,13 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.media.Media;
 import javafx.stage.Stage;
-import xyz.less.action.DndAction.DndResult;
-import xyz.less.action.DndAction.DndType;
 import xyz.less.async.AsyncServices;
 import xyz.less.bean.ConfigConstant;
 import xyz.less.bean.Resources.Fxmls;
 import xyz.less.bean.Resources.Images;
 import xyz.less.bean.Resources.Styles;
+import xyz.less.graphic.action.DndAction.DndResult;
+import xyz.less.graphic.action.DndAction.DndType;
 import xyz.less.util.FileUtil;
 import xyz.less.util.StringUtil;
 
@@ -44,14 +44,17 @@ public class MainView extends PlayerView {
 	private ImageView defaultCoverArt;
 	private ImageView playBtn;
 	private ImageView volumeBtn;
+	private ImageView lyricBtn;
 	private ImageView playlistBtn;
+	private LyricView lyricView;
 	private PlaylistView playlistView;
 	private ProgressBar progressBar;
 	
-	private boolean shuffleMode = true;
 	private boolean alwaysOnTop;
+	private boolean shuffleMode = true;
 	private boolean devMode = false;
-	private DndResult dndResult;	
+	private DndResult dndResult;
+	private double currentMinutes;
 	
 	public MainView(Stage stage, double width, double height) {
 		super(stage, width, height);
@@ -107,8 +110,12 @@ public class MainView extends PlayerView {
 		
 		Guis.addDnmAction(mainStage, pane, dnmOffset -> {
 			Guis.applyStages(stage -> {
-				playlistView.attach();
-			}, playlistView);
+				if(stage == playlistView) {
+					playlistView.attach();
+				} else if(stage == lyricView) {
+					lyricView.attach();
+				}
+			}, playlistView, lyricView);
 		}, winBtnsBox);
 		
 		logoBtn.setOnMouseClicked(e -> {
@@ -126,7 +133,7 @@ public class MainView extends PlayerView {
 		
 		pinBtn.setOnMouseClicked(e -> {
 			alwaysOnTop = (Guis.toggleImage(pinBtn, Images.PIN) == 1);
-			Guis.setAlwaysOnTop(alwaysOnTop, mainStage, playlistView);
+			Guis.setAlwaysOnTop(alwaysOnTop, mainStage, playlistView, lyricView);
 		});
 		
 		minBtn.setOnMouseClicked(e -> {
@@ -155,6 +162,7 @@ public class MainView extends PlayerView {
 		
 		progressBar = byId("progress_bar");
 		timeLbl = byId("audio_time");
+		lyricBtn = byId("lyric_btn");
 		
 		ImageView repeatBtn = byId("repeat_btn");
 		ImageView playPrevBtn = byId("play_prev_btn");
@@ -171,6 +179,7 @@ public class MainView extends PlayerView {
 		((Pane)pane.getRight()).setPrefWidth(ncnWidth);
 		
 		//TODO
+		lyricBtn.setImage(Images.LYRIC[0]);
 		repeatBtn.setImage(Images.REPEAT[0]);
 		playPrevBtn.setImage(Images.PLAY_PREV);
 		playBtn.setImage(Images.PLAY[0]);
@@ -192,6 +201,12 @@ public class MainView extends PlayerView {
 			}, pane);
 		
 		Guis.bind(volumeSlider.maxProperty(), volumeSlider.prefWidthProperty());
+		
+		lyricBtn.setOnMouseClicked(e -> {
+//			showLyric = !showLyric;
+			Guis.toggleImage(lyricBtn, Images.LYRIC);
+			toggleLyricView();
+		});
 		
 		repeatBtn.setOnMouseClicked(e -> {
 			getMediaPlayer().setRepeatMode(
@@ -273,6 +288,8 @@ public class MainView extends PlayerView {
 		addIcons(Images.LOGO);
 		initHelpText();
 		getMediaPlayer().setShuffleMode(shuffleMode);
+		initLyricView();
+		initPlaylistView();
 	}
 
 	private void handleDndFailed(String url) {
@@ -294,7 +311,7 @@ public class MainView extends PlayerView {
 
 	private void updateOnDndFail() {
 		resetPlaylistView();
-		mediaPlayer.clearPlaylist();
+		getMediaPlayer().clearPlaylist();
 		updateDndFailText();
 	}
 	
@@ -338,6 +355,74 @@ public class MainView extends PlayerView {
 		albumLbl.setText("<离奇事件>");
 	}
 
+	private boolean handleDndUrl(String url) {
+		//插件引擎实现
+		return true;
+	}
+
+	//TODO
+	private ImageView getDefaultCoverArt() {
+		if(defaultCoverArt == null) {
+			defaultCoverArt = new ImageView(Images.DEFAULT_COVER_ART);
+			defaultCoverArt.setFitWidth(ConfigConstant.COVER_ART_FIT_SIZE);
+			defaultCoverArt.setFitHeight(ConfigConstant.COVER_ART_FIT_SIZE);
+		}
+		return defaultCoverArt;
+	}
+	
+	private void toggleLyricView() {
+		if(lyricView.isShowing()) {
+			lyricView.hide();
+		} else {
+			lyricView.show();
+		}
+	}
+	
+	private void initLyricView() {
+		if(lyricView == null) {
+			lyricView = new LyricView(mainStage);
+			lyricView.setOnHidden(e -> {
+				updateLyricBtn();
+				playlistView.setLyricOn(false);
+				playlistView.attach();
+			});
+			lyricView.setOnShown(e -> {
+				updateLyricView(currentMinutes);
+				playlistView.setLyricOn(true);
+				playlistView.attach();
+			});
+		}
+	}
+
+	private void updateLyricView(double current) {
+		this.currentMinutes = current;
+		if(lyricView != null && lyricView.isShowing()) {
+			lyricView.updateGraph(current);
+		}
+	}
+
+	private void togglePlaylistView() {
+		if(playlistView.isShowing()) {
+			playlistView.hide();
+		} else {
+			Guis.setAlwaysOnTop(alwaysOnTop, playlistView);
+			playlistView.show();
+		}
+	}
+	
+	private void initPlaylistView() {
+		if(playlistView == null) {
+			playlistView = new PlaylistView(mainStage, getMediaPlayer());
+			
+			playlistView.setOnHidden(e -> {
+				updatePlaylistBtn();
+			});
+			playlistView.setOnShown(e -> {
+				updatePlaylistBtn();
+			});
+		}
+	}
+
 	//TODO
 	private void updatePlaylistView() {
 		if(playlistView != null) {
@@ -349,44 +434,6 @@ public class MainView extends PlayerView {
 		if(playlistView != null) {
 			playlistView.resetGraph(true);
 		}
-	}
-
-	private boolean handleDndUrl(String url) {
-		//插件引擎实现
-		return true;
-	}
-
-	private ImageView getDefaultCoverArt() {
-		if(defaultCoverArt == null) {
-			defaultCoverArt = new ImageView(Images.DEFAULT_COVER_ART);
-			defaultCoverArt.setFitWidth(ConfigConstant.COVER_ART_FIT_SIZE);
-			defaultCoverArt.setFitHeight(ConfigConstant.COVER_ART_FIT_SIZE);
-		}
-		return defaultCoverArt;
-	}
-
-	private void togglePlaylistView() {
-		if(playlistView == null) {
-			playlistView = new PlaylistView(mainStage, getMediaPlayer());
-			
-			playlistView.setOnHidden(e -> {
-				updatePlaylistBtn();
-			});
-			playlistView.setOnShown(e -> {
-				updatePlaylistBtn();
-			});
-		}
-		if(playlistView.isShowing()) {
-			playlistView.hide();
-		} else {
-			Guis.setAlwaysOnTop(alwaysOnTop, playlistView);
-			playlistView.show();
-		}
-	}
-
-	private void updatePlaylistBtn() {
-		int index = playlistView.isShowing() ? 1 : 0;
-		playlistBtn.setImage(Images.PLAYLIST[index]);
 	}
 
 	//TODO
@@ -406,32 +453,35 @@ public class MainView extends PlayerView {
 		return style.substring(0, index1) + x + style.substring(index2);
 	}
 
-	@Override
-	public void updateProgressBar(double percent) {
-		progressBar.setSeekable(mediaPlayer.isInit());
-		progressBar.updateProgress(percent);
+	private void updateLyricBtn() {
+		int index = lyricView.isShowing() ? 1 : 0;
+		lyricBtn.setImage(Images.LYRIC[index]);
 	}
 	
-	@Override
+	private void updatePlaylistBtn() {
+		int index = playlistView.isShowing() ? 1 : 0;
+		playlistBtn.setImage(Images.PLAYLIST[index]);
+	}
+	
+	public void updateProgressBar(double current, double duration) {
+		progressBar.setSeekable(getMediaPlayer().isInit());
+		progressBar.updateProgress(current/duration);
+	}
+	
 	public void updateTimeText(double current, double duration) {
 		timeLbl.setText(String.format(ConfigConstant.CURRENT_DURATION_FORMAT, 
 				StringUtil.toMmss(current),
 				StringUtil.toMmss(duration)));
 	}
 	
-	@Override
 	public void updateMetadata(Media media) {
 		Image image = null;
 		String title = null;
 		String artist = null;
 		String album = null;
 		String source = null;
-		if(media != null) {
+		if(media != null) { //TODO
 			Map<String, Object> metadata = media.getMetadata();
-//			metadata.forEach((k,v) -> {
-//				System.out.println(k + ": " + v);
-//			});
-			//TODO
 			source = media.getSource();
 			source = StringUtil.getDefault(StringUtil.decodeNameFromUrl(source), 
 									ConfigConstant.UNKOWN_AUDIO);
@@ -469,7 +519,6 @@ public class MainView extends PlayerView {
 		Guis.setGraphic(graphic, coverArtLbl);
 	}
 	
-	@Override
 	public void updatePlayBtn(boolean playing) {
 		int index = playing ? 1 : 0;
 		Guis.setUserData(index, playBtn);
@@ -489,7 +538,7 @@ public class MainView extends PlayerView {
 	}
 	
 	public void highlightPlaylist() {
-		if(playlistView != null) {
+		if(playlistView != null && playlistView.isShowing()) {
 			playlistView.highlightCurrentPlaying();
 		}
 	}
@@ -499,5 +548,28 @@ public class MainView extends PlayerView {
 		artistLbl.setText("类型: 文件、文件夹、其他");
 		albumLbl.setText("<HELP>");
 	}
+
+	@Override
+	protected void updateOnPlaying(boolean playing) {
+		updatePlayBtn(playing);
+	}
+
+	@Override
+	protected void updateOnReady(Media media) {
+		updateMetadata(media);
+		loadLyric(media.getSource());
+	}
 	
+	private void loadLyric(String source) {
+		if(lyricView != null) {
+			lyricView.loadLyric(source);
+		}
+	}
+
+	@Override
+	public void updateProgress(double current, double duration) {
+		updateProgressBar(current, duration);
+		updateTimeText(current, duration);
+		updateLyricView(current);
+	}
 }

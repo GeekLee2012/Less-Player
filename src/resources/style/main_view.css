@@ -1,4 +1,5 @@
 @import url("common.css");
+@import url("progress_bar.css");
 @import url("volume_bar.css");
 
 /* fx:id有点东西？？不支持分隔符"-" */
@@ -16,6 +17,11 @@
 
 #main_bottom {
 	-fx-pref-height: 56;
+}
+
+#audio_time {
+	-fx-font-size: 16;
+	-fx-font-weight: bold;
 }
 
 .app-title {

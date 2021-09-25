@@ -7,11 +7,12 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 import xyz.less.media.FxMediaPlayer;
+import xyz.less.media.MediaPlayerListener;
 
-public abstract class PlayerView extends StackPane {
+public abstract class PlayerView extends StackPane implements MediaPlayerListener {
 	protected Stage mainStage;
-	protected MediaView mediaView;
-	protected FxMediaPlayer mediaPlayer;
+	private MediaView mediaView;
+	private FxMediaPlayer mediaPlayer;
 	
 	public PlayerView(Stage stage, double width, double height) {
 		this.mainStage = stage;
@@ -21,11 +22,7 @@ public abstract class PlayerView extends StackPane {
 		addHiddenChildren(mediaView);
 	}
 	
-	public MediaView getMediaView() {
-		return mediaView;
-	}
-
-	public void setMediaView(MediaView mediaView) {
+	private void setMediaView(MediaView mediaView) {
 		this.mediaView = mediaView;
 	}
 
@@ -34,7 +31,11 @@ public abstract class PlayerView extends StackPane {
 	}
 
 	public void setMediaPlayer(FxMediaPlayer mediaPlayer) {
-		this.mediaPlayer = mediaPlayer;
+		if(mediaPlayer != null) {
+			this.mediaPlayer = mediaPlayer;
+			this.mediaPlayer.setMediaView(mediaView);
+			this.mediaPlayer.addPlayerListener(this);
+		}
 	}
 	
 	public <T> T byId(String id) {
@@ -62,17 +63,64 @@ public abstract class PlayerView extends StackPane {
 	
 	public abstract void setAppTitle(String title);
 	
-	public abstract void updateTimeText(double currentMinutes, double durationMinutes);
+	protected abstract void updateProgress(double currentMinutes, double durationMinutes);
+	
+//	protected abstract void updatePlayBtn(boolean playing);
+	
+	protected abstract void updateOnPlaying(boolean playing);
+	
+	protected abstract void updateOnReady(Media media);
 
-	public abstract void updateProgressBar(double percent);
-
-	public abstract void updatePlayBtn(boolean playing);
-
-	public abstract void updateMetadata(Media media);
-
-	public abstract void highlightPlaylist();
+//	protected abstract void updateMetadata(Media media);
 
 	public abstract void initGraph();
 	
-	protected abstract void initDatas();
+	protected void initDatas() {
+		//不要求子类必须实现
+	}
+	
+	protected void highlightPlaylist() {
+		//不要求子类必须实现
+	}
+	
+	@Override
+	public void onReady(Media Media) {
+		updateOnReady(Media);
+	}
+	
+	@Override
+	public void onPlaying() {
+		updateOnPlaying(true);
+		highlightPlaylist();
+	}
+	
+	@Override
+	public void onPaused() {
+		updateOnPlaying(false);
+	}
+	
+	@Override
+	public void onCurrentChanged(double currentMinutes, double durationMinutes) {
+		updateProgress(currentMinutes, durationMinutes);
+	}
+	
+	@Override
+	public void onNoMedia() {
+		updateProgress(0, 0);
+	}
+	
+	@Override
+	public void onEndOfMedia() {
+		// TODO Auto-generated method stub
+	}
+	
+	@Override
+	public void onReset() {
+		// TODO Auto-generated method stub
+	}
+	
+	@Override
+	public void onError() {
+		// TODO Auto-generated method stub
+	}
 }

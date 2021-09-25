@@ -21,29 +21,16 @@ public class ProgressBar extends HBox {
 		this.max = max;
 		this.valueProperty = new SimpleDoubleProperty(value);
 		initGraph();
-		initStyle();
 		initEvents();
 	}
 	
 	private void initGraph() {
 		progress = new HBox();
 		Guis.addChildren(this, progress);
+		Guis.addStyleClass("m-progress-bar", this);
+		Guis.addStyleClass("progress", progress);
 	}
 	
-	private void initStyle() {
-		Guis.setStyle("-fx-pref-height: 3;"
-				+ "-fx-max-height: 3;"
-				+ "-fx-pref-width: 0;"
-				+ "-fx-background-color: #1ca388;", 
-				progress);
-		
-		Guis.setStyle("-fx-pref-height: 4;"
-				+ "-fx-max-height: 4;"
-				+ "-fx-cursor: hand;"
-				+ "-fx-background-color: #464646;",
-				this);
-	}
-
 	private void initEvents() {
 		setOnMouseClicked(e -> {
 			if(isSeekable()) {
