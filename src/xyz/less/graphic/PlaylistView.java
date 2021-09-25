@@ -192,8 +192,8 @@ public class PlaylistView extends StageView {
 	}
 	
 	public void updateLogoSizeLabelText() {
-		String size = size() > 0 ? size() + "首" : "";
-		String text = String.format("当前播放 %1$s", size);
+		String size = size() > 0 ? size() + "脢脳" : "";
+		String text = String.format("碌卤脟掳虏楼路脜 %1$s", size);
 		logoSizeLbl.setText(text);
 	}
 
@@ -208,9 +208,9 @@ public class PlaylistView extends StageView {
 		openerY = opener.getY();
 		double paddingX = 6;
 		double paddingY = lyricOn ? 10 : 88;
-		if(!attach) {
-			opener.setX(openerX - getWidth() / 2 - paddingX);
-		}
+// 		if(!attach) {
+// 			opener.setX(openerX - getWidth() / 2 - paddingX);
+// 		}
 		setX(opener.getX() + opener.getWidth() + paddingX);
 		setY(openerY - paddingY);
 	}
