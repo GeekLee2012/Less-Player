@@ -37,8 +37,6 @@ public class FxMediaPlayer {
 				playerListeners.forEach(listener -> {
 					listener.onNoMedia();
 				});
-//				playerView.updatePlayBtn(false);
-//				playerView.updateProgress(0, 0);
 			}
 		});
 	}
@@ -176,8 +174,6 @@ public class FxMediaPlayer {
 				playerListeners.forEach(listener -> {
 					listener.onReady(media);
 				});
-//				playerView.updateMetadata(media);
-//				playerView.highlightPlaylist();
 			});
 			
 			delegatePlayer.setOnPlaying(() -> {
