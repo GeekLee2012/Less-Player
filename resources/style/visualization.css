@@ -1,8 +1,0 @@
-.rectangle-spectrum {
-	-fx-background-color: transparent;
-	-fx-padding: 0 0 3 10;
-}
-
-.rectangle-spectrum .sp-rectangle {
-	-fx-fill: #1ca388;
-}
