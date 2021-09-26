@@ -41,7 +41,7 @@ public class LyricView extends StageView {
 	private boolean attach = true;
 	
 	public LyricView(Stage opener) {
-		super(opener, 666, 150);
+		super(opener, ConfigConstant.LYRIC_WIDTH, ConfigConstant.LYRIC_HEIGHT);
 		hideTaskBarIcon();
 		initGraph();
 		initEvents();

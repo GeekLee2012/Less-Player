@@ -37,6 +37,8 @@ public class FxMediaPlayer {
 				playerListeners.forEach(listener -> {
 					listener.onNoMedia();
 				});
+//				playerView.updatePlayBtn(false);
+//				playerView.updateProgress(0, 0);
 			}
 		});
 	}
@@ -170,10 +172,18 @@ public class FxMediaPlayer {
 			bindMediaView(delegatePlayer);
 			delegatePlayer.setVolume(volume);
 			
+			delegatePlayer.setAudioSpectrumListener((double timestamp, double duration, float[] magnitudes, float[] phases) -> {
+				playerListeners.forEach(listener -> {
+					listener.spectrumDataUpdate(timestamp, duration, magnitudes, phases);
+				});
+			});
+			
 			delegatePlayer.setOnReady(() -> {
 				playerListeners.forEach(listener -> {
 					listener.onReady(media);
 				});
+//				playerView.updateMetadata(media);
+//				playerView.highlightPlaylist();
 			});
 			
 			delegatePlayer.setOnPlaying(() -> {

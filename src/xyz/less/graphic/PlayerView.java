@@ -20,6 +20,7 @@ public abstract class PlayerView extends StackPane implements MediaPlayerListene
 		setHeight(height);
 		setMediaView(new MediaView());
 		addHiddenChildren(mediaView);
+		initDatas();
 	}
 	
 	private void setMediaView(MediaView mediaView) {
@@ -29,13 +30,17 @@ public abstract class PlayerView extends StackPane implements MediaPlayerListene
 	public FxMediaPlayer getMediaPlayer() {
 		return mediaPlayer;
 	}
-
-	public void setMediaPlayer(FxMediaPlayer mediaPlayer) {
-		if(mediaPlayer != null) {
-			this.mediaPlayer = mediaPlayer;
+	
+	public void setFxMediaPlayer() {
+		if(mediaPlayer == null) {
+			this.mediaPlayer = new FxMediaPlayer();
 			this.mediaPlayer.setMediaView(mediaView);
 			this.mediaPlayer.addPlayerListener(this);
 		}
+	}
+	
+	public void setMediaPlayer() {
+		//TODO ×Ô¶¨ÒåMediaPlayer -> SPI
 	}
 	
 	public <T> T byId(String id) {
@@ -65,13 +70,9 @@ public abstract class PlayerView extends StackPane implements MediaPlayerListene
 	
 	protected abstract void updateProgress(double currentMinutes, double durationMinutes);
 	
-//	protected abstract void updatePlayBtn(boolean playing);
-	
 	protected abstract void updateOnPlaying(boolean playing);
 	
 	protected abstract void updateOnReady(Media media);
-
-//	protected abstract void updateMetadata(Media media);
 
 	public abstract void initGraph();
 	
@@ -105,6 +106,11 @@ public abstract class PlayerView extends StackPane implements MediaPlayerListene
 	}
 	
 	@Override
+	public void spectrumDataUpdate(double timestamp, double duration, float[] magnitudes, float[] phases) {
+		
+	}
+	
+	@Override
 	public void onNoMedia() {
 		updateProgress(0, 0);
 	}
@@ -123,4 +129,9 @@ public abstract class PlayerView extends StackPane implements MediaPlayerListene
 	public void onError() {
 		// TODO Auto-generated method stub
 	}
+
+	public void togglePlay() {
+		mediaPlayer.play();
+	}
+	
 }

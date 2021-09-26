@@ -1,0 +1,16 @@
+@import url("progress_bar.css");
+
+.m-slider-bar {
+	-fx-background-color: transparent;
+}
+
+.m-slider-bar .thumb {
+	-fx-max-width: 12;
+	-fx-max-height: 12; 
+	-fx-padding: 0;
+	-fx-border-width: 1;
+	-fx-border-color: #f0f0f0;
+	-fx-border-radius: 6;
+	-fx-background-color: #fff;
+	-fx-background-radius: 6;
+}

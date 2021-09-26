@@ -10,16 +10,14 @@ public abstract class StageView extends Stage {
 	private int count;
 	
 	public StageView(Stage opener) {
-		this.opener = opener;
-		initOwner(opener);
-		initStyle(StageStyle.TRANSPARENT);
+		this(opener, -1, -1);
 	}
 	
-	public StageView(Stage owner, double width, double height) {
-		this.opener = owner;
+	public StageView(Stage opener, double width, double height) {
+		this.opener = opener;
 		setWidth(width);
 		setHeight(height);
-		initOwner(owner);
+		initOwner(opener);
 		initStyle(StageStyle.TRANSPARENT);
 	}
 	
@@ -56,4 +54,12 @@ public abstract class StageView extends Stage {
 	}
 	
 	protected abstract void initGraph();
+	
+	public void toggle() {
+		if(isShowing()) {
+			hide();
+		} else {
+			show();
+		}
+	}
 }

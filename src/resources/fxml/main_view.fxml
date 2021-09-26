@@ -7,8 +7,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.Background?>
-<?import xyz.less.graphic.ProgressBar?>
+<?import xyz.less.graphic.control.ProgressBar?>
 <?import javafx.scene.control.Slider?>
+<?import xyz.less.graphic.control.SliderBar?>
 
 <BorderPane fx:id="main_view" xmlns:fx="http://javafx.com/fxml/1">
 	<top>
@@ -41,7 +42,7 @@
 				</VBox>
 			</left>
 			<center>
-				<VBox alignment="CENTER_LEFT">
+				<VBox fx:id="audio_metas" alignment="CENTER_LEFT">
 					<children>
 						<Label fx:id="audio_title" />
 						<Label fx:id="audio_artist" />
@@ -57,10 +58,11 @@
 				<ProgressBar fx:id="progress_bar" />
 			</top>
 			<left>
-				<HBox alignment="CENTER_LEFT">
+				<HBox alignment="CENTER_LEFT" spacing="5">
 					<children>
 						<Label fx:id="audio_time" />
 						<ImageView fx:id="lyric_btn" />
+						<ImageView fx:id="spectrum_btn" />
 					</children>
 				</HBox>
 			</left>
@@ -79,10 +81,10 @@
 				<HBox spacing="5" alignment="CENTER">
 					<children>
 						<ImageView fx:id="playlist_btn" />
-						<HBox alignment="CENTER">
+						<HBox alignment="CENTER" spacing="5">
 							<children>
 								<ImageView fx:id="volume_btn" />
-								<Slider fx:id="volume_bar" />
+								<SliderBar fx:id="volume_bar" />
 							</children>
 						</HBox>
 					</children>

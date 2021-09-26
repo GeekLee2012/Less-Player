@@ -11,7 +11,6 @@ import java.util.concurrent.Future;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Dragboard;
@@ -20,7 +19,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
 import javafx.scene.media.Media;
 import javafx.stage.Stage;
 import xyz.less.async.AsyncServices;
@@ -30,31 +28,39 @@ import xyz.less.bean.Resources.Images;
 import xyz.less.bean.Resources.Styles;
 import xyz.less.graphic.action.DndAction.DndResult;
 import xyz.less.graphic.action.DndAction.DndType;
+import xyz.less.graphic.control.ProgressBar;
+import xyz.less.graphic.control.SliderBar;
+import xyz.less.graphic.visualization.RectangleSpectrum;
 import xyz.less.util.FileUtil;
 import xyz.less.util.StringUtil;
 
 public class MainView extends PlayerView {
 	private Label mainTitleLbl;
-	private Slider volumeSlider;
 	private Label timeLbl;
 	private Label coverArtLbl;
 	private Label titleLbl;
 	private Label artistLbl;
 	private Label albumLbl;
 	private ImageView defaultCoverArt;
+	private ProgressBar progressBar;
+	private ImageView lyricBtn;
+	private ImageView spectrumBtn;
 	private ImageView playBtn;
 	private ImageView volumeBtn;
-	private ImageView lyricBtn;
+	private SliderBar volumeSlider;
 	private ImageView playlistBtn;
 	private LyricView lyricView;
 	private PlaylistView playlistView;
-	private ProgressBar progressBar;
 	
 	private boolean alwaysOnTop;
 	private boolean shuffleMode = true;
 	private boolean devMode = false;
 	private DndResult dndResult;
 	private double currentMinutes;
+	
+	private Pane audioMetaBox;
+	private RectangleSpectrum rectSpectrum;
+	private boolean spectrumOn;
 	
 	public MainView(Stage stage, double width, double height) {
 		super(stage, width, height);
@@ -70,7 +76,7 @@ public class MainView extends PlayerView {
 		initBottom();
 		
 		initEvents();
-		initDatas();
+		initGraphDatas();
 	}
 	
 	private void initStyles() {
@@ -120,12 +126,11 @@ public class MainView extends PlayerView {
 		
 		logoBtn.setOnMouseClicked(e -> {
 			devMode = !devMode;
+			updateAppTitle();
 			if(devMode) {
-				setAppTitle(ConfigConstant.APP_TITLE_DEV_MODE);
 				Guis.addStyleClass("dev-mode-bg", logoBtn);
 				Guis.addStyleClass("dev-mode-text", mainTitleLbl);
 			} else {
-				setAppTitle(ConfigConstant.APP_TITLE);
 				Guis.removeStyleClass("dev-mode-bg", logoBtn);
 				Guis.removeStyleClass("dev-mode-text", mainTitleLbl);
 			}
@@ -150,6 +155,7 @@ public class MainView extends PlayerView {
 		titleLbl = byId("audio_title");
 		artistLbl = byId("audio_artist");
 		albumLbl = byId("audio_album");
+		audioMetaBox = byId("audio_metas");
 		
 		Guis.addStyleClass("cover-art", coverArtLbl);
 		Guis.addStyleClass("audio-title", titleLbl);
@@ -163,6 +169,7 @@ public class MainView extends PlayerView {
 		progressBar = byId("progress_bar");
 		timeLbl = byId("audio_time");
 		lyricBtn = byId("lyric_btn");
+		spectrumBtn = byId("spectrum_btn");
 		
 		ImageView repeatBtn = byId("repeat_btn");
 		ImageView playPrevBtn = byId("play_prev_btn");
@@ -173,13 +180,15 @@ public class MainView extends PlayerView {
 		playlistBtn = byId("playlist_btn");
 		volumeBtn = byId("volume_btn");
 		volumeSlider = byId("volume_bar");
+		volumeSlider.setPrefSize(90, 5);
 		
-		double ncnWidth = 175;
+		double ncnWidth = 188;
 		((Pane)pane.getLeft()).setPrefWidth(ncnWidth);
 		((Pane)pane.getRight()).setPrefWidth(ncnWidth);
 		
 		//TODO
 		lyricBtn.setImage(Images.LYRIC[0]);
+		spectrumBtn.setImage(Images.SPECTRUM[0]);
 		repeatBtn.setImage(Images.REPEAT[0]);
 		playPrevBtn.setImage(Images.PLAY_PREV);
 		playBtn.setImage(Images.PLAY[0]);
@@ -190,7 +199,6 @@ public class MainView extends PlayerView {
 		
 		Guis.setUserData(shuffleMode ? 1 : 0, shuffleBtn);
 		
-		//TODO
 		Guis.applyChildrenDeeply(node -> {
 				if(node instanceof ImageView) {
 					ImageView btn = (ImageView)node;
@@ -199,13 +207,18 @@ public class MainView extends PlayerView {
 					Guis.setFitSize(ConfigConstant.PLAYER_ICON_FIT_SIZE, btn);
 				}
 			}, pane);
-		
-		Guis.bind(volumeSlider.maxProperty(), volumeSlider.prefWidthProperty());
+		Guis.removeStyleClass("image-btn", volumeBtn);
 		
 		lyricBtn.setOnMouseClicked(e -> {
-//			showLyric = !showLyric;
 			Guis.toggleImage(lyricBtn, Images.LYRIC);
-			toggleLyricView();
+			lyricView.toggle();
+		});
+		
+		spectrumBtn.setOnMouseClicked(e -> {
+			if(getMediaPlayer().isInit()) {
+				spectrumOn = !spectrumOn;
+				toggleSpectrumView();
+			}
 		});
 		
 		repeatBtn.setOnMouseClicked(e -> {
@@ -232,29 +245,22 @@ public class MainView extends PlayerView {
 		});
 		
 		playlistBtn.setOnMouseClicked(e -> {
-			togglePlaylistView();
+			playlistView.toggle();
 		});
 		
 		progressBar.addListener((o,ov,nv) -> {
 			getMediaPlayer().seek(nv.doubleValue());
 		});
 		
-		//TODO
-		volumeSlider.setOnMouseClicked(e -> {
-			volumeSlider.setValue(e.getX());
-		});
-		volumeSlider.valueProperty().addListener((o,ov,nv) -> {
-			Region track = bySelector("#volume_bar .track");
-			double x = nv.doubleValue();
-			if(track != null) {
-				track.setStyle(getTrackStyle(x));
-			}
-			updateVolumeBtn(x);
-			getMediaPlayer().setVolumn(x / volumeSlider.getMax());
+		volumeSlider.addListener((o,ov,nv) -> {
+			double value = nv.doubleValue();
+			updateVolumeBtn(value);
+			getMediaPlayer().setVolumn(value);
 		});
 	}
 	
 	private void initEvents() {
+		//TODO °´¼ü¼àÌýÊ§Ð§
 		addEventHandler(KeyEvent.KEY_RELEASED, (event) -> {
 			//¿Õ¸ñ¼ü: ²¥·Å/ÔÝÍ£ÒôÀÖ
 			if(KeyCode.SPACE == event.getCode()) {
@@ -281,7 +287,11 @@ public class MainView extends PlayerView {
 
 	@Override
 	protected void initDatas() {
-		setAppTitle(ConfigConstant.APP_TITLE);
+		setFxMediaPlayer();
+	}
+	
+	protected void initGraphDatas() {
+		setAppTitle(ConfigConstant.APP_TITLE_DEFAULT_MODE);
 		volumeSlider.setValue(ConfigConstant.INITIAL_VOLUME);
 		updateMetadata(null);
 		updateTimeText(0, 0);
@@ -290,6 +300,7 @@ public class MainView extends PlayerView {
 		getMediaPlayer().setShuffleMode(shuffleMode);
 		initLyricView();
 		initPlaylistView();
+		initSpectrumView();
 	}
 
 	private void handleDndFailed(String url) {
@@ -313,6 +324,9 @@ public class MainView extends PlayerView {
 		resetPlaylistView();
 		getMediaPlayer().clearPlaylist();
 		updateDndFailText();
+		//TODO
+		spectrumOn = false;
+		toggleSpectrumView();
 	}
 	
 	//TODO
@@ -370,26 +384,17 @@ public class MainView extends PlayerView {
 		return defaultCoverArt;
 	}
 	
-	private void toggleLyricView() {
-		if(lyricView.isShowing()) {
-			lyricView.hide();
-		} else {
-			lyricView.show();
-		}
-	}
-	
 	private void initLyricView() {
 		if(lyricView == null) {
 			lyricView = new LyricView(mainStage);
 			lyricView.setOnHidden(e -> {
 				updateLyricBtn();
-				playlistView.setLyricOn(false);
-				playlistView.attach();
+				playlistView.attach(false);
 			});
 			lyricView.setOnShown(e -> {
+				updateLyricBtn();
 				updateLyricView(currentMinutes);
-				playlistView.setLyricOn(true);
-				playlistView.attach();
+				playlistView.attach(true);
 			});
 		}
 	}
@@ -400,16 +405,35 @@ public class MainView extends PlayerView {
 			lyricView.updateGraph(current);
 		}
 	}
-
-	private void togglePlaylistView() {
-		if(playlistView.isShowing()) {
-			playlistView.hide();
-		} else {
-			Guis.setAlwaysOnTop(alwaysOnTop, playlistView);
-			playlistView.show();
-		}
+	
+	private void initSpectrumView() {
+		rectSpectrum = new RectangleSpectrum(99);
+		rectSpectrum.setSpacing(1);
+		rectSpectrum.setAlignment(Pos.BOTTOM_LEFT);
 	}
 	
+	private void toggleSpectrumView() {
+		BorderPane mainCenterPane = byId("main_center");
+		if(spectrumOn) {
+			mainCenterPane.setCenter(rectSpectrum);
+		} else {
+			mainCenterPane.setCenter(audioMetaBox);
+		}
+		updateSpectrumBtn();
+		updateAppTitle();
+	}
+
+	private String getAdjustAppTitle() {
+		String result = titleLbl.getText();
+		if(devMode) {
+			return spectrumOn ? ConfigConstant.DEV_MODE_PREFIX.concat(result) 
+					+ " " + ConfigConstant.PLAYING_PREFIX + result 
+					: ConfigConstant.APP_TITLE_DEV_MODE;
+		} 
+		return spectrumOn ? ConfigConstant.PLAYING_PREFIX + result 
+				: ConfigConstant.APP_TITLE_DEFAULT_MODE;
+	}
+
 	private void initPlaylistView() {
 		if(playlistView == null) {
 			playlistView = new PlaylistView(mainStage, getMediaPlayer());
@@ -436,26 +460,18 @@ public class MainView extends PlayerView {
 		}
 	}
 
-	//TODO
-	private String getTrackStyle(double x) {
-		x = x > 0 ? x : 0.01;
-		String style = "-fx-pref-height: 5;"
-				+ "-fx-max-height: 5;"
-				+ "-fx-background-color: #464646;"
-				+ "-fx-background-radius: 0;"
-				+ "-fx-background-image: url('/resources/images/music_volume_track.png');"
-				+ "-fx-background-size: 1;"
-				+ "-fx-background-repeat: repeat-y;";
-		String key = "-fx-background-size:";
-		int index1 = style.indexOf(key);
-		int index2 = style.indexOf(";", index1);
-		index1 += key.length();
-		return style.substring(0, index1) + x + style.substring(index2);
-	}
-
 	private void updateLyricBtn() {
 		int index = lyricView.isShowing() ? 1 : 0;
 		lyricBtn.setImage(Images.LYRIC[index]);
+	}
+	
+	private void updateSpectrumBtn() {
+		int index = spectrumOn ? 1 : 0;
+		spectrumBtn.setImage(Images.SPECTRUM[index]);
+	}
+	
+	private void updateAppTitle() {
+		setAppTitle(getAdjustAppTitle());
 	}
 	
 	private void updatePlaylistBtn() {
@@ -501,6 +517,7 @@ public class MainView extends PlayerView {
 		albumLbl.setText(album);
 		
 		updateCoverArt(image, false);
+		updateAppTitle();
 	}
 	
 	public void updateCoverArt(Image image, boolean applyTheme) {
@@ -525,9 +542,9 @@ public class MainView extends PlayerView {
 		playBtn.setImage(Images.PLAY[index]);
 	}
 	
-	private void updateVolumeBtn(double x) {
-		double lowLimit = volumeSlider.getMax() / 2;
-		int index = x > 0 ? (x >= lowLimit ? 0 : 1) : 2;
+	private void updateVolumeBtn(double value) {
+		double lowLimit = volumeSlider.getHalf();
+		int index = value > 0 ? (value >= lowLimit ? 0 : 1) : 2;
 		Guis.setUserData(index, volumeBtn);
 		volumeBtn.setImage(Images.VOLUME[index]);
 	}
@@ -571,5 +588,10 @@ public class MainView extends PlayerView {
 		updateProgressBar(current, duration);
 		updateTimeText(current, duration);
 		updateLyricView(current);
+	}
+	
+	@Override
+	public void spectrumDataUpdate(double timestamp, double duration, float[] magnitudes, float[] phases) {
+		rectSpectrum.updateGraph(timestamp, duration, magnitudes, phases);
 	}
 }

@@ -10,6 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import xyz.less.bean.ConfigConstant;
 import xyz.less.bean.Resources.Fxmls;
 import xyz.less.bean.Resources.Images;
 import xyz.less.bean.Resources.Styles;
@@ -19,7 +20,7 @@ import xyz.less.util.StringUtil;
 public class PlaylistView extends StageView {
 	private FxMediaPlayer mediaPlayer;
 	
-	private double openerX;
+//	private double openerX;
 	private double openerY;
 	
 	private Label logoSizeLbl;
@@ -30,7 +31,7 @@ public class PlaylistView extends StageView {
 	private boolean autoTarget = true;
 	
 	public PlaylistView(Stage opener, FxMediaPlayer mediaPlayer) {
-		super(opener, 366, 520);
+		super(opener, ConfigConstant.PLAYLIST_WIDTH, ConfigConstant.PLAYLIST_HEIGHT);
 		this.mediaPlayer = mediaPlayer;
 		
 		initGraph();
@@ -43,9 +44,9 @@ public class PlaylistView extends StageView {
 			//TODO
 			highlightCurrentPlaying();
 		});
-		setOnHiding(e -> {
-			opener.setX(openerX);
-		});
+//		setOnHiding(e -> {
+//			opener.setX(openerX);
+//		});
 	}
 
 	protected void initGraph() {
@@ -192,31 +193,32 @@ public class PlaylistView extends StageView {
 	}
 	
 	public void updateLogoSizeLabelText() {
-		String size = size() > 0 ? size() + "脢脳" : "";
-		String text = String.format("碌卤脟掳虏楼路脜 %1$s", size);
+		String size = size() > 0 ? size() + "首" : "";
+		String text = String.format("当前播放 %1$s", size);
 		logoSizeLbl.setText(text);
 	}
 
 	public void attach() {
+		attach(this.lyricOn);
+	}
+	
+	public void attach(boolean lyricOn) {
+		this.lyricOn = lyricOn;
 		if(attach) {
 			locate2Opener();
 		}
 	}
 	
 	private void locate2Opener() {
-		openerX = opener.getX();
+//		openerX = opener.getX();
 		openerY = opener.getY();
 		double paddingX = 6;
-		double paddingY = lyricOn ? 10 : 88;
-// 		if(!attach) {
-// 			opener.setX(openerX - getWidth() / 2 - paddingX);
-// 		}
+		double paddingY = lyricOn ? 18 : 88;
+//		if(!attach) {
+//			opener.setX(openerX - getWidth() / 2 - paddingX);
+//		}
 		setX(opener.getX() + opener.getWidth() + paddingX);
 		setY(openerY - paddingY);
-	}
-
-	public void setLyricOn(boolean value) {
-		this.lyricOn = value;
 	}
 	
 }

@@ -35,24 +35,24 @@ public class DnmAction  {
 	
 	public DnmAction enable(boolean value) {
 		this.enabled = value;
-		trigger.setOnMousePressed(event -> {
-			event.consume();
+		trigger.setOnMousePressed(e -> {
+			e.consume();
 			if(!this.enabled) {
 				return ;
 			}
 			fromX = stage.getX();
 			fromY = stage.getY();
-			fromScreenX = event.getScreenX();
-			fromScreenY = event.getScreenY();
+			fromScreenX = e.getScreenX();
+			fromScreenY = e.getScreenY();
 		});
 		
-		trigger.setOnMouseDragged(event -> {
-			event.consume();
+		trigger.setOnMouseDragged(e -> {
+			e.consume();
 			if(!this.enabled) {
 				return ;
 			}
-			double toScreenX = event.getScreenX();
-			double toScreenY = event.getScreenY();
+			double toScreenX = e.getScreenX();
+			double toScreenY = e.getScreenY();
 			double offsetX = toScreenX - fromScreenX;
 			double offsetY = toScreenY - fromScreenY;
 			double toX = fromX + offsetX;

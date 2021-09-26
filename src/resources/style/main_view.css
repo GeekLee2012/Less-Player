@@ -1,6 +1,6 @@
 @import url("common.css");
-@import url("progress_bar.css");
-@import url("volume_bar.css");
+@import url("slider_bar.css");
+@import url("visualization.css");
 
 /* fx:id有点东西？？不支持分隔符"-" */
 #main_view {
@@ -22,6 +22,7 @@
 #audio_time {
 	-fx-font-size: 16;
 	-fx-font-weight: bold;
+	-fx-padding: 5 5 5 15;
 }
 
 .app-title {

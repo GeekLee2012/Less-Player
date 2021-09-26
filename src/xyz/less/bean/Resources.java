@@ -42,6 +42,11 @@ public final class Resources {
 				ResourcesEngine.getImage("pin_on_16px.png") 
 			};
 		
+		public final static Image[] SPECTRUM = { 
+				ResourcesEngine.getImage("spectrum_32px.png"), 
+				ResourcesEngine.getImage("spectrum_on_32px.png") 
+			};
+		
 		public final static Image[] LYRIC = { 
 				ResourcesEngine.getImage("text_32px.png"), 
 				ResourcesEngine.getImage("text_on_32px.png") 

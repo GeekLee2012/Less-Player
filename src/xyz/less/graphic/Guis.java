@@ -3,6 +3,7 @@ package xyz.less.graphic;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.function.Consumer;
 
 import javafx.application.Platform;
@@ -87,7 +88,13 @@ public final class Guis {
 	
 	public static void addChildren(Pane parent, Node... nodes) {
 		if(parent !=null && nodes != null) {
-			parent.getChildren().addAll(Arrays.asList(nodes));
+			addChildren(parent, Arrays.asList(nodes));
+		}
+	}
+	
+	public static void addChildren(Pane parent, Collection<? extends Node> c) {
+		if(parent !=null && c != null) {
+			parent.getChildren().addAll(c);
 		}
 	}
 	
