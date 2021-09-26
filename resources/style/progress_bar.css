@@ -1,0 +1,11 @@
+.m-progress-bar {
+	-fx-pref-height: 4;
+	-fx-cursor: hand;
+	-fx-background-color: #464646;
+}
+
+.m-progress-bar .progress {
+	-fx-pref-height: 4;
+	-fx-pref-width: 0;
+	-fx-background-color: #1ca388;	
+}
