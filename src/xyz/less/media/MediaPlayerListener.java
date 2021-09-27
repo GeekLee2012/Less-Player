@@ -1,10 +1,12 @@
 package xyz.less.media;
 
-import javafx.scene.media.Media;
+import java.util.Map;
+
+import xyz.less.bean.Audio;
 
 //TODO «ø“¿¿µMedia
 public interface MediaPlayerListener {
-	void onReady(Media Media);
+	void onReady(Audio audio, Map<String, Object> metadata);
 	void onPlaying();
 	void onCurrentChanged(double currentMinutes, double durationMinutes);
 	void spectrumDataUpdate(double timestamp, double duration, float[] magnitudes, float[] phases);

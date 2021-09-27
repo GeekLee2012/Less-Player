@@ -17,7 +17,4 @@ public class DateUtil {
 		return minutes + (secords + millis / 1000.0D) / 60.0D;
 	}
 	
-	public static void main(String[] args) {
-		System.out.println(toMinutes("05:20.99"));
-	}
 }

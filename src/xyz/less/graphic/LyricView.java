@@ -11,6 +11,7 @@ import javafx.scene.paint.Paint;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import xyz.less.bean.Audio;
 import xyz.less.bean.ConfigConstant;
 import xyz.less.bean.Lyric;
 import xyz.less.bean.Resources.Fxmls;
@@ -39,12 +40,17 @@ public class LyricView extends StageView {
 	private String line2TimeKey;
 	private String line3TimeKey;
 	private boolean attach = true;
+	private Audio currentAudio;
 	
 	public LyricView(Stage opener) {
 		super(opener, ConfigConstant.LYRIC_WIDTH, ConfigConstant.LYRIC_HEIGHT);
 		hideTaskBarIcon();
 		initGraph();
 		initEvents();
+	}
+	
+	public void setCurrentAudio(Audio currentAudio) {
+		this.currentAudio = currentAudio;
 	}
 
 	private void hideTaskBarIcon() {
@@ -155,9 +161,11 @@ public class LyricView extends StageView {
 		timeKeyList.clear();
 	}
 	
-	public void loadLyric(String uri) {
+	public void loadLyric(Audio audio) {
+		setCurrentAudio(audio);
 		try {
 			resetLyric();
+			String uri = currentAudio.getSource();
 			int index = uri.lastIndexOf(".");
 			uri = uri.substring(0, index) + ".lrc";
 			lyric = lyricParser.parse(uri);

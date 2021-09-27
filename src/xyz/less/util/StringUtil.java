@@ -2,6 +2,10 @@ package xyz.less.util;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import xyz.less.bean.ConfigConstant;
 
 public final class StringUtil {
 
@@ -72,23 +76,8 @@ public final class StringUtil {
 		return path.substring(0, from) + path.substring(from).replaceAll("\\\\", "/");
 	}
 
-	public static String getEncoding(String str) {
-		String[] encodings = {"ISO-8859-1", "GBK",
-				"UTF-8" };
-		for(String encoding : encodings) {
-			try {
-				if (str.equals(new String(str.getBytes(), encoding))) {
-					return encoding;
-				}
-			} catch (Exception ex) {
-				//TODO
-			}
-		}
-		return "UNKOWN";
-	}
-	
 	public static String getDefault(String value, String defaultValue) {
-		return isBlank(value) ? defaultValue : value;
+		return isBlank(value) || isMessyCode(value) ? defaultValue : value;
 	}
 	
 	public static String replaceAll(String str, String regex, String replacement) {
@@ -102,7 +91,7 @@ public final class StringUtil {
 	
 	public static String decodeNameFromUrl(String url) {
 		try {
-			url = URLDecoder.decode(url, "UTF-8");
+			url = URLDecoder.decode(url, ConfigConstant.UTF_8);
 			int fromIndex = url.lastIndexOf("/") + 1;
 			int toIndex = url.lastIndexOf(".");
 			return url.substring(fromIndex, toIndex);
@@ -111,5 +100,39 @@ public final class StringUtil {
 		}
 		return null;
 	}
+	
+	private static boolean isChinese(char c) {
+        Character.UnicodeBlock ub = Character.UnicodeBlock.of(c);
+        if (ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS
+                || ub == Character.UnicodeBlock.CJK_COMPATIBILITY_IDEOGRAPHS
+                || ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_A
+                || ub == Character.UnicodeBlock.GENERAL_PUNCTUATION
+                || ub == Character.UnicodeBlock.CJK_SYMBOLS_AND_PUNCTUATION
+                || ub == Character.UnicodeBlock.HALFWIDTH_AND_FULLWIDTH_FORMS) {
+            return true;
+        }
+        return false;
+    }
+    
+    public static boolean isMessyCode(String value) {
+        Pattern p = Pattern.compile("\\s*|\t*|\r*|\n*");
+        Matcher m = p.matcher(value);
+        String after = m.replaceAll("");
+        String temp = after.replaceAll("\\p{P}", "");
+        char[] ch = temp.trim().toCharArray();
+        float chLength = ch.length;
+        float count = 0;
+        for (int i = 0; i < ch.length; i++) {
+            char c = ch[i];
+            if (!Character.isLetterOrDigit(c)) {
+                if (!isChinese(c)) {
+                    count = count + 1;
+                }
+//                chLength++; 
+            }
+        }
+        System.err.println(count + " : " + chLength);
+        return (count / chLength) > 0.4;
+    }
 }
 

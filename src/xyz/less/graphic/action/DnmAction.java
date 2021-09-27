@@ -1,12 +1,10 @@
 package xyz.less.graphic.action;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.function.Consumer;
 
 import javafx.scene.Node;
 import javafx.stage.Stage;
+import xyz.less.graphic.Guis;
 
 /**
  * Drag And Move
@@ -20,17 +18,13 @@ public class DnmAction  {
 	private Node trigger;
 	private Consumer<DnmOffset> action;
 	private boolean enabled;
-	private List<Node> ignoreTriggers;
+	private Node[] ignoreTriggers;
 	
 	public DnmAction(Stage stage, Node trigger, Consumer<DnmOffset> action, Node... ignoreTriggers) {
 		this.stage = stage;
 		this.trigger = trigger;
 		this.action = action;
-		if(ignoreTriggers != null) {
-			this.ignoreTriggers = new ArrayList<>();
-			this.ignoreTriggers.addAll(Arrays.asList(ignoreTriggers));
-		}
-		
+		this.ignoreTriggers = ignoreTriggers;
 	}
 	
 	public DnmAction enable(boolean value) {
@@ -64,13 +58,11 @@ public class DnmAction  {
 			}
 		});
 		
-		if(ignoreTriggers != null) {
-			ignoreTriggers.forEach(t -> {
-				t.setOnMouseDragged(e -> {
-					e.consume();
-				});
+		Guis.applyNodes(node -> {
+			node.setOnMouseDragged(e -> {
+				e.consume();
 			});
-		}
+		}, ignoreTriggers);
 		return this;
 	}
 	

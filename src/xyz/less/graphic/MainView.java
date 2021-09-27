@@ -19,9 +19,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.media.Media;
 import javafx.stage.Stage;
 import xyz.less.async.AsyncServices;
+import xyz.less.bean.Audio;
 import xyz.less.bean.ConfigConstant;
 import xyz.less.bean.Resources.Fxmls;
 import xyz.less.bean.Resources.Images;
@@ -293,7 +293,7 @@ public class MainView extends PlayerView {
 	protected void initGraphDatas() {
 		setAppTitle(ConfigConstant.APP_TITLE_DEFAULT_MODE);
 		volumeSlider.setValue(ConfigConstant.INITIAL_VOLUME);
-		updateMetadata(null);
+		updateMetadata(null, null);
 		updateTimeText(0, 0);
 		addIcons(Images.LOGO);
 		initHelpText();
@@ -490,29 +490,26 @@ public class MainView extends PlayerView {
 				StringUtil.toMmss(duration)));
 	}
 	
-	public void updateMetadata(Media media) {
-		Image image = null;
-		String title = null;
-		String artist = null;
-		String album = null;
-		String source = null;
-		if(media != null) { //TODO
-			Map<String, Object> metadata = media.getMetadata();
-			source = media.getSource();
-			source = StringUtil.getDefault(StringUtil.decodeNameFromUrl(source), 
-									ConfigConstant.UNKOWN_AUDIO);
-			
-			image = (Image)metadata.get("image");
-			title = (String)metadata.get("title");
-			artist = (String)metadata.get("artist");
-			album = (String)metadata.get("album");
+	public void updateMetadata(Audio audio, Map<String, Object> metadata) {
+		if(audio == null || metadata == null) {
+			titleLbl.setText(ConfigConstant.UNKOWN_AUDIO);
+			artistLbl.setText(ConfigConstant.UNKOWN_ARTIST);
+			albumLbl.setText(ConfigConstant.UNKOWN_ALBUM);
+			updateCoverArt(null, false);
+			updateAppTitle();
+			return ;
 		}
+		Image image = (Image)metadata.get("image");
+		String title = (String)metadata.get("title");
+		String artist = (String)metadata.get("artist");
+		String album = (String)metadata.get("album");
+		String titleFromUrl = audio.getTitle();
 		
+		title = titleFromUrl.contains(title) ? title : titleFromUrl;
 		//TODO
 		album = StringUtil.getDefault(album, ConfigConstant.UNKOWN_ALBUM);
 		album = album.startsWith("<") ? album : "<" + album + ">";
-		
-		titleLbl.setText(StringUtil.getDefault(title, source));
+		titleLbl.setText(StringUtil.getDefault(title, ConfigConstant.UNKOWN_AUDIO));
 		artistLbl.setText(StringUtil.getDefault(artist, ConfigConstant.UNKOWN_ARTIST));
 		albumLbl.setText(album);
 		
@@ -572,14 +569,14 @@ public class MainView extends PlayerView {
 	}
 
 	@Override
-	protected void updateOnReady(Media media) {
-		updateMetadata(media);
-		loadLyric(media.getSource());
+	protected void updateOnReady(Audio audio, Map<String, Object> metadata) {
+		updateMetadata(audio, metadata);
+		loadLyric(audio);
 	}
 	
-	private void loadLyric(String source) {
+	private void loadLyric(Audio audio) {
 		if(lyricView != null) {
-			lyricView.loadLyric(source);
+			lyricView.loadLyric(audio);
 		}
 	}
 

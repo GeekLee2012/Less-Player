@@ -22,7 +22,7 @@ public class RectangleSpectrum extends HBox {
 	private void initGraph() {
 		Guis.addStyleClass("rectangle-spectrum", this);
 		for(int i = 0; i < rectNums; i++) {
-			Rectangle rect = new Rectangle(0, 1);
+			Rectangle rect = new Rectangle(0, 0);
 			Guis.addStyleClass("sp-rectangle", rect);
 			rectList.add(rect);
 		}

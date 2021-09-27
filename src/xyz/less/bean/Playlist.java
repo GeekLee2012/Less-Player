@@ -14,20 +14,20 @@ import xyz.less.async.FileScanTask;
 import xyz.less.util.FileUtil;
 import xyz.less.util.StringUtil;
 
-public class Playlist<T> {
+public class Playlist {
 	private IntegerProperty sizeProperty = new SimpleIntegerProperty(0);
-	private List<T> audioList = new CopyOnWriteArrayList<T>();
+	private List<Audio> audioList = new CopyOnWriteArrayList<>();
 	
-	public List<T> get() {
+	public List<Audio> get() {
 		return audioList;
 	}
 	
-	public void add(T t) {
+	public void add(Audio t) {
 		audioList.add(t);
 		sizeProperty.set(size());
 	}
 	
-	public void addAll(Collection<T> c) {
+	public void addAll(Collection<Audio> c) {
 		audioList.addAll(c);
 		sizeProperty.set(size());
 	}
@@ -54,16 +54,15 @@ public class Playlist<T> {
 		//TODO
 	}
 	
-	@SuppressWarnings("unchecked")
 	private void addFromFile(File file) {
 		if(!FileUtil.isAudio(file)) {
 			return ;
 		}
 		try {
-//			System.out.println(file.toURI().toURL().toExternalForm());
 			String url = StringUtil.toSlash(file.toURI().toURL().toExternalForm(), 
 										"file:///".length());
-			add((T)url);
+			String title = StringUtil.decodeNameFromUrl(url);
+			add(new Audio(title, null, null, 0, url));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -77,11 +76,11 @@ public class Playlist<T> {
 		return audioList.size();
 	}
 
-	public T get(int index) {
+	public Audio get(int index) {
 		return audioList.get(index);
 	}
 	
-	public Playlist<T> clear() {
+	public Playlist clear() {
 		audioList.clear();
 		sizeProperty.set(0);
 		return this;

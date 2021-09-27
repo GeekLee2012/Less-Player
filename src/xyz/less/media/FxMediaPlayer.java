@@ -12,16 +12,15 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
 import javafx.scene.media.MediaView;
 import javafx.util.Duration;
-import xyz.less.bean.ConfigConstant;
+import xyz.less.bean.Audio;
 import xyz.less.bean.Playlist;
-import xyz.less.engine.ResourcesEngine;
 
 public class FxMediaPlayer {
 	private MediaView mediaView;
 	private List<MediaPlayerListener> playerListeners = new ArrayList<>();
 	private MediaPlayer delegatePlayer;
 	private Media media;
-	private Playlist<String> playlist = new Playlist<>();
+	private Playlist playlist = new Playlist();
 	private double volume = 0.5; 
 	private boolean nextAction = true;
 	private boolean shuffleMode = false;
@@ -51,7 +50,7 @@ public class FxMediaPlayer {
 		this.playerListeners.add(listener);
 	}
 
-	public Playlist<String> getPlaylist() {
+	public Playlist getPlaylist() {
 		return playlist;
 	}
 
@@ -180,7 +179,7 @@ public class FxMediaPlayer {
 			
 			delegatePlayer.setOnReady(() -> {
 				playerListeners.forEach(listener -> {
-					listener.onReady(media);
+					listener.onReady(getCurrentAudio(), media.getMetadata());
 				});
 //				playerView.updateMetadata(media);
 //				playerView.highlightPlaylist();
@@ -225,14 +224,15 @@ public class FxMediaPlayer {
 	}
 
 	private String getCurrentSource() {
+		Audio audio = getCurrentAudio();
+		return audio != null ? audio.getSource() : null; 
+	}
+	
+	private Audio getCurrentAudio() {
 		if(currentIndex < 0) {
 			nextIndex();
 		}
-		String currentUrl = playlist.get(currentIndex);
-		if(currentUrl.startsWith(ConfigConstant.FILE_PREFIX)) {
-			return currentUrl;
-		}
-		return ResourcesEngine.getAudio(currentUrl);
+		return playlist.get(currentIndex);
 	}
 
 	public void setVolumn(double value) {

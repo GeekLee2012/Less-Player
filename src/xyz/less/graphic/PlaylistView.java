@@ -10,6 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import xyz.less.bean.Audio;
 import xyz.less.bean.ConfigConstant;
 import xyz.less.bean.Resources.Fxmls;
 import xyz.less.bean.Resources.Images;
@@ -29,6 +30,9 @@ public class PlaylistView extends StageView {
 	private boolean attach = true;
 	private boolean lyricOn = false;
 	private boolean autoTarget = true;
+	private final static double ROW_WIDTH = 335;
+	private final static double DURATION_WIDTH = 60;
+	private final static double ROW_PADDING = 3;
 	
 	public PlaylistView(Stage opener, FxMediaPlayer mediaPlayer) {
 		super(opener, ConfigConstant.PLAYLIST_WIDTH, ConfigConstant.PLAYLIST_HEIGHT);
@@ -40,8 +44,7 @@ public class PlaylistView extends StageView {
 
 	private void initEvents() {
 		setOnShowing(e -> {
-			locate2Opener();
-			//TODO
+			attach();
 			highlightCurrentPlaying();
 		});
 //		setOnHiding(e -> {
@@ -118,29 +121,19 @@ public class PlaylistView extends StageView {
 		return listView.getItems().indexOf(node);
 	}
 
-	private AnchorPane createDataRow(String url) {
-		Label titleLbl = new Label(StringUtil.decodeNameFromUrl(url));
-		Label durationLbl = new Label(getDurationForm(url));
+	private AnchorPane createDataRow(String name, String duration) {
+		Label titleLbl = new Label(name);
+		Label durationLbl = new Label(duration);
 		durationLbl.setAlignment(Pos.CENTER);
 		
 		AnchorPane box = new AnchorPane(titleLbl, durationLbl);
-		box.setPrefWidth(335);
-		durationLbl.setPrefWidth(60);
-		titleLbl.setPrefWidth(box.getPrefWidth() - durationLbl.getPrefWidth());
+		box.setPrefWidth(ROW_WIDTH);
+		titleLbl.setPrefWidth(ROW_WIDTH - DURATION_WIDTH);
+		durationLbl.setPrefWidth(DURATION_WIDTH);
 		
-		AnchorPane.setLeftAnchor(titleLbl, 3.0);
-		AnchorPane.setRightAnchor(durationLbl, 3.0);
+		AnchorPane.setLeftAnchor(titleLbl, ROW_PADDING);
+		AnchorPane.setRightAnchor(durationLbl, ROW_PADDING);
 		return box;
-	}
-
-	private String getDurationForm(String url) {
-		String duration = "00:00";
-		try {
-			//TODO
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		return duration;
 	}
 
 	public void targetCurrentPlaying() {
@@ -176,11 +169,12 @@ public class PlaylistView extends StageView {
 	}
 
 	public void updateGraph() {
-		//TODO
 		resetGraph(false);
-		List<String> datas = mediaPlayer.getPlaylist().get();
-		datas.forEach(url -> {
-			Node node = createDataRow(url);
+		//TODO
+		List<Audio> datas = mediaPlayer.getPlaylist().get();
+		datas.forEach(audio -> {
+			String duration = StringUtil.toMmss(audio.getDuration());
+			Node node = createDataRow(audio.getTitle(), duration);
 			Guis.setPickOnBounds(true, node);
 			node.setOnMouseClicked(e -> {
 				if(e.getClickCount() > 1) {

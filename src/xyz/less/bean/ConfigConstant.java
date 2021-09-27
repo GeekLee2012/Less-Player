@@ -1,6 +1,8 @@
 package xyz.less.bean;
 
 public final class ConfigConstant {
+	public final static String UTF_8 = "UTF-8";
+	
 	public final static double APP_WIDTH = 666;
 	public final static double APP_HEIGHT = 333;
 	
@@ -36,4 +38,5 @@ public final class ConfigConstant {
 	public final static String CURRENT_DURATION_FORMAT = "%1$s / %2$s";
 	
 	public final static String INFINITED_TIME_KEY = "99:99.999";
+
 }

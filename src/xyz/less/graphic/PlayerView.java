@@ -1,11 +1,13 @@
 package xyz.less.graphic;
 
+import java.util.Map;
+
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
-import javafx.scene.media.Media;
 import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
+import xyz.less.bean.Audio;
 import xyz.less.media.FxMediaPlayer;
 import xyz.less.media.MediaPlayerListener;
 
@@ -72,7 +74,7 @@ public abstract class PlayerView extends StackPane implements MediaPlayerListene
 	
 	protected abstract void updateOnPlaying(boolean playing);
 	
-	protected abstract void updateOnReady(Media media);
+	protected abstract void updateOnReady(Audio audio, Map<String, Object> metadata);
 
 	public abstract void initGraph();
 	
@@ -85,8 +87,8 @@ public abstract class PlayerView extends StackPane implements MediaPlayerListene
 	}
 	
 	@Override
-	public void onReady(Media Media) {
-		updateOnReady(Media);
+	public void onReady(Audio audio, Map<String, Object> metadata) {
+		updateOnReady(audio, metadata);
 	}
 	
 	@Override
