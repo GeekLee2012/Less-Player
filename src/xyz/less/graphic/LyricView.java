@@ -8,7 +8,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import xyz.less.bean.Audio;
@@ -24,9 +23,8 @@ import xyz.less.util.DateUtil;
 public class LyricView extends StageView {
 	private Stage owner;
 //	private double openerX;
-	private double openerY;
+//	private double openerY;
 	private Pane topNavBox;
-	private boolean firstShow = true;
 	private Label line1;
 	private Label line2;
 	private Lyric lyric;
@@ -54,6 +52,7 @@ public class LyricView extends StageView {
 	}
 
 	private void hideTaskBarIcon() {
+		//TODO Bugs
 		owner = new Stage();
 		owner.initStyle(StageStyle.UTILITY);
 		owner.setOpacity(0);
@@ -73,17 +72,7 @@ public class LyricView extends StageView {
 	
 	private void initEvents() {
 		setOnShowing(e -> {
-			if(firstShow) {
-				Screen screen = Screen.getPrimary();
-				double maxX = screen.getBounds().getMaxX();
-				double maxY = screen.getBounds().getMaxY();
-				
-				double x = (maxX - getWidth()) / 2;
-				double y = maxY - getHeight() - 88;
-				setX(x);
-				setY(y);
-				firstShow = false;
-			}
+			attach();
 		});
 		//TODO
 		getScene().setOnMouseEntered(e -> {
@@ -92,17 +81,6 @@ public class LyricView extends StageView {
 		
 		getScene().setOnMouseExited(e -> {
 //			setLyricViewTransparent(true);
-		});
-		
-		opener.setOnCloseRequest(e -> {
-			owner.close();
-		});
-		
-		setOnShowing(e -> {
-			locate2Opener();
-		});
-		setOnHiding(e -> {
-			opener.setY(openerY);
 		});
 	}
 
@@ -162,10 +140,15 @@ public class LyricView extends StageView {
 	}
 	
 	public void loadLyric(Audio audio) {
-		setCurrentAudio(audio);
+		if(audio != null) {
+			setCurrentAudio(audio);
+			loadLyric(currentAudio.getSource());
+		}
+	}
+	
+	public void loadLyric(String uri) {
 		try {
 			resetLyric();
-			String uri = currentAudio.getSource();
 			int index = uri.lastIndexOf(".");
 			uri = uri.substring(0, index) + ".lrc";
 			lyric = lyricParser.parse(uri);
@@ -294,7 +277,6 @@ public class LyricView extends StageView {
 	
 	private void locate2Opener() {
 //		openerX = opener.getX();
-		openerY = opener.getY();
 		double padding = 6;
 		setX(opener.getX());
 		setY(opener.getY() + opener.getHeight() + padding);

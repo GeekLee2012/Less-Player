@@ -26,7 +26,7 @@ public final class StringUtil {
 
 	/**
 	 * @param duration
-	 * @return ∑µªÿ∏Ò Ω£∫mm:ss, »Á05:20
+	 * @return ËøîÂõûÊ†ºÂºèÔºömm:ss, Â¶Ç05:20
 	 */
 	public static String toMmss(double duration) {
 		return toMmss(duration, null);
@@ -34,7 +34,7 @@ public final class StringUtil {
 
 	/**
 	 * @param duration
-	 * @return ∑µªÿ∏Ò Ω£∫mm:ss, »Á05:20
+	 * @return ËøîÂõûÊ†ºÂºèÔºömm:ss, Â¶Ç05:20
 	 */
 	public static String toMmss(double duration, String seperator) {
 		int minutes = (int) duration;
@@ -44,7 +44,7 @@ public final class StringUtil {
 
 	/**
 	 * @param duration
-	 * @return ∑µªÿ∏Ò Ω£∫mm:ss.SS, »Á05:20.99
+	 * @return ËøîÂõûÊ†ºÂºèÔºömm:ss.SS, Â¶Ç05:20.99
 	 */
 	public static String toMmssSS(double duration) {
 		int minutes = (int) duration;
@@ -54,7 +54,7 @@ public final class StringUtil {
 
 	/**
 	 * @param duration
-	 * @return ∑µªÿ∏Ò Ω£∫mm:ss.SSS, »Á05:20.999
+	 * @return ËøîÂõûÊ†ºÂºèÔºömm:ss.SSS, Â¶Ç05:20.999
 	 */
 	public static String toMmssSSS(double duration) {
 		int minutes = (int) duration;
@@ -66,7 +66,7 @@ public final class StringUtil {
 	public static String toSlash(String path) {
 		return toSlash(path, 0);
 	}
-	
+
 	public static String toSlash(String path, int from) {
 		path = trim(path);
 		if (isBlank(path)) {
@@ -79,16 +79,28 @@ public final class StringUtil {
 	public static String getDefault(String value, String defaultValue) {
 		return isBlank(value) || isMessyCode(value) ? defaultValue : value;
 	}
-	
+
+	public static String iso88591ToUtf8(String value) {
+		if (isBlank(value)) {
+			return null;
+		}
+		try {
+			return new String(value.getBytes(ConfigConstant.ISO_8859_1), ConfigConstant.UTF_8);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return value;
+	}
+
 	public static String replaceAll(String str, String regex, String replacement) {
-		if(isBlank(str)) {
+		if (isBlank(str)) {
 			return str;
 		}
 		str = trim(str);
 		str = str.replaceAll(regex, replacement);
 		return str;
 	}
-	
+
 	public static String decodeNameFromUrl(String url) {
 		try {
 			url = URLDecoder.decode(url, ConfigConstant.UTF_8);
@@ -100,39 +112,41 @@ public final class StringUtil {
 		}
 		return null;
 	}
-	
-	private static boolean isChinese(char c) {
-        Character.UnicodeBlock ub = Character.UnicodeBlock.of(c);
-        if (ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS
-                || ub == Character.UnicodeBlock.CJK_COMPATIBILITY_IDEOGRAPHS
-                || ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_A
-                || ub == Character.UnicodeBlock.GENERAL_PUNCTUATION
-                || ub == Character.UnicodeBlock.CJK_SYMBOLS_AND_PUNCTUATION
-                || ub == Character.UnicodeBlock.HALFWIDTH_AND_FULLWIDTH_FORMS) {
-            return true;
-        }
-        return false;
-    }
-    
-    public static boolean isMessyCode(String value) {
-        Pattern p = Pattern.compile("\\s*|\t*|\r*|\n*");
-        Matcher m = p.matcher(value);
-        String after = m.replaceAll("");
-        String temp = after.replaceAll("\\p{P}", "");
-        char[] ch = temp.trim().toCharArray();
-        float chLength = ch.length;
-        float count = 0;
-        for (int i = 0; i < ch.length; i++) {
-            char c = ch[i];
-            if (!Character.isLetterOrDigit(c)) {
-                if (!isChinese(c)) {
-                    count = count + 1;
-                }
-//                chLength++; 
-            }
-        }
-        System.err.println(count + " : " + chLength);
-        return (count / chLength) > 0.4;
-    }
-}
 
+	private static boolean isChinese(char c) {
+		Character.UnicodeBlock ub = Character.UnicodeBlock.of(c);
+		if (ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS
+				|| ub == Character.UnicodeBlock.CJK_COMPATIBILITY_IDEOGRAPHS
+				|| ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_A
+				|| ub == Character.UnicodeBlock.GENERAL_PUNCTUATION
+				|| ub == Character.UnicodeBlock.CJK_SYMBOLS_AND_PUNCTUATION
+				|| ub == Character.UnicodeBlock.HALFWIDTH_AND_FULLWIDTH_FORMS) {
+			return true;
+		}
+		return false;
+	}
+
+	public static boolean isMessyCode(String value) {
+		try {
+			Pattern p = Pattern.compile("\\s*|\t*|\r*|\n*");
+			Matcher m = p.matcher(value);
+			String after = m.replaceAll("");
+//           String temp = after.replaceAll("\\p{P}", "");
+			char[] ch = after.trim().toCharArray();
+			float chLength = ch.length;
+			float count = 0;
+			for (int i = 0; i < ch.length; i++) {
+				char c = ch[i];
+				if (!Character.isLetterOrDigit(c) && !isChinese(c)) {
+					count = count + 1;
+				}
+			}
+//			System.out.println(String.format("value: %1$s, after: %2$s, temp: %3$s, count/total: %4$s/%5$s", value,
+//					after, "", count, chLength));
+			return (count / chLength) > 0.4;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+}

@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
 
-import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -31,6 +30,7 @@ import xyz.less.graphic.action.DndAction.DndType;
 import xyz.less.graphic.control.ProgressBar;
 import xyz.less.graphic.control.SliderBar;
 import xyz.less.graphic.visualization.RectangleSpectrum;
+import xyz.less.media.PlaybackQueue.PlayMode;
 import xyz.less.util.FileUtil;
 import xyz.less.util.StringUtil;
 
@@ -53,7 +53,8 @@ public class MainView extends PlayerView {
 	private PlaylistView playlistView;
 	
 	private boolean alwaysOnTop;
-	private boolean shuffleMode = true;
+	private PlayMode[] repeatModes = { PlayMode.NO_REPEAT, PlayMode.REPEAT_ALL, PlayMode.REPEAT_SELF };
+	private PlayMode repeatMode = repeatModes[0];
 	private boolean devMode = false;
 	private DndResult dndResult;
 	private double currentMinutes;
@@ -197,7 +198,7 @@ public class MainView extends PlayerView {
 		volumeBtn.setImage(Images.VOLUME[0]);
 		playlistBtn.setImage(Images.PLAYLIST[0]);
 		
-		Guis.setUserData(shuffleMode ? 1 : 0, shuffleBtn);
+		Guis.setUserData(1, shuffleBtn);
 		
 		Guis.applyChildrenDeeply(node -> {
 				if(node instanceof ImageView) {
@@ -222,8 +223,9 @@ public class MainView extends PlayerView {
 		});
 		
 		repeatBtn.setOnMouseClicked(e -> {
-			getMediaPlayer().setRepeatMode(
-					Guis.toggleImage(repeatBtn, Images.REPEAT));
+			int index = Guis.toggleImage(repeatBtn, Images.REPEAT);
+			repeatMode = repeatModes[index];
+			getMediaPlayer().setPlayMode(repeatMode);
 		});
 		
 		playPrevBtn.setOnMouseClicked(e -> {
@@ -239,9 +241,12 @@ public class MainView extends PlayerView {
 		});
 		
 		shuffleBtn.setOnMouseClicked(e -> {
-			shuffleMode = !shuffleMode;
-			Guis.toggleImage(shuffleBtn, Images.SHUFFLE);
-			getMediaPlayer().setShuffleMode(shuffleMode);
+			int index = Guis.toggleImage(shuffleBtn, Images.SHUFFLE);
+			if(index == 1) {
+				getMediaPlayer().setPlayMode(PlayMode.SHUFFLE);
+			} else {
+				getMediaPlayer().setPlayMode(repeatMode);
+			}
 		});
 		
 		playlistBtn.setOnMouseClicked(e -> {
@@ -297,7 +302,7 @@ public class MainView extends PlayerView {
 		updateTimeText(0, 0);
 		addIcons(Images.LOGO);
 		initHelpText();
-		getMediaPlayer().setShuffleMode(shuffleMode);
+		getMediaPlayer().setPlayMode(PlayMode.SHUFFLE);
 		initLyricView();
 		initPlaylistView();
 		initSpectrumView();
@@ -322,7 +327,7 @@ public class MainView extends PlayerView {
 
 	private void updateOnDndFail() {
 		resetPlaylistView();
-		getMediaPlayer().clearPlaylist();
+		getMediaPlayer().resetPlaybackQueue();
 		updateDndFailText();
 		//TODO
 		spectrumOn = false;
@@ -338,34 +343,55 @@ public class MainView extends PlayerView {
 				dndResult.setDndType(DndType.IMAGE);
 				updateCoverArt(new Image(result.getUrl()), false);
 				dndResult.setSuccess(true);
+			}else if(FileUtil.isLryic(dndFile)) { //歌词
+				dndResult.setDndType(DndType.LYRIC);
+				loadLyric(result.getUrl());
+				dndResult.setSuccess(true);
 			} else if(FileUtil.isDirectory(dndFile)
 					|| FileUtil.isAudio(dndFile)) { //目录或音频
 				dndResult.setSuccess(true);
+				updateDndWaiting();
 				Future<?> future = getMediaPlayer().loadFrom(dndFile);
-				AsyncServices.submit(() ->{
-					if(future != null) {
-						try {
-							future.get();
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-						Platform.runLater(() -> {
-							getMediaPlayer().play();
-							updatePlaylistView();
+				AsyncServices.submitFxTaskOnFutureDone(future, () ->{
+					updateDndDone();
+					getMediaPlayer().play();
+					updatePlaylistView();
+					Future<?> updateFuture = getMediaPlayer().updateMetadatas();
+					AsyncServices.submitFxTaskOnFutureDone(updateFuture,() -> {
+							updatePlaylistViewTimeLbl();
 						});
-					}
-				});
-			}
+					});
+				}
 			//TODO 歌词
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void updateDndFailText() {
 		updateCoverArt(Images.DND_NOT_FOUND, true);
 		titleLbl.setText("暂时无法识别哦\r试一试拖拽其他吧~");
 		artistLbl.setText("神秘代号: 404");
+		albumLbl.setText("<离奇事件>");
+	}
+	
+	private void updateDndWaiting() {
+//		updateCoverArt(Images.DND_WAITING, true);
+		titleLbl.setText("正在努力加载，请耐心等待~");
+		artistLbl.setText("精彩即将开始");
+		albumLbl.setText("<拖拽文件>");
+	}
+	
+	private void updateDndDone() {
+		titleLbl.setText("加载完成~");
+		artistLbl.setText("精彩即将开始");
+		albumLbl.setText("<拖拽文件>");
+	}
+	
+	private void updateNoMediaText() {
+//		updateCoverArt(Images.DND_NOT_FOUND, true);
+		titleLbl.setText("暂时无法播放哦\r试一试拖拽其他吧~");
+		artistLbl.setText("神秘代号: 500");
 		albumLbl.setText("<离奇事件>");
 	}
 
@@ -409,7 +435,7 @@ public class MainView extends PlayerView {
 	private void initSpectrumView() {
 		rectSpectrum = new RectangleSpectrum(99);
 		rectSpectrum.setSpacing(1);
-		rectSpectrum.setAlignment(Pos.BOTTOM_LEFT);
+		rectSpectrum.setAlignment(Pos.BOTTOM_CENTER);
 	}
 	
 	private void toggleSpectrumView() {
@@ -426,7 +452,7 @@ public class MainView extends PlayerView {
 	private String getAdjustAppTitle() {
 		String result = titleLbl.getText();
 		if(devMode) {
-			return spectrumOn ? ConfigConstant.DEV_MODE_PREFIX.concat(result) 
+			return spectrumOn ? ConfigConstant.DEV_MODE_PREFIX
 					+ " " + ConfigConstant.PLAYING_PREFIX + result 
 					: ConfigConstant.APP_TITLE_DEV_MODE;
 		} 
@@ -454,13 +480,20 @@ public class MainView extends PlayerView {
 		}
 	}
 	
+	
+	private void updatePlaylistViewTimeLbl() {
+		if(playlistView != null) {
+			playlistView.updateTimeLbl();
+		}
+	}
+	
 	private void resetPlaylistView() {
 		if(playlistView != null) {
 			playlistView.resetGraph(true);
 		}
 	}
 
-	private void updateLyricBtn() {
+	public void updateLyricBtn() {
 		int index = lyricView.isShowing() ? 1 : 0;
 		lyricBtn.setImage(Images.LYRIC[index]);
 	}
@@ -503,13 +536,22 @@ public class MainView extends PlayerView {
 		String title = (String)metadata.get("title");
 		String artist = (String)metadata.get("artist");
 		String album = (String)metadata.get("album");
-		String titleFromUrl = audio.getTitle();
 		
-		title = titleFromUrl.contains(title) ? title : titleFromUrl;
+		image = image != null ? image : audio.getCoverArt();
+		title = title != null ? title : audio.getTitle();
+		artist = artist != null ? artist : audio.getArtist();
+		album = album != null ? album : audio.getAlbum();
+		
+//		System.out.println(String.format("title: %1$s, artist: %2$s, album: %3$s", title, artist, album));
+		System.out.println("title: " + title + ", messy: " + StringUtil.isMessyCode(title));
+		System.out.println("artist: " + artist + ", messy: " + StringUtil.isMessyCode(artist));
+		System.out.println("album: " + album + ", messy: " + StringUtil.isMessyCode(album));
+		
 		//TODO
 		album = StringUtil.getDefault(album, ConfigConstant.UNKOWN_ALBUM);
 		album = album.startsWith("<") ? album : "<" + album + ">";
-		titleLbl.setText(StringUtil.getDefault(title, ConfigConstant.UNKOWN_AUDIO));
+		
+		titleLbl.setText(StringUtil.getDefault(title, audio.getTitle()));
 		artistLbl.setText(StringUtil.getDefault(artist, ConfigConstant.UNKOWN_ARTIST));
 		albumLbl.setText(album);
 		
@@ -574,9 +616,20 @@ public class MainView extends PlayerView {
 		loadLyric(audio);
 	}
 	
+	@Override
+	public void onNoPlayableMedia() {
+		updateNoMediaText();
+	}
+	
 	private void loadLyric(Audio audio) {
 		if(lyricView != null) {
 			lyricView.loadLyric(audio);
+		}
+	}
+	
+	private void loadLyric(String uri) {
+		if(lyricView != null) {
+			lyricView.loadLyric(uri);
 		}
 	}
 
@@ -591,4 +644,8 @@ public class MainView extends PlayerView {
 	public void spectrumDataUpdate(double timestamp, double duration, float[] magnitudes, float[] phases) {
 		rectSpectrum.updateGraph(timestamp, duration, magnitudes, phases);
 	}
+	
+	//TODO a Bug: 打包成exe文件执行时，
+	//从最小化状态中还原为正常显示状态时，
+	//原本已打开的当前播放列表未能被正常显示
 }

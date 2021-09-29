@@ -9,6 +9,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import xyz.less.bean.Audio;
 import xyz.less.bean.ConfigConstant;
@@ -33,6 +34,7 @@ public class PlaylistView extends StageView {
 	private final static double ROW_WIDTH = 335;
 	private final static double DURATION_WIDTH = 60;
 	private final static double ROW_PADDING = 3;
+	private int index = 0;
 	
 	public PlaylistView(Stage opener, FxMediaPlayer mediaPlayer) {
 		super(opener, ConfigConstant.PLAYLIST_WIDTH, ConfigConstant.PLAYLIST_HEIGHT);
@@ -184,6 +186,17 @@ public class PlaylistView extends StageView {
 			listView.getItems().add(node);
 		});
 		updateLogoSizeLabelText();
+	}
+	
+	public void updateTimeLbl() {
+		List<Audio> datas = mediaPlayer.getPlaylist().get();
+		index = 0;
+		listView.getItems().forEach(node -> {
+			Pane pane = (Pane)node;
+			Label timeLbl = (Label)pane.getChildren().get(1);
+			String duration = StringUtil.toMmss(datas.get(index++).getDuration());
+			timeLbl.setText(duration);
+		});
 	}
 	
 	public void updateLogoSizeLabelText() {

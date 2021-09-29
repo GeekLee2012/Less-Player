@@ -131,6 +131,11 @@ public abstract class PlayerView extends StackPane implements MediaPlayerListene
 	public void onError() {
 		// TODO Auto-generated method stub
 	}
+	
+	@Override
+	public void onNoPlayableMedia() {
+		// TODO Auto-generated method stub
+	}
 
 	public void togglePlay() {
 		mediaPlayer.play();

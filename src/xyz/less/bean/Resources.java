@@ -35,6 +35,7 @@ public final class Resources {
 		public final static Image DEFAULT_COVER_ART = image("cover_longplay_vinyl.png");
 		public final static Image DEFAULT_COVER_ART_2 = image("cover_guitar.jpg");
 //		public final static Image VOLUME_TRACK = image("music_volume_track.png");
+		public final static Image DND_WAITING = image("cover_waiting.png");
 		public final static Image DND_NOT_FOUND = image("404_not_found.png");
 
 		public final static Image[] PIN = { 

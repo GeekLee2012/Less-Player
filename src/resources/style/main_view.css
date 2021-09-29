@@ -30,6 +30,7 @@
 	-fx-font-weight: bold;
 	-fx-text-fill: #168242;
 	-fx-text-fill: #1ca388;
+	-fx-max-width: 520;
 }
 
 .cover-art {

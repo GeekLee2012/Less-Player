@@ -22,6 +22,10 @@ public class FileUtil {
 		return isFile(file) && isSupported(file.getName(), ConfigConstant.IMAGE_SUFFIXES);
 	}
 	
+	public static boolean isLryic(File file) {
+		return isFile(file) && isSupported(file.getName(), ConfigConstant.LYRIC_SUFFIXES);
+	}
+	
 	public static boolean isAudio(File file) {
 		return isFile(file) && isSupported(file.getName(), ConfigConstant.AUDIO_SUFFIXES);
 	}

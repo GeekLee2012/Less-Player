@@ -1,25 +1,30 @@
 package xyz.less.bean;
 
+import javafx.scene.image.Image;
+
 public class Audio {
 	private String title;
 	private String artist;
 	private String album;
 	private double duration;
-//	private byte[] coverArt;
+	private Image coverArt;
 	private String source;
 	
 	public Audio() {
 		
 	}
 	
-	public Audio(String title, String artist, String album, double duration, String source) {
+	public Audio(String title, String artist, String album, 
+			double duration, Image coverArt, String source) {
 		super();
 		this.title = title;
 		this.artist = artist;
 		this.album = album;
 		this.duration = duration;
+		this.coverArt = coverArt;
 		this.source = source;
 	}
+
 	public String getTitle() {
 		return title;
 	}
@@ -37,6 +42,13 @@ public class Audio {
 	}
 	public void setAlbum(String album) {
 		this.album = album;
+	}
+	public Image getCoverArt() {
+		return coverArt;
+	}
+
+	public void setCoverArt(Image coverArt) {
+		this.coverArt = coverArt;
 	}
 	public double getDuration() {
 		return duration;

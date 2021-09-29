@@ -2,6 +2,7 @@ package xyz.less.bean;
 
 public final class ConfigConstant {
 	public final static String UTF_8 = "UTF-8";
+	public final static String ISO_8859_1 = "ISO-8859-1";
 	
 	public final static double APP_WIDTH = 666;
 	public final static double APP_HEIGHT = 333;
@@ -21,6 +22,7 @@ public final class ConfigConstant {
 	
 	
 	public final static String[] IMAGE_SUFFIXES = {".png", ".jpg", ".jpeg", ".bmp", ".gif"};
+	public final static String[] LYRIC_SUFFIXES = {".lrc"};
 	public final static String[] AUDIO_SUFFIXES = {".flac", ".mp3", ".mp4", ".m4a", ".wav"};
 
 	public final static String FILE_PREFIX = "file:/";

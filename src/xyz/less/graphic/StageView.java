@@ -55,11 +55,12 @@ public abstract class StageView extends Stage {
 	
 	protected abstract void initGraph();
 	
-	public void toggle() {
+	public boolean toggle() {
 		if(isShowing()) {
 			hide();
 		} else {
 			show();
 		}
+		return isShowing();
 	}
 }

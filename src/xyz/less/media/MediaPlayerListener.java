@@ -15,4 +15,5 @@ public interface MediaPlayerListener {
 	void onError();
 	void onReset();
 	void onNoMedia();
+	void onNoPlayableMedia();
 }

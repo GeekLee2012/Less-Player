@@ -60,6 +60,6 @@ public class DndAction {
 	}
 	
 	public enum DndType {
-		IMAGE, FILE, LINK, UNKNOWN;
+		IMAGE, LYRIC, FILE, LINK, UNKNOWN;
 	}
 }

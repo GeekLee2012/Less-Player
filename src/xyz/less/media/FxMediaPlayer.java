@@ -2,7 +2,6 @@ package xyz.less.media;
 
 import java.io.File;
 import java.io.IOException;
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Future;
@@ -13,34 +12,15 @@ import javafx.scene.media.MediaPlayer.Status;
 import javafx.scene.media.MediaView;
 import javafx.util.Duration;
 import xyz.less.bean.Audio;
-import xyz.less.bean.Playlist;
+import xyz.less.media.PlaybackQueue.PlayMode;
 
 public class FxMediaPlayer {
 	private MediaView mediaView;
 	private List<MediaPlayerListener> playerListeners = new ArrayList<>();
 	private MediaPlayer delegatePlayer;
-	private Media media;
-	private Playlist playlist = new Playlist();
+	private PlaybackQueue playbackQueue = new PlaybackQueue();
 	private double volume = 0.5; 
-	private boolean nextAction = true;
-	private boolean shuffleMode = false;
-	private int repeatMode = 0;
-	private static final int DEFAULT_CURRENT_INDEX = -1;
-	private int currentIndex = DEFAULT_CURRENT_INDEX;
-	private SecureRandom random = new SecureRandom();
-	
-	public FxMediaPlayer() {
-		//TODO
-		playlist.sizeProperty().addListener((o,ov,nv) -> {
-			if(playlist.isEmpty()) {
-				playerListeners.forEach(listener -> {
-					listener.onNoMedia();
-				});
-//				playerView.updatePlayBtn(false);
-//				playerView.updateProgress(0, 0);
-			}
-		});
-	}
+	private int retry = 0;
 	
 	public void setMediaView(MediaView mediaView) {
 		this.mediaView = mediaView;
@@ -51,7 +31,7 @@ public class FxMediaPlayer {
 	}
 
 	public Playlist getPlaylist() {
-		return playlist;
+		return playbackQueue.getPlaylist();
 	}
 
 	public void play() {
@@ -59,7 +39,7 @@ public class FxMediaPlayer {
 	}
 	
 	private void doPlay(boolean force) {
-		if(playlist.isEmpty()) {
+		if(!playbackQueue.isEnable()) {
 			return ;
 		}
 		if(delegatePlayer == null || force) {
@@ -77,77 +57,32 @@ public class FxMediaPlayer {
 	}
 	
 	public void play(int index) {
-		if(currentIndex != index) {
-			setCurrentIndex(index);
-			doPlay(true);
-		}
-	}
-	
-	public void setCurrentIndex(int index) {
-		if(index >= 0 && index < playlist.size()) {
-			currentIndex = index;
-		}
-	}
-	
-	private void resetCurrentIndex() {
-		currentIndex = DEFAULT_CURRENT_INDEX;
-	}
-	
-	public int getCurrentIndex() {
-		return currentIndex;
-	}
-	
-	private void nextIndex() {
-		if(isRepeatOnceMode()) {
+		if(playbackQueue.isCurrentIndex(index)) {
 			return ;
 		}
-		if(isShuffleMode()) {
-			currentIndex = random.nextInt(playlist.size());
-			return ;
-		}
-		++currentIndex;
-		if(isRepeatMode()){
-			currentIndex = currentIndex % playlist.size();
-		} else {
-			if(currentIndex >= playlist.size()) {
-				currentIndex = playlist.size() - 1;
-			}
-		}
-	}
-	
-	public void playNext() {
-		if(playlist.isEmpty()) {
-			return ;
-		}
-		nextIndex();
-		nextAction = true;
+		playbackQueue.setCurrentIndex(index);
 		doPlay(true);
 	}
 	
-	private void prevIndex() {
-		if(isRepeatOnceMode() || isShuffleMode()) {
+	public void playNext() {
+		if(!playbackQueue.isEnable()) {
 			return ;
 		}
-		--currentIndex;
-		if(isRepeatMode()) {
-			currentIndex = currentIndex >= 0 ? currentIndex : playlist.size() - 1;
-		} else {
-			currentIndex = currentIndex > 0 ? currentIndex : 0;
-		}
+		playbackQueue.next();
+		doPlay(true);
 	}
-
+	
 	public void playPrevious() {
-		if(playlist.isEmpty()) {
+		if(!playbackQueue.isEnable()) {
 			return ;
 		}
-		prevIndex();
-		nextAction = false;
+		playbackQueue.prev();
 		doPlay(true);
 	}
 	
 	public void seek(double percent) {
 		if(delegatePlayer != null) {
-			Duration duration = media.getDuration();
+			Duration duration = delegatePlayer.getMedia().getDuration();
 			delegatePlayer.seek(duration.multiply(percent));
 		}
 	}
@@ -166,7 +101,7 @@ public class FxMediaPlayer {
 	public void initDelegatePlayer() {
 		resetPlayer();
 		try {
-			media = new Media(getCurrentSource());
+			Media media = new Media(getCurrentSource());
 			delegatePlayer = new MediaPlayer(media);
 			bindMediaView(delegatePlayer);
 			delegatePlayer.setVolume(volume);
@@ -179,10 +114,8 @@ public class FxMediaPlayer {
 			
 			delegatePlayer.setOnReady(() -> {
 				playerListeners.forEach(listener -> {
-					listener.onReady(getCurrentAudio(), media.getMetadata());
+					listener.onReady(playbackQueue.getCurrentAudio(), media.getMetadata());
 				});
-//				playerView.updateMetadata(media);
-//				playerView.highlightPlaylist();
 			});
 			
 			delegatePlayer.setOnPlaying(() -> {
@@ -208,11 +141,19 @@ public class FxMediaPlayer {
 				playNext();
 			});
 		} catch(Exception e) {
-//			e.printStackTrace();
-			if(nextAction) {
-				playNext();
+			//TODO
+			++retry;
+			if(retry < playbackQueue.getPlaylist().size()) {
+				if(playbackQueue.isNextAction()) {
+					playNext();
+				} else {
+					playPrevious();
+				}
 			} else {
-				playPrevious();
+				retry = 0;
+				playerListeners.forEach(listener -> {
+					listener.onNoPlayableMedia();
+				});
 			}
 		}
 	}
@@ -224,15 +165,8 @@ public class FxMediaPlayer {
 	}
 
 	private String getCurrentSource() {
-		Audio audio = getCurrentAudio();
+		Audio audio = playbackQueue.getCurrentAudio();
 		return audio != null ? audio.getSource() : null; 
-	}
-	
-	private Audio getCurrentAudio() {
-		if(currentIndex < 0) {
-			nextIndex();
-		}
-		return playlist.get(currentIndex);
 	}
 
 	public void setVolumn(double value) {
@@ -242,39 +176,33 @@ public class FxMediaPlayer {
 		}
 	}
 
-	public boolean isShuffleMode() {
-		return shuffleMode;
-	}
-
-	public void setShuffleMode(boolean shuffleMode) {
-		this.shuffleMode = shuffleMode;
-	}
-
-	public void setRepeatMode(int repeatMode) {
-		this.repeatMode = repeatMode;
-	}
-	
-	public boolean isRepeatMode() {
-		return repeatMode == 1;
-	}
-
-	public boolean isRepeatOnceMode() {
-		return repeatMode == 2;
-	}
-	
 	public Future<?> loadFrom(File file) throws IOException {
-		clearPlaylist();
-		return playlist.loadFrom(file);
+		resetPlaybackQueue();
+		return playbackQueue.loadFrom(file);
 	}
-
-	public void clearPlaylist() {
-		playlist.clear();
-		resetCurrentIndex();
+	
+	public void resetPlaybackQueue() {
+		playbackQueue.reset();
+		playerListeners.forEach(listener -> {
+			listener.onNoMedia();
+		});
 		resetPlayer();
 	}
 
 	public boolean isInit() {
 		return delegatePlayer != null;
+	}
+
+	public int getCurrentIndex() {
+		return playbackQueue.getCurrentIndex();
+	}
+
+	public void setPlayMode(PlayMode playMode) {
+		playbackQueue.setPlayMode(playMode);
+	}
+
+	public Future<?> updateMetadatas() {
+		return playbackQueue.getPlaylist().updateMetadatas();
 	}
 	
 }

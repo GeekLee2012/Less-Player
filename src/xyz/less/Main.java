@@ -11,7 +11,8 @@ import xyz.less.graphic.MainView;
 import xyz.less.graphic.PlayerView;
 
 public class Main extends Application {
-	Stage mainStage;
+	private Stage mainStage;
+	private PlayerView mainView;
 	
 	private void setMainStage(Stage stage) {
 		this.mainStage = stage;
@@ -21,24 +22,26 @@ public class Main extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		setMainStage(primaryStage);
 		initStage();
+		initEvents();
 	}
 
 	private void initStage() {
-		PlayerView mainView = new MainView(mainStage, 
+		mainView = new MainView(mainStage, 
 				ConfigConstant.APP_WIDTH, ConfigConstant.APP_HEIGHT);
 		mainStage.setScene(new Scene(mainView, 
 				mainView.getWidth(), mainView.getHeight()));
 		mainStage.initStyle(StageStyle.TRANSPARENT);
-		mainStage.addEventHandler(KeyEvent.KEY_RELEASED, (event) -> {
+		mainStage.show();
+		mainView.initGraph();
+	}
+	
+	private void initEvents() {
+		mainStage.addEventHandler(KeyEvent.KEY_RELEASED, e -> {
 			//ø’∏Òº¸: ≤•∑≈/‘›Õ£“Ù¿÷
-			if(KeyCode.SPACE == event.getCode()) {
+			if(KeyCode.SPACE == e.getCode()) {
 				mainView.togglePlay();
 			}
 		});
-		
-		mainStage.show();
-		mainView.initGraph();
-		
 	}
 	
 	public static void main(String[] args) {
