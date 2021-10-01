@@ -39,7 +39,7 @@ public class SliderBar extends StackPane {
 		
 		thumb.setOnMousePressed(e -> {
 			e.consume();
-			fromX = thumb.getLayoutX();
+			fromX = thumb.getLayoutX() + thumb.getTranslateX();
 			fromScreenX = e.getScreenX();
 		});
 		
