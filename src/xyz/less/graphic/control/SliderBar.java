@@ -40,15 +40,15 @@ public class SliderBar extends StackPane {
 		thumb.setOnMousePressed(e -> {
 			e.consume();
 			fromX = thumb.getLayoutX() + thumb.getTranslateX();
-			fromScreenX = e.getScreenX();
+			fromScreenX = e.getSceneX();
 		});
 		
 		thumb.setOnMouseDragged(e -> {
 			e.consume();
-			double offsetX =  e.getScreenX() - fromScreenX;
+			double offsetX =  e.getSceneX() - fromScreenX;
 			double toX = fromX + offsetX;
 			toX = toX > 0 ? toX : 0;
-			toX = toX < getWidth() ? toX : getWidth();
+			toX = toX < getPrefWidth() ? toX : getWidth();
 			setValue(toX / getWidth());
 		});
 		
@@ -98,7 +98,7 @@ public class SliderBar extends StackPane {
 
 	public void updateProgress(double percent) {
 		delegate.updateProgress(percent);
-		thumb.setTranslateX(getWidth() * (-0.5D + percent));
+		thumb.setTranslateX(getPrefWidth() * (-0.5D + percent));
 	}
 
 	public void setPrefSize(double width, double height) {

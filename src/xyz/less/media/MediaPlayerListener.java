@@ -4,7 +4,6 @@ import java.util.Map;
 
 import xyz.less.bean.Audio;
 
-//TODO «ø“¿¿µMedia
 public interface MediaPlayerListener {
 	void onReady(Audio audio, Map<String, Object> metadata);
 	void onPlaying();

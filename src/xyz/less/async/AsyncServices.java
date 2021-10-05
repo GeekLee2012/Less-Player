@@ -1,5 +1,6 @@
 package xyz.less.async;
 
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
@@ -12,6 +13,10 @@ public class AsyncServices {
 	private static final ForkJoinPool fjPool = new ForkJoinPool();
 	
 	public static Future<?> submit(Runnable task) {
+		return executorService.submit(task);
+	}
+	
+	public static <V> Future<V> submit(Callable<V> task) {
 		return executorService.submit(task);
 	}
 	

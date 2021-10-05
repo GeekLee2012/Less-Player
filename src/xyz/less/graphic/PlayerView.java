@@ -22,6 +22,7 @@ public abstract class PlayerView extends StackPane implements MediaPlayerListene
 		setHeight(height);
 		setMediaView(new MediaView());
 		addHiddenChildren(mediaView);
+		setFxMediaPlayer();
 		initDatas();
 	}
 	

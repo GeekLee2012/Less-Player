@@ -30,6 +30,8 @@ import xyz.less.graphic.action.DndAction.DndType;
 import xyz.less.graphic.control.ProgressBar;
 import xyz.less.graphic.control.SliderBar;
 import xyz.less.graphic.visualization.RectangleSpectrum;
+import xyz.less.graphic.visualization.Spectrum;
+import xyz.less.media.Metadatas;
 import xyz.less.media.PlaybackQueue.PlayMode;
 import xyz.less.util.FileUtil;
 import xyz.less.util.StringUtil;
@@ -60,7 +62,7 @@ public class MainView extends PlayerView {
 	private double currentMinutes;
 	
 	private Pane audioMetaBox;
-	private RectangleSpectrum rectSpectrum;
+	private Spectrum spectrum;
 	private boolean spectrumOn;
 	
 	public MainView(Stage stage, double width, double height) {
@@ -284,25 +286,21 @@ public class MainView extends PlayerView {
 			} else if(url.startsWith(ConfigConstant.HTTPS_PREFIX) 
 					|| url.startsWith(ConfigConstant.HTTP_PREFIX)) {
 				dndResult.setDndType(DndType.LINK);
-				handleDndUrl(url);
+				dndResult.setSuccess(true);
+				handleDndLinkUrl(url);
 			}
 			handleDndFailed(url);
 		});
 	}
 
-	@Override
-	protected void initDatas() {
-		setFxMediaPlayer();
-	}
-	
 	protected void initGraphDatas() {
 		setAppTitle(ConfigConstant.APP_TITLE_DEFAULT_MODE);
+		addIcons(Images.LOGO);
 		volumeSlider.setValue(ConfigConstant.INITIAL_VOLUME);
+		getMediaPlayer().setPlayMode(PlayMode.SHUFFLE);
 		updateMetadata(null, null);
 		updateTimeText(0, 0);
-		addIcons(Images.LOGO);
 		initHelpText();
-		getMediaPlayer().setPlayMode(PlayMode.SHUFFLE);
 		initLyricView();
 		initPlaylistView();
 		initSpectrumView();
@@ -358,10 +356,10 @@ public class MainView extends PlayerView {
 					updatePlaylistView();
 					Future<?> updateFuture = getMediaPlayer().updateMetadatas();
 					AsyncServices.submitFxTaskOnFutureDone(updateFuture,() -> {
-							updatePlaylistViewTimeLbl();
-						});
+						updatePlaylistViewTimeLbl();
 					});
-				}
+				});
+			}
 			//TODO 歌词
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -395,8 +393,11 @@ public class MainView extends PlayerView {
 		albumLbl.setText("<离奇事件>");
 	}
 
-	private boolean handleDndUrl(String url) {
+	private boolean handleDndLinkUrl(String url) {
 		//插件引擎实现
+		System.out.println(url);
+		getMediaPlayer().playUrl(url);
+		updatePlaylistView();
 		return true;
 	}
 
@@ -433,15 +434,16 @@ public class MainView extends PlayerView {
 	}
 	
 	private void initSpectrumView() {
-		rectSpectrum = new RectangleSpectrum(99);
-		rectSpectrum.setSpacing(1);
-		rectSpectrum.setAlignment(Pos.BOTTOM_CENTER);
+		spectrum = new RectangleSpectrum(66);
+//		spectrum = new GridSpectrum(32, 28);
+		spectrum.setSpacing(1);
+		spectrum.setAlignment(Pos.BOTTOM_CENTER);
 	}
 	
 	private void toggleSpectrumView() {
 		BorderPane mainCenterPane = byId("main_center");
 		if(spectrumOn) {
-			mainCenterPane.setCenter(rectSpectrum);
+			mainCenterPane.setCenter(spectrum);
 		} else {
 			mainCenterPane.setCenter(audioMetaBox);
 		}
@@ -532,26 +534,27 @@ public class MainView extends PlayerView {
 			updateAppTitle();
 			return ;
 		}
-		Image image = (Image)metadata.get("image");
-		String title = (String)metadata.get("title");
-		String artist = (String)metadata.get("artist");
-		String album = (String)metadata.get("album");
+		String title = (String)metadata.get(Metadatas.TITLE);
+		String artist = (String)metadata.get(Metadatas.ARTIST);
+		String album = (String)metadata.get(Metadatas.ALBUM);
+		Image image = (Image)metadata.get(Metadatas.COVER_ART);
 		
 		image = image != null ? image : audio.getCoverArt();
-		title = title != null ? title : audio.getTitle();
-		artist = artist != null ? artist : audio.getArtist();
-		album = album != null ? album : audio.getAlbum();
+		title = !StringUtil.isBlank(title) ? title : audio.getTitle();
+		artist = !StringUtil.isBlank(artist) ? artist : audio.getArtist();
+		album = !StringUtil.isBlank(album)  ? album : audio.getAlbum();
 		
 //		System.out.println(String.format("title: %1$s, artist: %2$s, album: %3$s", title, artist, album));
 		System.out.println("title: " + title + ", messy: " + StringUtil.isMessyCode(title));
 		System.out.println("artist: " + artist + ", messy: " + StringUtil.isMessyCode(artist));
 		System.out.println("album: " + album + ", messy: " + StringUtil.isMessyCode(album));
 		
+		String titleDefault = StringUtil.getDefault(title, ConfigConstant.UNKOWN_AUDIO);
 		//TODO
 		album = StringUtil.getDefault(album, ConfigConstant.UNKOWN_ALBUM);
 		album = album.startsWith("<") ? album : "<" + album + ">";
 		
-		titleLbl.setText(StringUtil.getDefault(title, audio.getTitle()));
+		titleLbl.setText(StringUtil.getDefault(title, titleDefault));
 		artistLbl.setText(StringUtil.getDefault(artist, ConfigConstant.UNKOWN_ARTIST));
 		albumLbl.setText(album);
 		
@@ -642,7 +645,9 @@ public class MainView extends PlayerView {
 	
 	@Override
 	public void spectrumDataUpdate(double timestamp, double duration, float[] magnitudes, float[] phases) {
-		rectSpectrum.updateGraph(timestamp, duration, magnitudes, phases);
+		if(spectrumOn) {
+			spectrum.updateGraph(timestamp, duration, magnitudes, phases);
+		}
 	}
 	
 	//TODO a Bug: 打包成exe文件执行时，

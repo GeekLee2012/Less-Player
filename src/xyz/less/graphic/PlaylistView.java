@@ -32,9 +32,8 @@ public class PlaylistView extends StageView {
 	private boolean lyricOn = false;
 	private boolean autoTarget = true;
 	private final static double ROW_WIDTH = 335;
-	private final static double DURATION_WIDTH = 60;
+	private final static double DURATION_WIDTH = 72;
 	private final static double ROW_PADDING = 3;
-	private int index = 0;
 	
 	public PlaylistView(Stage opener, FxMediaPlayer mediaPlayer) {
 		super(opener, ConfigConstant.PLAYLIST_WIDTH, ConfigConstant.PLAYLIST_HEIGHT);
@@ -126,7 +125,8 @@ public class PlaylistView extends StageView {
 	private AnchorPane createDataRow(String name, String duration) {
 		Label titleLbl = new Label(name);
 		Label durationLbl = new Label(duration);
-		durationLbl.setAlignment(Pos.CENTER);
+		titleLbl.setAlignment(Pos.CENTER_LEFT);
+		durationLbl.setAlignment(Pos.CENTER_RIGHT);
 		
 		AnchorPane box = new AnchorPane(titleLbl, durationLbl);
 		box.setPrefWidth(ROW_WIDTH);
@@ -159,6 +159,7 @@ public class PlaylistView extends StageView {
 	}
 
 	public int size() {
+//		return listBox.getChildren().size();
 		return listView.getItems().size();
 	}
 	
@@ -190,12 +191,13 @@ public class PlaylistView extends StageView {
 	
 	public void updateTimeLbl() {
 		List<Audio> datas = mediaPlayer.getPlaylist().get();
-		index = 0;
+		startCount();
 		listView.getItems().forEach(node -> {
 			Pane pane = (Pane)node;
 			Label timeLbl = (Label)pane.getChildren().get(1);
-			String duration = StringUtil.toMmss(datas.get(index++).getDuration());
+			String duration = StringUtil.toMmss(datas.get(getCount()).getDuration());
 			timeLbl.setText(duration);
+			increaseCount();
 		});
 	}
 	

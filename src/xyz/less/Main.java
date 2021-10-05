@@ -7,12 +7,12 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import xyz.less.bean.ConfigConstant;
+import xyz.less.graphic.Guis;
 import xyz.less.graphic.MainView;
-import xyz.less.graphic.PlayerView;
 
 public class Main extends Application {
 	private Stage mainStage;
-	private PlayerView mainView;
+	private MainView mainView;
 	
 	private void setMainStage(Stage stage) {
 		this.mainStage = stage;
@@ -36,6 +36,9 @@ public class Main extends Application {
 	}
 	
 	private void initEvents() {
+		mainStage.setOnCloseRequest(e -> {
+			Guis.exitApplication();
+		});
 		mainStage.addEventHandler(KeyEvent.KEY_RELEASED, e -> {
 			//ø’∏Òº¸: ≤•∑≈/‘›Õ£“Ù¿÷
 			if(KeyCode.SPACE == e.getCode()) {

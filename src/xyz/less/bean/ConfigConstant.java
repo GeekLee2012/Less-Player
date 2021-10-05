@@ -32,6 +32,7 @@ public final class ConfigConstant {
 	public final static double COVER_ART_FIT_SIZE = 202;
 	public final static double COVER_ART_BORDERS_WIDTH = 6;
 
+	public final static String UNKOWN_AUDIO_ONLINE = "未知在线歌曲";
 	public final static String UNKOWN_AUDIO = "未知歌曲";
 	public final static String UNKOWN_ARTIST = "未知艺术家";
 	public final static String UNKOWN_ALBUM = "<未知专辑>";

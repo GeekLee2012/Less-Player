@@ -1,9 +1,20 @@
-.rectangle-spectrum {
+.rectangle-spectrum, .grid-spectrum {
 	-fx-background-color: transparent;
 	-fx-background-radius: 3;
 	-fx-padding: 0 0 3 5;
 }
 
-.rectangle-spectrum .sp-rectangle {
-	-fx-fill: #1ca388;
+.sp-rectangle {
+	-fx-fill: #1ca388 !important;
+}
+
+.grid-spectrum {
+	-fx-background-color: transparent;
+	-fx-background-radius: 3;
+	-fx-padding: 0 0 0 10;
+}
+
+.grid-rectangle {
+	-fx-fill: transparent;
+	-fx-stroke: #464646;
 }

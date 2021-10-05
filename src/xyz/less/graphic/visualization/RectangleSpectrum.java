@@ -3,11 +3,10 @@ package xyz.less.graphic.visualization;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.scene.layout.HBox;
 import javafx.scene.shape.Rectangle;
 import xyz.less.graphic.Guis;
 
-public class RectangleSpectrum extends HBox {
+public class RectangleSpectrum extends Spectrum {
 	private List<Rectangle> rectList;
 	private int rectNums;
 	private int index = 0;
@@ -41,18 +40,6 @@ public class RectangleSpectrum extends HBox {
 			rect.setWidth(width);
 			rect.setHeight(height);
 		});
-	}
-
-	private double getPaddingX() {
-		return getPadding().getLeft() + getPadding().getRight();
-	}
-	
-	private double getPaddingY() {
-		return getPadding().getTop() + getPadding().getBottom();
-	}
-
-	private double getMagnitudePercent(float magnitude) {
-		return 1 - Math.abs(magnitude) / 60D;
 	}
 	
 	public void setRectangleMinHeight(double value) {

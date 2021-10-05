@@ -12,6 +12,7 @@ import javafx.scene.media.MediaPlayer.Status;
 import javafx.scene.media.MediaView;
 import javafx.util.Duration;
 import xyz.less.bean.Audio;
+import xyz.less.bean.ConfigConstant;
 import xyz.less.media.PlaybackQueue.PlayMode;
 
 public class FxMediaPlayer {
@@ -43,7 +44,7 @@ public class FxMediaPlayer {
 			return ;
 		}
 		if(delegatePlayer == null || force) {
-			initDelegatePlayer();
+			initDelegatePlayer(getCurrentSource());
 		}
 		if(delegatePlayer == null) {
 			return ;
@@ -98,10 +99,10 @@ public class FxMediaPlayer {
 		}
 	}
 	
-	public void initDelegatePlayer() {
+	public void initDelegatePlayer(String source) {
 		resetPlayer();
 		try {
-			Media media = new Media(getCurrentSource());
+			Media media = new Media(source);
 			delegatePlayer = new MediaPlayer(media);
 			bindMediaView(delegatePlayer);
 			delegatePlayer.setVolume(volume);
@@ -203,6 +204,16 @@ public class FxMediaPlayer {
 
 	public Future<?> updateMetadatas() {
 		return playbackQueue.getPlaylist().updateMetadatas();
+	}
+
+	//http://music.163.com/song/media/outer/url?id=1822834628
+	public void playUrl(String url) {
+		Audio audio = new Audio();
+		audio.setTitle(ConfigConstant.UNKOWN_AUDIO_ONLINE);
+		audio.setSource(url);
+		playbackQueue.getPlaylist().add(audio);
+		initDelegatePlayer(url);
+		delegatePlayer.play();
 	}
 	
 }
