@@ -1,18 +1,14 @@
 package xyz.less;
 
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import xyz.less.bean.ConfigConstant;
 import xyz.less.graphic.Guis;
-import xyz.less.graphic.MainView;
+import xyz.less.graphic.skins.Skin;
+import xyz.less.graphic.skins.simple.SimpleSkin;
 
-public class Main extends Application {
+public final class Main extends Application {
 	private Stage mainStage;
-	private MainView mainView;
 	
 	private void setMainStage(Stage stage) {
 		this.mainStage = stage;
@@ -22,32 +18,19 @@ public class Main extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		setMainStage(primaryStage);
 		initStage();
-		initEvents();
 	}
 
 	private void initStage() {
-		mainView = new MainView(mainStage, 
-				ConfigConstant.APP_WIDTH, ConfigConstant.APP_HEIGHT);
-		mainStage.setScene(new Scene(mainView, 
-				mainView.getWidth(), mainView.getHeight()));
+		Skin skin = new SimpleSkin(mainStage);
+		mainStage.setScene(skin.getRootScene());
 		mainStage.initStyle(StageStyle.TRANSPARENT);
+		mainStage.setOnCloseRequest(e -> Guis.exitApplication());
 		mainStage.show();
-		mainView.initGraph();
-	}
-	
-	private void initEvents() {
-		mainStage.setOnCloseRequest(e -> {
-			Guis.exitApplication();
-		});
-		mainStage.addEventHandler(KeyEvent.KEY_RELEASED, e -> {
-			//ø’∏Òº¸: ≤•∑≈/‘›Õ£“Ù¿÷
-			if(KeyCode.SPACE == e.getCode()) {
-				mainView.togglePlay();
-			}
-		});
+		skin.init();
 	}
 	
 	public static void main(String[] args) {
 		launch(args);
 	}
+	
 }

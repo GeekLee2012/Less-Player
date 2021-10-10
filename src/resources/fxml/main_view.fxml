@@ -58,11 +58,11 @@
 				<ProgressBar fx:id="progress_bar" />
 			</top>
 			<left>
-				<HBox alignment="CENTER_LEFT" spacing="5">
+				<HBox fx:id="l_extra_box" spacing="5" alignment="CENTER_LEFT">
 					<children>
-						<Label fx:id="audio_time" />
 						<ImageView fx:id="lyric_btn" />
 						<ImageView fx:id="spectrum_btn" />
+						<Label fx:id="audio_time" />
 					</children>
 				</HBox>
 			</left>

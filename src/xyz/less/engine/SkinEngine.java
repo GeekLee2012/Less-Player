@@ -3,10 +3,9 @@ package xyz.less.engine;
 import java.util.HashMap;
 import java.util.Map;
 
-import javafx.stage.Stage;
+import xyz.less.graphic.skins.Skin;
 
-public class SkinEngine {
-	Stage stage;
+public final class SkinEngine {
 	Map<String, Skin> skinMap = new HashMap<>();
 	
 	public SkinEngine() {

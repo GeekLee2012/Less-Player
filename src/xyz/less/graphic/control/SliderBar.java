@@ -2,6 +2,7 @@ package xyz.less.graphic.control;
 
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Pos;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import xyz.less.graphic.Guis;
@@ -53,14 +54,12 @@ public class SliderBar extends StackPane {
 		});
 		
 		setOnScroll(e -> {
-			e.consume();
-			double deltaX = e.getDeltaY();
-			if(deltaX > 0) {
-				setValue(getValue() + 0.05);
-			} else {
-				setValue(getValue() - 0.05);
-			}
+			scroll(e);
 		});
+	}
+	
+	public void scrollValue() {
+		
 	}
 
 	public void addListener(ChangeListener<? super Number> listener) {
@@ -84,8 +83,8 @@ public class SliderBar extends StackPane {
 	}
 	
 	public void setValue(double value) {
-		double min = delegate.getMin();
-		double max = delegate.getMax();
+		double min = getMin();
+		double max = getMax();
 		value = value > min ? value : min;
 		value = value < max ? value : max;
 		delegate.setValue(value);
@@ -109,5 +108,16 @@ public class SliderBar extends StackPane {
 
 	public double getHalf() {
 		return (getMax() - getMin()) / 2;
+	}
+
+	public void scroll(ScrollEvent e) {
+		e.consume();
+		double deltaX = e.getDeltaY();
+		double deltaValue = 0.05 * (getMax() - getMin());
+		if(deltaX > 0) {
+			setValue(getValue() + deltaValue);
+		} else {
+			setValue(getValue() - deltaValue);
+		}
 	}
 }

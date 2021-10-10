@@ -5,7 +5,7 @@ import java.net.URL;
 import javafx.scene.image.Image;
 import xyz.less.bean.Resources;
 
-public class ResourcesEngine {
+public final class ResourcesEngine {
 	
 	public static Image getImage(String name) {
 		return new Image(getResourceUrl(Resources.IMG_SRC, name)

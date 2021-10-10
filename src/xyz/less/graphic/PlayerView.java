@@ -139,7 +139,9 @@ public abstract class PlayerView extends StackPane implements MediaPlayerListene
 	}
 
 	public void togglePlay() {
-		mediaPlayer.play();
+		if(mediaPlayer != null) {
+			mediaPlayer.play();
+		}
 	}
 	
 }
