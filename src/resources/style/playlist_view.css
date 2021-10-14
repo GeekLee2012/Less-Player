@@ -16,6 +16,7 @@
 	-fx-pref-height: 32;
 	-fx-border-width: 0 0 1 0;
 	-fx-border-color: #1b1b1b;
+	/*-fx-border-color: transparent;*/
 }
 
 #playlist_view .list-view {
@@ -28,6 +29,7 @@
 
 #playlist_view .list-view .list-cell:hover {
 	-fx-background-color: #464646; 
+	/*-fx-background-color: #009dae; */
 }
 
 #playlist_view .list-view .list-cell:selected {
@@ -59,6 +61,7 @@
 
 #playlist_view .scroll-bar .thumb  {
 	-fx-background-color: #1ca388;
+	/*-fx-background-color: #f0f0f0;*/
 	-fx-pref-height: 56;
 }
 

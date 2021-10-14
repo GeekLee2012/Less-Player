@@ -14,6 +14,7 @@ import java.util.concurrent.Future;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.SourceDataLine;
 
@@ -124,6 +125,20 @@ public class JsaMediaPlayer {
 		line.close();
 	}
 	
+	public void playClip(String source) throws Exception {
+		File file = new File(source);
+		AudioInputStream stream = AudioSystem.getAudioInputStream(file);
+		Clip clip = AudioSystem.getClip();
+		clip.open(stream);
+		clip.start();
+		while(clip.available() > 0) {
+			
+		}
+		clip.drain();
+		clip.close();
+		System.out.println("“Ù¿÷≤•∑≈ÕÍ±œ~");
+	}
+	
 	//TODO
 	private Map<String, Object> copyMetadata() {
 		Map<String, Object> metadata = new HashMap<>();
@@ -165,4 +180,5 @@ public class JsaMediaPlayer {
 	public void setVolume(double value) {
 		this.volume = value;
 	}
+	
 }

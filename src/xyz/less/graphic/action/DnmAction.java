@@ -10,10 +10,13 @@ import xyz.less.graphic.Guis;
  * Drag And Move
  */
 public class DnmAction  {
-	private double fromX;
-	private double fromY;
+//	private double fromX;
+//	private double fromY;
 	private double fromScreenX;
 	private double fromScreenY;
+	private double fromSceneX;
+	private double fromSceneY;
+	
 	private Stage stage;
 	private Node trigger;
 	private Consumer<DnmOffset> action;
@@ -34,10 +37,12 @@ public class DnmAction  {
 			if(!this.enabled) {
 				return ;
 			}
-			fromX = stage.getX();
-			fromY = stage.getY();
+//			fromX = stage.getX();
+//			fromY = stage.getY();
 			fromScreenX = e.getScreenX();
 			fromScreenY = e.getScreenY();
+			fromSceneX = e.getSceneX();
+			fromSceneY = e.getSceneY();
 		});
 		
 		trigger.setOnMouseDragged(e -> {
@@ -49,8 +54,11 @@ public class DnmAction  {
 			double toScreenY = e.getScreenY();
 			double offsetX = toScreenX - fromScreenX;
 			double offsetY = toScreenY - fromScreenY;
-			double toX = fromX + offsetX;
-			double toY = fromY + offsetY;
+//			double toX = fromX + offsetX;
+//			double toY = fromY + offsetY;
+			
+			double toX = toScreenX - fromSceneX;
+			double toY = toScreenY - fromSceneY;
 			stage.setX(toX);
 			stage.setY(toY);
 			if(action != null) {

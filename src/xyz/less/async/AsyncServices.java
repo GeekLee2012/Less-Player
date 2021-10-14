@@ -5,6 +5,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import javafx.application.Platform;
 
@@ -20,31 +21,44 @@ public class AsyncServices {
 		return executorService.submit(task);
 	}
 	
-	public static Future<?> submitOnFutureDone(Future<?> future, Runnable task) {
+	public static Future<?> submitOnFutureDone(Future<?> future, Runnable task, Runnable onFailedTask) {
 		if(future == null) {
 			return submit(task);
 		}
 		return submit(() -> {
 			try {
-				future.get();
+				future.get(60, TimeUnit.SECONDS);
+				if(task != null) {
+					task.run();
+				}
 			} catch(Exception e) {
 				e.printStackTrace();
-			}
-			try {
-				task.run();
-			}catch(Exception e) {
-				e.printStackTrace();
+				if(onFailedTask != null) {
+					onFailedTask.run();
+				}
 			}
 		});
 	}
 	
 	public static Future<?> submitFxTaskOnFutureDone(Future<?> future, Runnable task) {
+		return submitFxTaskOnFutureDone(future, task, null);
+	}
+	
+	public static Future<?> submitFxTaskOnFutureDone(Future<?> future, Runnable task, Runnable onFailedTask) {
 		if(future == null) {
 			return submit(task);
 		}
 		return submitOnFutureDone(future, () -> {
 			Platform.runLater(()-> {
-				task.run();
+				if(task != null) {
+					task.run();
+				}
+			});
+		}, () -> {
+			Platform.runLater(()-> {
+				if(onFailedTask != null) {
+					onFailedTask.run();
+				}
 			});
 		});
 	}

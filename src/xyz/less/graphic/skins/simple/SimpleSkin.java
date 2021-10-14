@@ -4,10 +4,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import xyz.less.bean.ConfigConstant;
 import xyz.less.graphic.PlayerView;
-import xyz.less.graphic.skins.Skin;
 
 //TODO
-public final class SimpleSkin implements Skin {
+public final class SimpleSkin {
 	private Stage mainStage;
 	private PlayerView playerView;
 	
@@ -25,12 +24,11 @@ public final class SimpleSkin implements Skin {
 		this.playerView = playerView;
 	}
 
-	@Override
 	public void init() {
 		playerView.initGraph();
+		//TODO
 	}
 
-	@Override
 	public Scene getRootScene() {
 		return new Scene(playerView, 
 				playerView.getWidth(), playerView.getHeight());

@@ -1,17 +1,20 @@
 package xyz.less.graphic.control;
 
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import xyz.less.graphic.Guis;
 
-public class SliderBar extends StackPane {
+public class SliderBar extends StackPane implements ChangeListener<Number> {
 	private ProgressBar delegate;
 	private HBox thumb;
 	private double fromX;
-	private double fromScreenX;
+	private double fromSceneX;
+	private final static double SCROLL_UNIT = 0.05;
+	private final static double THUMB_BASE_PERCENT = -0.5;
 	
 	public SliderBar() {
 		this(0, 1, 0);
@@ -19,38 +22,40 @@ public class SliderBar extends StackPane {
 	
 	public SliderBar(double min, double max, double value) {
 		delegate = new ProgressBar(min, max, value);
-		delegate.setPrefSize(-1, 5);
+		thumb = new HBox();
+		
 		initGraph();
 		initEvents();
 	}
 	
 	private void initGraph() {
-		thumb = new HBox();
 		Guis.setAlignment(Pos.CENTER, this);
 		Guis.addChildren(this, delegate, thumb);
 		Guis.addStyleClass("m-slider-bar", this);
 		Guis.addStyleClass("thumb", thumb);
+		
+		setScrollUnit(SCROLL_UNIT);
+		addListener(this);
 	}
 	
 	private void initEvents() {
 		delegate.setOnMouseClicked(e -> {
-			double x = e.getX();
-			setValue(x / delegate.getWidth());
+			setValue(e.getX() / delegate.getWidth());
 		});
 		
 		thumb.setOnMousePressed(e -> {
 			e.consume();
 			fromX = thumb.getLayoutX() + thumb.getTranslateX();
-			fromScreenX = e.getSceneX();
+			fromSceneX = e.getSceneX();
 		});
 		
 		thumb.setOnMouseDragged(e -> {
 			e.consume();
-			double offsetX =  e.getSceneX() - fromScreenX;
+			double offsetX =  e.getSceneX() - fromSceneX;
 			double toX = fromX + offsetX;
 			toX = toX > 0 ? toX : 0;
-			toX = toX < getPrefWidth() ? toX : getWidth();
-			setValue(toX / getWidth());
+			toX = toX < getWidthsMax() ? toX : getWidthsMax();
+			setValue(toX / getWidthsMax());
 		});
 		
 		setOnScroll(e -> {
@@ -58,10 +63,10 @@ public class SliderBar extends StackPane {
 		});
 	}
 	
-	public void scrollValue() {
-		
+	public void setThumbVisible(boolean value) {
+		thumb.setVisible(value);
 	}
-
+	
 	public void addListener(ChangeListener<? super Number> listener) {
 		delegate.addListener(listener);
 	}
@@ -82,22 +87,28 @@ public class SliderBar extends StackPane {
 		delegate.setMax(max);
 	}
 	
+	public double getScrollUnit() {
+		return delegate.getScrollUnit();
+	}
+
+	public void setScrollUnit(double value) {
+		delegate.setScrollUnit(value);
+	}
+
 	public void setValue(double value) {
-		double min = getMin();
-		double max = getMax();
-		value = value > min ? value : min;
-		value = value < max ? value : max;
 		delegate.setValue(value);
-		updateProgress(value / (max - min));
 	}
 	
 	public double getValue() {
 		return delegate.getValue();
 	}
 
-	public void updateProgress(double percent) {
-		delegate.updateProgress(percent);
-		thumb.setTranslateX(getPrefWidth() * (-0.5D + percent));
+	private void updateThumbPos() {
+		setThumbPos(getValue() / getMaxLength());
+	}
+	
+	private void setThumbPos(double percent) {
+		thumb.setTranslateX(getWidthsMax() * (THUMB_BASE_PERCENT + percent));
 	}
 
 	public void setPrefSize(double width, double height) {
@@ -105,19 +116,26 @@ public class SliderBar extends StackPane {
 		delegate.setPrefWidth(width);
 		delegate.setMaxHeight(height);
 	}
-
+	
+	private double getMaxLength() {
+		return getMax() - getMin();
+	}
+	
+	private double getWidthsMax() {
+		return Math.max(getWidth(), getPrefWidth());
+	}
+	
 	public double getHalf() {
-		return (getMax() - getMin()) / 2;
+		return getMaxLength() / 2;
+	}
+	
+	public void scroll(ScrollEvent e) {
+		delegate.scroll(e);
 	}
 
-	public void scroll(ScrollEvent e) {
-		e.consume();
-		double deltaX = e.getDeltaY();
-		double deltaValue = 0.05 * (getMax() - getMin());
-		if(deltaX > 0) {
-			setValue(getValue() + deltaValue);
-		} else {
-			setValue(getValue() - deltaValue);
-		}
+	@Override
+	public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+		updateThumbPos();
 	}
+	
 }

@@ -2,9 +2,10 @@
 @import url("slider_bar.css");
 @import url("visualization.css");
 
-/* fx:id有点东西？？不支持分隔符"-" */
+/* fx:id不支持分隔符"-" */
 #main_view {
-	-fx-background-color: #313131;	
+	-fx-background-color: #313131;
+	/* -fx-background-color: linear-gradient(to right top, #ff00cc, #333399); */
 }
 
 #main_top {
@@ -63,8 +64,4 @@
 .playlist-btn {
 	-fx-cursor: hand;
 	-fx-padding: 6;
-}
-
-.playlist-btn-on {
-	-fx-background-color: #464646;
 }

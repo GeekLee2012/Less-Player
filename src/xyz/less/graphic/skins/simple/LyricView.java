@@ -139,7 +139,7 @@ public class LyricView extends StageView {
 		}
 	}
 	
-	public void loadLyric(String uri) {
+	public boolean loadLyric(String uri) {
 		try {
 			resetLyric();
 			int index = uri.lastIndexOf(".");
@@ -148,9 +148,11 @@ public class LyricView extends StageView {
 			if(lyric != null) {
 				timeKeyList.addAll(lyric.getDatas().keySet());
 			}
+			return hasLyricDatas();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return false;
 	}
 
 	private boolean hasLyricDatas() {
@@ -269,8 +271,7 @@ public class LyricView extends StageView {
 	
 	private void locate2Opener() {
 //		openerX = opener.getX();
-		double padding = 6;
 		setX(opener.getX());
-		setY(opener.getY() + opener.getHeight() + padding);
+		setY(opener.getY() + opener.getHeight() + ConfigConstant.LYRIC_PADDING_Y);
 	}
 }

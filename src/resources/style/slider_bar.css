@@ -14,3 +14,11 @@
 	-fx-background-color: #fff;
 	-fx-background-radius: 6;
 }
+
+.m-slider-bar .m-progress-bar {
+	-fx-pref-height: 3 !important;
+}
+
+.m-slider-bar .progress {
+	-fx-pref-height: 3 !important;
+}

@@ -3,6 +3,7 @@ package xyz.less.graphic.control;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.HBox;
 import xyz.less.graphic.Guis;
 
@@ -12,6 +13,7 @@ public class ProgressBar extends HBox {
 	private double max = 1;
 	private HBox progress;
 	private boolean seekable;
+	private double scrollUnit = 0.01;
 	
 	public ProgressBar() {
 		this(0, 1, 0);
@@ -30,16 +32,24 @@ public class ProgressBar extends HBox {
 		Guis.addChildren(this, progress);
 		Guis.addStyleClass("m-progress-bar", this);
 		Guis.addStyleClass("progress", progress);
+		Guis.bind(progress.prefHeightProperty(), this.prefHeightProperty());
 	}
 	
 	private void initEvents() {
 		setOnMouseClicked(e -> {
 			if(isSeekable()) {
-				double percent = e.getX() / getProgressMaxWidth();
+				double percent = e.getX() / getWidthsMax();
 				updateProgress(percent);
 				valueProperty.set(percent);
 			}
 		});
+		/*
+		setOnScroll(e -> {
+			if(isSeekable()) {
+				scroll(e);
+			}
+		});
+		*/
 	}
 
 	public void addListener(ChangeListener<? super Number> listener) {
@@ -63,8 +73,6 @@ public class ProgressBar extends HBox {
 	}
 	
 	public double getValue() {
-//		double percent = progress.getPrefWidth() / getProgressMaxWidth();
-//		return  (max - min) * percent;
 		return valueProperty.get();
 	}
 	
@@ -75,11 +83,18 @@ public class ProgressBar extends HBox {
 	public void setSeekable(boolean seekable) {
 		this.seekable = seekable;
 	}
+	public double getScrollUnit() {
+		return scrollUnit;
+	}
 
+	public void setScrollUnit(double value) {
+		this.scrollUnit = value;
+	}
+	
 	public void updateProgress(double percent) {
 		percent = percent > 0 ? percent : 0;
 		percent = percent < 1 ? percent : 1;
-		progress.setPrefWidth(getProgressMaxWidth() * percent);
+		progress.setPrefWidth(getWidthsMax() * percent);
 	}
 
 	public void setValue(double value) {
@@ -89,7 +104,18 @@ public class ProgressBar extends HBox {
 		updateProgress(value / (max - min));
 	}
 	
-	private double getProgressMaxWidth() {
+	private double getWidthsMax() {
 		return Math.max(getWidth(), getPrefWidth());
+	}
+	
+	public void scroll(ScrollEvent e) {
+		e.consume();
+		double deltaX = e.getDeltaY();
+		double deltaValue = scrollUnit * (getMax() - getMin());
+		if(deltaX > 0) {
+			setValue(getValue() + deltaValue);
+		} else {
+			setValue(getValue() - deltaValue);
+		}
 	}
 }

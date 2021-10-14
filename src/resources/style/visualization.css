@@ -6,6 +6,7 @@
 
 .sp-rectangle {
 	-fx-fill: #1ca388 !important;
+	-fx-background-color: #1ca388 !important;
 }
 
 .grid-spectrum {

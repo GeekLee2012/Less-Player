@@ -3,11 +3,11 @@ package xyz.less.graphic.visualization;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.scene.shape.Rectangle;
+import javafx.scene.layout.HBox;
 import xyz.less.graphic.Guis;
 
 public class RectangleSpectrum extends Spectrum {
-	private List<Rectangle> rectList;
+	private List<HBox> rectList;
 	private int rectNums;
 	private int index = 0;
 	private double rectMinHeight = 1;
@@ -21,7 +21,8 @@ public class RectangleSpectrum extends Spectrum {
 	private void initGraph() {
 		Guis.addStyleClass("rectangle-spectrum", this);
 		for(int i = 0; i < rectNums; i++) {
-			Rectangle rect = new Rectangle(0, 0);
+//			Rectangle rect = new Rectangle(0, 0);
+			HBox rect = new HBox();
 			Guis.addStyleClass("sp-rectangle", rect);
 			rectList.add(rect);
 		}
@@ -37,8 +38,10 @@ public class RectangleSpectrum extends Spectrum {
 			double percent = getMagnitudePercent(magnitudes[index++]);
 			double height = (getHeight() - getPaddingY()) * percent;
 			height = height > rectMinHeight ? height : rectMinHeight; 
-			rect.setWidth(width);
-			rect.setHeight(height);
+//			rect.setWidth(width);
+//			rect.setHeight(height);
+			rect.setPrefSize(width, height);
+			rect.setMaxSize(width, height);
 		});
 	}
 	

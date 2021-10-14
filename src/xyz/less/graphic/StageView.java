@@ -41,15 +41,15 @@ public abstract class StageView extends Stage {
 		Guis.addStylesheet(stylesheet, this);
 	}
 	
-	public void startCount() {
+	protected void startCount() {
 		count = 0;
 	}
 	
-	public int getCount() {
+	protected int getCount() {
 		return count;
 	}
 	
-	public void increaseCount() {
+	protected void increaseCount() {
 		++count;
 	}
 	

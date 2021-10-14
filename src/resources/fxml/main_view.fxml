@@ -81,7 +81,7 @@
 				<HBox spacing="5" alignment="CENTER">
 					<children>
 						<ImageView fx:id="playlist_btn" />
-						<HBox alignment="CENTER" spacing="5">
+						<HBox fx:id="volume_box" spacing="5" alignment="CENTER" >
 							<children>
 								<ImageView fx:id="volume_btn" />
 								<SliderBar fx:id="volume_bar" />

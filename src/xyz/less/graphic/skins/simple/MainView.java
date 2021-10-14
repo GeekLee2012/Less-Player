@@ -60,7 +60,7 @@ public final class MainView extends PlayerView {
 	private PlayMode[] repeatModes = { PlayMode.NO_REPEAT, PlayMode.REPEAT_ALL, PlayMode.REPEAT_SELF };
 	private PlayMode repeatMode = repeatModes[0];
 	private boolean devMode = false;
-	private DndResult dndResult;
+	private DndResult<?> dndResult;
 	private double currentMinutes;
 	
 	private Pane audioMetaBox;
@@ -174,6 +174,7 @@ public final class MainView extends PlayerView {
 		progressBar = byId("progress_bar");
 		timeLbl = byId("audio_time");
 		lyricBtn = byId("lyric_btn");
+		
 		spectrumBtn = byId("spectrum_btn");
 		
 		ImageView repeatBtn = byId("repeat_btn");
@@ -183,9 +184,11 @@ public final class MainView extends PlayerView {
 		ImageView shuffleBtn = byId("shuffle_btn");
 		
 		playlistBtn = byId("playlist_btn");
+		Pane volumebox = byId("volume_box");
 		volumeBtn = byId("volume_btn");
 		volumeSlider = byId("volume_bar");
 		volumeSlider.setPrefSize(90, 5);
+		volumeSlider.setThumbVisible(false);
 		
 		double ncnWidth = 188;
 		((Pane)pane.getLeft()).setPrefWidth(ncnWidth);
@@ -203,7 +206,6 @@ public final class MainView extends PlayerView {
 		playlistBtn.setImage(Images.PLAYLIST[0]);
 		
 		Guis.setUserData(1, shuffleBtn);
-		
 		Guis.applyChildrenDeeply(node -> {
 				if(node instanceof ImageView) {
 					ImageView btn = (ImageView)node;
@@ -261,6 +263,11 @@ public final class MainView extends PlayerView {
 			getMediaPlayer().seek(nv.doubleValue());
 		});
 		
+		Guis.addHoverAction(
+				node -> volumeSlider.setThumbVisible(true),
+				node -> volumeSlider.setThumbVisible(false), 
+				volumebox);
+		
 		volumeBtn.setOnScroll(e -> {
 			volumeSlider.scroll(e);
 		});
@@ -282,7 +289,7 @@ public final class MainView extends PlayerView {
 		
 		//TODO
 		Guis.addDndAction(this, result -> {
-			dndResult = new DndResult();
+			dndResult = new DndResult<>();
 			String url = result.getUrl();
 			
 			if(url.startsWith(ConfigConstant.FILE_PREFIX)) {
@@ -348,8 +355,8 @@ public final class MainView extends PlayerView {
 				dndResult.setSuccess(true);
 			}else if(FileUtil.isLryic(dndFile)) { //歌词
 				dndResult.setDndType(DndType.LYRIC);
-				loadLyric(result.getUrl());
-				dndResult.setSuccess(true);
+				boolean success = loadLyric(result.getUrl());
+				dndResult.setSuccess(success);
 			} else if(FileUtil.isDirectory(dndFile)
 					|| FileUtil.isAudio(dndFile)) { //目录或音频
 				dndResult.setSuccess(true);
@@ -357,13 +364,17 @@ public final class MainView extends PlayerView {
 				Future<?> future = getMediaPlayer().loadFrom(dndFile);
 				AsyncServices.submitFxTaskOnFutureDone(future, () ->{
 					updateDndDone();
+					if(getMediaPlayer().isPlaylistEmpty()) {
+						updateDndFailText();
+						return ;
+					}
 					getMediaPlayer().play();
 					updatePlaylistView();
 					Future<?> updateFuture = getMediaPlayer().updateMetadatas();
 					AsyncServices.submitFxTaskOnFutureDone(updateFuture,() -> {
 						updatePlaylistViewTimeLbl();
 					});
-				});
+				}, () -> updateDndFailText());
 			}
 			//TODO 歌词
 		} catch (Exception e) {
@@ -386,7 +397,7 @@ public final class MainView extends PlayerView {
 	}
 	
 	private void updateDndDone() {
-		titleLbl.setText("加载完成~");
+		titleLbl.setText("加载完成，正在努力识别~");
 		artistLbl.setText("精彩即将开始");
 		albumLbl.setText("<拖拽文件>");
 	}
@@ -569,9 +580,9 @@ public final class MainView extends PlayerView {
 	
 	public void updateCoverArt(Image image, boolean applyTheme) {
 		if(applyTheme) {
-			Guis.addStyleClass("theme-bg", coverArtLbl);
+			Guis.addStyleClass("theme-fg", coverArtLbl);
 		} else {
-			Guis.removeStyleClass("theme-bg", coverArtLbl);
+			Guis.removeStyleClass("theme-fg", coverArtLbl);
 		}
 		ImageView graphic = getDefaultCoverArt();
 		if(image != null) {
@@ -635,10 +646,11 @@ public final class MainView extends PlayerView {
 		}
 	}
 	
-	private void loadLyric(String uri) {
+	private boolean loadLyric(String uri) {
 		if(lyricView != null) {
-			lyricView.loadLyric(uri);
+			return lyricView.loadLyric(uri);
 		}
+		return false;
 	}
 
 	@Override

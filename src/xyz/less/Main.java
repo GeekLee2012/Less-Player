@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import xyz.less.graphic.Guis;
-import xyz.less.graphic.skins.Skin;
 import xyz.less.graphic.skins.simple.SimpleSkin;
 
 public final class Main extends Application {
@@ -21,7 +20,7 @@ public final class Main extends Application {
 	}
 
 	private void initStage() {
-		Skin skin = new SimpleSkin(mainStage);
+		SimpleSkin skin = new SimpleSkin(mainStage);
 		mainStage.setScene(skin.getRootScene());
 		mainStage.initStyle(StageStyle.TRANSPARENT);
 		mainStage.setOnCloseRequest(e -> Guis.exitApplication());

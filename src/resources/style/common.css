@@ -1,11 +1,20 @@
-.label {
-	-fx-padding: 5 15;
-	-fx-text-fill: #fff;
+* {
+	-fx-background-color: transparent;
+	-fx-text-fill: #1ca388;
 	-fx-font-family: "Microsoft YaHei";
 }
 
-.theme-bg {
+.label {
+	-fx-padding: 5 15;
+	-fx-text-fill: #fff;
+}
+
+.theme-fg {
 	-fx-background-color: #1ca388;
+}
+
+.theme-bg {
+	-fx-background-color: #313131;
 }
 
 .image-btn {
@@ -52,6 +61,7 @@
 
 .label-hover {
 	-fx-background-color: #464646 !important;
+	/*-fx-background-color: #009dae !important;*/
 }
 
 .label-hover-tran {
@@ -66,4 +76,5 @@
 .bottom-border-dark {
 	-fx-border-width: 0 0 1 0;
 	-fx-border-color: #1b1b1b;
+	/*-fx-border-color: transparent;*/
 }

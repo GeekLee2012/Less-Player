@@ -223,12 +223,12 @@ public class PlaylistView extends StageView {
 	private void locate2Opener() {
 //		openerX = opener.getX();
 		openerY = opener.getY();
-		double paddingX = 6;
+		//TODO
 		double paddingY = lyricOn ? 18 : 88;
 //		if(!attach) {
 //			opener.setX(openerX - getWidth() / 2 - paddingX);
 //		}
-		setX(opener.getX() + opener.getWidth() + paddingX);
+		setX(opener.getX() + opener.getWidth() + ConfigConstant.PLAYLIST_PADDING_X);
 		setY(openerY - paddingY);
 	}
 	

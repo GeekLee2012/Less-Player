@@ -156,12 +156,18 @@ public final class Guis {
 	}
 	
 	public static void addHoverStyleClass(String styleClass, Node... nodes) {
+		addHoverAction(node -> addStyleClass(styleClass, node), 
+				node -> removeStyleClass(styleClass, node), 
+				nodes);
+	}
+	
+	public static void addHoverAction(Consumer<? super Node> enterAction, Consumer<? super Node> exitAction, Node... nodes) {
 		applyNodes(node -> {
 			node.setOnMouseEntered(e -> {
-				addStyleClass(styleClass, node);
+				enterAction.accept(node);
 			});
 			node.setOnMouseExited(e -> {
-				removeStyleClass(styleClass, node);
+				exitAction.accept(node);
 			});
 		}, nodes);
 	}

@@ -36,9 +36,10 @@ public class DndAction {
 		return this;
 	}
 	
-	public static class DndResult {
+	public static class DndResult<T> {
 		private boolean success;
 		private DndType dndType;
+		private T userData;
 		
 		public DndResult() {
 			this.success = false;
@@ -56,6 +57,14 @@ public class DndAction {
 		}
 		public void setDndType(DndType dndType) {
 			this.dndType = dndType;
+		}
+
+		public T getUserData() {
+			return userData;
+		}
+
+		public void setUserData(T userData) {
+			this.userData = userData;
 		}
 	}
 	

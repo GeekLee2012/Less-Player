@@ -215,5 +215,9 @@ public class FxMediaPlayer {
 		initDelegatePlayer(url);
 		delegatePlayer.play();
 	}
+
+	public boolean isPlaylistEmpty() {
+		return getPlaylist().isEmpty();
+	}
 	
 }

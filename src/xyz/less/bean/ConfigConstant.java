@@ -4,14 +4,17 @@ public final class ConfigConstant {
 	public final static String UTF_8 = "UTF-8";
 	public final static String ISO_8859_1 = "ISO-8859-1";
 	
+	//TODO
 	public final static double APP_WIDTH = 666;
 	public final static double APP_HEIGHT = 333;
 	
 	public final static double PLAYLIST_WIDTH = 366;
 	public final static double PLAYLIST_HEIGHT = 520;
+	public final static double PLAYLIST_PADDING_X = 6;
 	
 	public final static double LYRIC_WIDTH = 666;
 	public final static double LYRIC_HEIGHT = 150;
+	public final static double LYRIC_PADDING_Y = 6;
 	
 	public final static String APP_TITLE_DEFAULT_MODE = "Less-Player, Less is More !";
 	public final static String DEV_MODE_PREFIX = "[开发者模式]"; 
