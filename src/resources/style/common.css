@@ -1,0 +1,80 @@
+* {
+	-fx-background-color: transparent;
+	-fx-text-fill: #1ca388;
+	-fx-font-family: "Microsoft YaHei";
+}
+
+.label {
+	-fx-padding: 5 15;
+	-fx-text-fill: #fff;
+}
+
+.theme-fg {
+	-fx-background-color: #1ca388;
+}
+
+.theme-bg {
+	-fx-background-color: #313131;
+}
+
+.image-btn {
+	-fx-cursor: hand;
+}
+
+.image-btn-hover {
+	-fx-background-color: #1ca388;
+	-fx-background-radius: 20;
+}
+
+.label-logo {
+	-fx-padding: 3 8.25;
+	-fx-background-color: #1ca388;
+	-fx-border-width: 1;
+	-fx-border-radius: 99 0 99 99;
+	-fx-background-radius: 99 0 99 99;
+	-fx-font-size: 15;
+	-fx-font-weight: bold;
+	-fx-text-fill: white;
+	-fx-cursor: hand;
+}
+
+.dev-mode-bg {
+	-fx-background-color: #ec4141;
+}
+
+.dev-mode-text {
+	-fx-text-fill: #ec4141 !important;
+}
+
+.label-logo-hover {
+	-fx-background-color: #50bde2;
+	-fx-background-color: #168242;
+	-fx-background-color: #ec4141;
+	-fx-background-color: #2d6bc2;
+}
+
+.label-btn {
+	/*-fx-pref-width: 36;*/
+	-fx-cursor: hand; 
+	/* -fx-text-fill: #fff; */
+}
+
+.label-hover {
+	-fx-background-color: #464646 !important;
+	/*-fx-background-color: #009dae !important;*/
+}
+
+.label-hover-tran {
+	-fx-background-color: #fff !important;
+	-fx-opacity: 0.65;
+}
+
+.label-hover-red {
+	-fx-background-color: #ec4141 !important;
+}
+
+.bottom-border-dark {
+	-fx-border-width: 0 0 1 0;
+	-fx-border-color: #1b1b1b;
+	/*-fx-border-color: transparent;*/
+}

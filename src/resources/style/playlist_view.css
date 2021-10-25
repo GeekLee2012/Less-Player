@@ -1,0 +1,87 @@
+@import url("common.css");
+
+#playlist_view {
+	-fx-background-color: #313131;
+	-fx-padding: 0 0 10 0;
+}
+
+#playlist_view .logo-label {
+	-fx-padding: 2;
+	-fx-font-size: 16;
+	-fx-font-weight: bold;
+	-fx-text-fill: #1ca388;
+}
+
+#playlist_view .top-nav {
+	-fx-pref-height: 32;
+	-fx-border-width: 0 0 1 0;
+	-fx-border-color: #1b1b1b;
+	/*-fx-border-color: transparent;*/
+}
+
+#playlist_view .list-view {
+	-fx-background-color: transparent;
+}
+
+#playlist_view .list-view .list-cell {
+	-fx-background-color: transparent;
+}
+
+#playlist_view .list-view .list-cell:hover {
+	-fx-background-color: #464646; 
+	/*-fx-background-color: #009dae; */
+}
+
+#playlist_view .list-view .list-cell:selected {
+	/* -fx-background-color: #1ca388; */
+}
+
+#playlist_view .list-view .list-cell .label {
+	-fx-padding: 5;
+}
+
+#playlist_view .scroll-bar {
+	-fx-pref-width: 10;
+	-fx-background-color: transparent;
+}
+
+#playlist_view .scroll-bar .decrement-button {
+	visibility: hidden;
+	-fx-pref-height: 2;
+}
+
+#playlist_view .scroll-bar .decrement-button .decrement-arrow {
+	visibility: hidden;
+	-fx-pref-height: 0;
+}
+
+#playlist_view .scroll-bar .track  {
+	visibility: hidden;
+}
+
+#playlist_view .scroll-bar .thumb  {
+	-fx-background-color: #1ca388;
+	/*-fx-background-color: #f0f0f0;*/
+	-fx-pref-height: 56;
+}
+
+#playlist_view .scroll-bar .increment-button  {
+	visibility: hidden;
+	-fx-pref-height: 0;
+}
+
+#playlist_view .scroll-bar .increment-button .increment-arrow {
+	visibility: hidden;
+	-fx-pref-height: 0;
+}
+
+#playlist_view .current .label {
+	-fx-text-fill: #1ca388;
+	-fx-font-size: 16;
+	-fx-font-weight: bold;
+}
+
+#playlist_view .scroll-pane > .viewport {
+	-fx-background-color: transparent; 
+}
+
