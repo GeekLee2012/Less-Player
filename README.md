@@ -1,4 +1,5 @@
 ## Less Player 是一款基于JavaFX开发的“轻量级本地”音乐播放器
+### 欢迎喜欢GUI开发的朋友一起学习和交流
 
 #### 界面参考
 * Dopamine 3 (开源)  
@@ -27,6 +28,5 @@
 ![snap 04.png](https://github.com/GeekLee2012/Less-Player/blob/main/snapshot/snap%2004.png)  
 
 #### 其他
-* 欢迎喜欢GUI开发的朋友一起学习和交流
-* 如需打包成.exe文件，可使用工具exe4j或其他  
+* Release版本中所使用的.exe文件打包工具: exe4j
 
