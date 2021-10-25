@@ -16,11 +16,11 @@ public class PlaybackQueue {
 	private boolean nextAction = true;
 	
 	public PlaybackQueue() {
-		this.playlist = new Playlist();
+		this(null);
 	}
 	
 	public PlaybackQueue(Playlist playlist) {
-		this.playlist = playlist;
+		setPlaylist(playlist);
 	}
 	
 	public Playlist getPlaylist() {
@@ -28,7 +28,7 @@ public class PlaybackQueue {
 	}
 
 	public void setPlaylist(Playlist playlist) {
-		this.playlist = playlist;
+		this.playlist = (playlist == null ? new Playlist() : playlist);
 	}
 
 	public PlayMode getPlayMode() {
