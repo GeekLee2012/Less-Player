@@ -112,7 +112,7 @@ public class SliderBar extends StackPane implements ChangeListener<Number> {
 	}
 
 	public void setPrefSize(double width, double height) {
-		super.setPrefSize(width, height);
+		super.setPrefWidth(width);
 		delegate.setPrefWidth(width);
 		delegate.setMaxHeight(height);
 	}
