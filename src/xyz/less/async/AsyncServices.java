@@ -14,6 +14,7 @@ import javafx.application.Platform;
 public class AsyncServices {
 	private static final ExecutorService executorService = Executors.newFixedThreadPool(4);
 	private static final ForkJoinPool fjPool = new ForkJoinPool();
+	private static final int TIMEOUT = 60;
 	
 	public static Future<?> submit(Runnable task) {
 		return executorService.submit(task);
@@ -39,7 +40,7 @@ public class AsyncServices {
 		}
 		return submit(() -> {
 			try {
-				future.get(60, TimeUnit.SECONDS);
+				future.get(TIMEOUT, TimeUnit.SECONDS);
 				if(task != null) {
 					task.run();
 				}
