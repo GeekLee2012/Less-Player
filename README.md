@@ -7,7 +7,7 @@
    [Github源码 https://github.com/digimezzo/dopamine](https://github.com/digimezzo/dopamine)  
    
 * Right-Player (C++ Qt)  
-   作者: 蔡姬MrBeanC（B站UP主）  
+   作者: MrBeanCpp（B站UP主）  
    [Github源码 https://github.com/MrBeanCpp/Right-Player](https://github.com/MrBeanCpp/Right-Player)
 
 #### 开发环境
