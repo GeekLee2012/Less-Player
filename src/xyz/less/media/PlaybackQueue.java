@@ -50,6 +50,7 @@ public class PlaybackQueue {
 		return currentIndex;
 	}
 	
+	//TODO
 	public int prev() {
 		nextAction = false;
 		if(playlist.size() <= 0) {

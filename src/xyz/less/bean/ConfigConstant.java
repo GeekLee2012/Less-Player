@@ -17,9 +17,9 @@ public final class ConfigConstant {
 	public final static double LYRIC_PADDING_Y = 6;
 	
 	public final static String APP_TITLE_DEFAULT_MODE = "Less Player, Less is More !";
-	public final static String DEV_MODE_PREFIX = "[å¼€å‘è€…æ¨¡å¼]"; 
+	public final static String DEV_MODE_PREFIX = "[¿ª·¢ÕßÄ£Ê½]"; 
 	public final static String APP_TITLE_DEV_MODE = DEV_MODE_PREFIX + " Less Player, More is Less ! ";
-	public final static String PLAYING_PREFIX = "æ­£åœ¨æ’­æ”¾: ";
+	public final static String PLAYING_PREFIX = "ÕıÔÚ²¥·Å: ";
 	public final static double PLAYER_ICON_FIT_SIZE = 25;
 	public final static double INITIAL_VOLUME = 0.5;
 	
@@ -35,10 +35,10 @@ public final class ConfigConstant {
 	public final static double COVER_ART_FIT_SIZE = 202;
 	public final static double COVER_ART_BORDERS_WIDTH = 6;
 
-	public final static String UNKOWN_AUDIO_ONLINE = "æœªçŸ¥åœ¨çº¿æ­Œæ›²";
-	public final static String UNKOWN_AUDIO = "æœªçŸ¥æ­Œæ›²";
-	public final static String UNKOWN_ARTIST = "æœªçŸ¥è‰ºæœ¯å®¶";
-	public final static String UNKOWN_ALBUM = "<æœªçŸ¥ä¸“è¾‘>";
+	public final static String UNKOWN_AUDIO_ONLINE = "Î´ÖªÔÚÏß¸èÇú";
+	public final static String UNKOWN_AUDIO = "Î´Öª¸èÇú";
+	public final static String UNKOWN_ARTIST = "Î´ÖªÒÕÊõ¼Ò";
+	public final static String UNKOWN_ALBUM = "<Î´Öª×¨¼­>";
 	
 	public final static String DEFAULT_CURRENT_DURATION_TEXT= "00:00/00:00";
 	public final static String CURRENT_DURATION_FORMAT = "%1$s / %2$s";

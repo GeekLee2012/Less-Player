@@ -1,6 +1,5 @@
 package xyz.less.media;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -13,7 +12,6 @@ import java.util.concurrent.Future;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.scene.image.Image;
 import xyz.less.async.AsyncServices;
 import xyz.less.async.FileScanTask;
 import xyz.less.bean.Audio;
@@ -58,10 +56,6 @@ public class Playlist {
 				ConfigConstant.AUDIO_SUFFIXES));
 	}
 	
-	public void loadFromUrl(String url) throws IOException {
-		//TODO
-	}
-	
 	private void addFromFile(File file) {
 		if(!FileUtil.isAudio(file)) {
 			return ;
@@ -98,18 +92,17 @@ public class Playlist {
 		return sizeProperty;
 	}
 
+	//TODO
 	public Future<?> updateMetadatas() {
 		return AsyncServices.submit(() -> {
 			audioList.forEach(audio -> {
 				try {
 					File file = Paths.get(URI.create(audio.getSource())).toFile();
 					Map<String, Object> metadata = Metadatas.readFrom(file);
-					byte[] coverArt = (byte[])metadata.get(Metadatas.COVER_ART);
-					Image image = coverArt != null ? new Image(new ByteArrayInputStream(coverArt)) : null; 
-					audio.setArtist((String)metadata.get(Metadatas.ARTIST));
-					audio.setAlbum((String)metadata.get(Metadatas.ALBUM));
-					audio.setDuration((double)metadata.get(Metadatas.DURATION));
-					audio.setCoverArt(image);
+					audio.setArtist(Metadatas.getArtist(metadata));
+					audio.setAlbum(Metadatas.getAlbum(metadata));
+					audio.setDuration(Metadatas.getDuration(metadata));
+					audio.setCoverArt(Metadatas.getCoverArtImage(metadata));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
