@@ -19,18 +19,22 @@ public class FileUtil {
 	}
 	
 	public static boolean isImage(File file) {
-		return isFile(file) && isSupported(file.getName(), ConfigConstant.IMAGE_SUFFIXES);
+		return isFileSupported(file, ConfigConstant.IMAGE_SUFFIXES);
 	}
 	
 	public static boolean isLryic(File file) {
-		return isFile(file) && isSupported(file.getName(), ConfigConstant.LYRIC_SUFFIXES);
+		return isFileSupported(file, ConfigConstant.LYRIC_SUFFIXES);
 	}
 	
 	public static boolean isAudio(File file) {
-		return isFile(file) && isSupported(file.getName(), ConfigConstant.AUDIO_SUFFIXES);
+		return isFileSupported(file, ConfigConstant.AUDIO_SUFFIXES);
 	}
 	
-	public static boolean isSupported(String name, String[] suffixes) {
+	public static boolean isFileSupported(File file, String[] suffixes) {
+		return isFile(file) && isSuffixSupported(file.getName(), suffixes);
+	}
+	
+	public static boolean isSuffixSupported(String name, String[] suffixes) {
 		if(suffixes == null) {
 			return true;
 		}
