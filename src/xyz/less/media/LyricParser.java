@@ -124,6 +124,7 @@ public class LyricParser {
 	}
 
 	private boolean isTimeDataTag(String line) {
+		//TODO regex
 		return Character.isDigit(line.charAt(1));
 	}
 	
