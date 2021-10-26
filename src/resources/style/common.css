@@ -5,7 +5,7 @@
 }
 
 .label {
-	-fx-padding: 5 15;
+	-fx-padding: 5.5 15;
 	-fx-text-fill: #fff;
 }
 
@@ -27,7 +27,7 @@
 }
 
 .label-logo {
-	-fx-padding: 3 8.25;
+	-fx-padding: 2.5 8.25;
 	-fx-background-color: #1ca388;
 	-fx-border-width: 1;
 	-fx-border-radius: 99 0 99 99;

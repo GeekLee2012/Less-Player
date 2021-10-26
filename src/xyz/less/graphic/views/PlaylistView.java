@@ -89,7 +89,7 @@ public class PlaylistView extends StageView {
 		Guis.setGraphic(Images.CLOSE, closeBtn);
 		Guis.setUserData(1, targetBtn, attachBtn);
 		
-		Guis.addStyleClass("top-nav", pane);
+		Guis.addStyleClass("bottom-border-dark", pane);
 		Guis.addStyleClass("logo-label", logoSizeLbl);
 		Guis.addStyleClass("label-btn", attachBtn, targetBtn, closeBtn);
 		Guis.addHoverStyleClass("label-hover", attachBtn, targetBtn);

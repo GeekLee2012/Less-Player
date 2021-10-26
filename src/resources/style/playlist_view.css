@@ -12,11 +12,11 @@
 	-fx-text-fill: #1ca388;
 }
 
-#playlist_view .top-nav {
+#playlist_top {
 	-fx-pref-height: 32;
-	-fx-border-width: 0 0 1 0;
+	/* -fx-border-width: 0 0 1 0;
 	-fx-border-color: #1b1b1b;
-	/*-fx-border-color: transparent;*/
+	-fx-border-color: transparent;*/
 }
 
 #playlist_view .list-view {

@@ -20,7 +20,7 @@ import xyz.less.util.FileUtil;
 import xyz.less.util.StringUtil;
 
 public class Playlist {
-	private IntegerProperty sizeProperty = new SimpleIntegerProperty(0);
+	private IntegerProperty sizeProp = new SimpleIntegerProperty(0);
 	private CopyOnWriteArrayList<Audio> audioList = new CopyOnWriteArrayList<>();
 	
 	public List<Audio> get() {
@@ -29,12 +29,12 @@ public class Playlist {
 	
 	public void add(Audio t) {
 		audioList.add(t);
-		sizeProperty.set(size());
+		sizeProp.set(size());
 	}
 	
 	public void addAll(Collection<Audio> c) {
 		audioList.addAll(c);
-		sizeProperty.set(size());
+		sizeProp.set(size());
 	}
 	
 	public Future<?> loadFrom(File file) throws IOException {
@@ -84,12 +84,12 @@ public class Playlist {
 	
 	public Playlist clear() {
 		audioList.clear();
-		sizeProperty.set(0);
+		sizeProp.set(0);
 		return this;
 	}
 
 	public IntegerProperty sizeProperty() {
-		return sizeProperty;
+		return sizeProp;
 	}
 
 	//TODO

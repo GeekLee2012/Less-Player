@@ -8,7 +8,7 @@ import javafx.scene.layout.HBox;
 import xyz.less.graphic.Guis;
 
 public class ProgressBar extends HBox {
-	private DoubleProperty valueProperty;
+	private DoubleProperty valueProp;
 	private double min = 0;
 	private double max = 1;
 	private HBox progress;
@@ -22,7 +22,7 @@ public class ProgressBar extends HBox {
 	public ProgressBar(double min, double max, double value) {
 		this.min = min;
 		this.max = max;
-		this.valueProperty = new SimpleDoubleProperty(value);
+		this.valueProp = new SimpleDoubleProperty(value);
 		initGraph();
 		initEvents();
 	}
@@ -40,7 +40,7 @@ public class ProgressBar extends HBox {
 			if(isSeekable()) {
 				double percent = e.getX() / getWidthsMax();
 				updateProgress(percent);
-				valueProperty.set(percent);
+				valueProp.set(percent);
 			}
 		});
 		/*
@@ -53,7 +53,7 @@ public class ProgressBar extends HBox {
 	}
 
 	public void addListener(ChangeListener<? super Number> listener) {
-		valueProperty.addListener(listener);
+		valueProp.addListener(listener);
 	}
 
 	public double getMin() {
@@ -73,7 +73,7 @@ public class ProgressBar extends HBox {
 	}
 	
 	public double getValue() {
-		return valueProperty.get();
+		return valueProp.get();
 	}
 	
 	public boolean isSeekable() {
@@ -100,7 +100,7 @@ public class ProgressBar extends HBox {
 	public void setValue(double value) {
 		value = value > min ? value : min;
 		value = value < max ? value : max;
-		valueProperty.set(value);
+		valueProp.set(value);
 		updateProgress(value / (max - min));
 	}
 	

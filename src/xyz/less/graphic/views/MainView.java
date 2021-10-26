@@ -121,7 +121,8 @@ public final class MainView extends PlayerView {
 		Guis.addHoverStyleClass("label-hover", pinBtn, minBtn);
 		Guis.addHoverStyleClass("label-hover-red", closeBtn);
 		
-		Guis.applyChildrenPrefHeight(pane);
+		Guis.bind(logoTitleBox.prefHeightProperty(), pane.prefHeightProperty());
+		Guis.bind(winBtnsBox.prefHeightProperty(), pane.prefHeightProperty());
 		
 		Guis.addDnmAction(mainStage, pane, dnmOffset -> {
 			Guis.applyStages(stage -> {

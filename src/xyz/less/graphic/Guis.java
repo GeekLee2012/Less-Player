@@ -110,16 +110,6 @@ public final class Guis {
 		}
 	}
 	
-	public static void applyChildrenPrefHeight(Pane... panes) {
-		applyChildren(node -> {
-			if(node instanceof Pane) {
-				Pane childPane = (Pane)node;
-				Pane parent = (Pane)childPane.getParent();
-				bind(childPane.prefHeightProperty(), parent.prefHeightProperty());
-			}
-		}, panes);
-	}
-	
 	public static void setFitSize(double value, ImageView... views) {
 		applyNodes(node -> {
 				ImageView view = (ImageView)node;

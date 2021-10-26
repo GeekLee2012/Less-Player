@@ -44,7 +44,7 @@ public class FileScanTask extends RecursiveAction {
 				FileScanTask task = new FileScanTask(file.getAbsolutePath(), consumer, this.suffixes);
 				//task.fork();
 				subTaskList.add(task);
-			} else if(FileUtil.isSupported(file.getName(), suffixes)) {
+			} else if(FileUtil.isSuffixSupported(file.getName(), suffixes)) {
 				this.result.add(file);
 				if(consumer != null) {
 					consumer.accept(file);
