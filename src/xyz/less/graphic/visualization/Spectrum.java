@@ -9,7 +9,7 @@ public abstract class Spectrum extends HBox {
 			float[] magnitudes, float[] phases) ;
 	
 	public void updateGraph(float[] magnitudes, float[] phases) {
-		this.updateGraph(magnitudes, phases);
+		this.updateGraph(0, 0, magnitudes, phases);
 	}
 	
 	protected double getPaddingX() {
