@@ -40,7 +40,7 @@ public final class ConfigConstant {
 	public final static String UNKOWN_ARTIST = "未知艺术家";
 	public final static String UNKOWN_ALBUM = "<未知专辑>";
 	
-	public final static String DEFAULT_CURRENT_DURATION_TEXT= "00:00/00:00";
+//	public final static String DEFAULT_CURRENT_DURATION_TEXT= "00:00 / 00:00";
 	public final static String CURRENT_DURATION_FORMAT = "%1$s / %2$s";
 	
 	public final static String INFINITED_TIME_KEY = "99:99.999";

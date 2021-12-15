@@ -34,6 +34,7 @@ public class GridSpectrum extends Spectrum {
 		Guis.addChildren(this, gridCols);
 	}
 	
+	@Override
 	public void updateGraph(double timestamp, double duration, 
 			float[] magnitudes, float[] phases) {
 		startCount();

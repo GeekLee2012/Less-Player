@@ -53,7 +53,7 @@ public class PlaybackQueue {
 	//TODO
 	public int prev() {
 		nextAction = false;
-		if(playlist.size() <= 0) {
+		if(!isEnable()) {
 			return -1;
 		}
 		int index = currentIndex;
@@ -77,7 +77,7 @@ public class PlaybackQueue {
 	
 	public int next() {
 		nextAction = true;
-		if(playlist.size() <= 0) {
+		if(!isEnable()) {
 			return -1;
 		}
 		int index = currentIndex;

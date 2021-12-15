@@ -9,6 +9,8 @@ import xyz.less.engine.ResourcesEngine;
 public final class Resources {
 	public final static String FXML_SUFFIX = ".fxml";
 	public final static String STYLE_SUFFIX = ".css";
+	public final static String PNG = ".png";
+	public final static String JPG = ".jpg";
 	
 	public final static String FXML_SRC = "/resources/fxml/";
 	public final static String STYLE_SRC = "/resources/style/";
@@ -28,71 +30,71 @@ public final class Resources {
 	}
 	
 	public static final class Images {
-		public final static Image LOGO = image("logo.png");
-		public final static Image MIN = image("min_16px.png");
-		public final static Image CLOSE = image("close_16px.png");
-		public final static Image PLAY_PREV = image("music_play_prev_32px.png");
-		public final static Image PLAY_NEXT = image("music_play_next_32px.png");
-		public final static Image DEFAULT_COVER_ART = image("cover_longplay_vinyl.png");
-		public final static Image DEFAULT_COVER_ART_2 = image("cover_guitar.jpg");
-//		public final static Image VOLUME_TRACK = image("music_volume_track.png");
-		public final static Image DND_NOT_FOUND = image("404_not_found.png");
+		public final static Image LOGO = png("logo");
+		public final static Image MIN = png("min_16px");
+		public final static Image CLOSE = png("close_16px");
+		public final static Image PLAY_PREV = png("music_play_prev_32px");
+		public final static Image PLAY_NEXT = png("music_play_next_32px");
+		public final static Image DEFAULT_COVER_ART = png("cover_longplay_vinyl");
+		public final static Image DEFAULT_COVER_ART_2 = jpg("cover_guitar");
+//		public final static Image VOLUME_TRACK = png("music_volume_track");
+		public final static Image DND_NOT_FOUND = png("404_not_found");
 
 		public final static Image[] PIN = { 
-				image("pin_16px.png"), 
-				image("pin_on_16px.png") 
+				png("pin_16px"), 
+				png("pin_on_16px") 
 			};
 		
 		public final static Image[] SPECTRUM = { 
-				image("spectrum_32px.png"), 
-				image("spectrum_on_32px.png") 
+				png("spectrum_32px"), 
+				png("spectrum_on_32px") 
 			};
 		
 		public final static Image[] LYRIC = { 
-				image("text_32px.png"), 
-				image("text_on_32px.png") 
+				png("text_32px"), 
+				png("text_on_32px") 
 			};
 		
 		public final static Image[] REPEAT = { 
-				image("music_repeat_32px.png"), 
-				image("music_repeat_on_32px.png"),
-				image("music_repeat_self_32px.png") 
+				png("music_repeat_32px"), 
+				png("music_repeat_on_32px"),
+				png("music_repeat_self_32px") 
 			};
 		
 		public final static Image[] PLAY = { 
-				image("music_play_32px.png"), 
-				image("music_pause_32px.png") 
+				png("music_play_32px"), 
+				png("music_pause_32px") 
 			};
 		
 		public final static Image[] SHUFFLE = { 
-				image("music_shuffle_32px.png"), 
-				image("music_shuffle_on_32px.png") 
+				png("music_shuffle_32px"), 
+				png("music_shuffle_on_32px") 
 			};
 		
 		public final static Image[] PLAYLIST = { 
-				image("music_playlist_32px.png"), 
-				image("music_playlist_on_32px.png") 
+				png("music_playlist_32px"), 
+				png("music_playlist_on_32px") 
 			};
 		
 		public final static Image[] VOLUME = { 
-				image("music_volume_32px.png"), 
-				image("music_volume_low_32px.png"),
-				image("music_volume_mute_32px.png")
+				png("music_volume_32px"), 
+				png("music_volume_low_32px"),
+				png("music_volume_mute_32px")
 			};
 		
 		public final static Image[] ATTACH = { 
-				image("attach_16px.png"), 
-				image("attach_on_16px.png") 
+				png("attach_16px"), 
+				png("attach_on_16px") 
 			};
 		
 		public final static Image[] TARGET = {
-				image("target_16px.png"),
-				image("target_on_16px.png")
+				png("target_16px"),
+				png("target_on_16px")
 			};
 		
 		public final static Image[] LOCK = {
-				image("unlock_16px.png"),
-				image("lock_16px.png")
+				png("unlock_16px"),
+				png("lock_16px")
 			};
 	}
 	
@@ -106,5 +108,13 @@ public final class Resources {
 	
 	public static Image image(String name) {
 		return ResourcesEngine.getImage(name);
+	}
+	
+	private static Image png(String name) {
+		return image(name + PNG);
+	}
+	
+	private static Image jpg(String name) {
+		return image(name + JPG);
 	}
 }

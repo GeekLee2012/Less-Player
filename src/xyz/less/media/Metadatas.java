@@ -5,15 +5,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.jaudiotagger.audio.AudioFile;
-import org.jaudiotagger.audio.AudioFileIO;
-import org.jaudiotagger.audio.AudioHeader;
-import org.jaudiotagger.tag.FieldKey;
-import org.jaudiotagger.tag.Tag;
-import org.jaudiotagger.tag.images.Artwork;
-
 import javafx.scene.image.Image;
-import xyz.less.util.StringUtil;
 
 public final class Metadatas {
 	public static final String TITLE = "title";
@@ -23,41 +15,12 @@ public final class Metadatas {
 	public static final String DURATION = "duration";
 
 	public static Map<String, Object> readFrom(File file) {
-		Map<String, Object> metadata = createDefaultMetadata();
-		
-		AudioHeader audioHeader = null;
-		Tag tag = null;
-		try {
-			AudioFile audioFile = AudioFileIO.read(file);
-			if(audioFile != null) {
-				tag = audioFile.getTag();
-				audioHeader = audioFile.getAudioHeader();
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		if(tag != null) {
-			String title = tag.getFirst(FieldKey.TITLE);
-			String artist = tag.getFirst(FieldKey.ARTIST);
-			String album = tag.getFirst(FieldKey.ALBUM);
-			metadata.put(TITLE, StringUtil.iso88591ToUtf8(title));
-			metadata.put(ARTIST, StringUtil.iso88591ToUtf8(artist));
-			metadata.put(ALBUM, StringUtil.iso88591ToUtf8(album));
-			
-			Artwork artwork = tag.getFirstArtwork();
-			if(artwork != null) {
-				metadata.put(COVER_ART, artwork.getBinaryData());
-			}
-		}
-		if(audioHeader != null) {
-			double duration = audioHeader.getTrackLength() / 60D;
-			metadata.put(DURATION, duration);
-		}
-//		System.out.println(String.format("title: %1$s, artist: %2$s, album: %3$s", title, artist, album));
-		return metadata;
+		//TODO Pluginable
+		Jaudiotagger tagger = new Jaudiotagger();
+		return tagger.readMetadata(file);
 	}
 	
-	private static Map<String, Object> createDefaultMetadata() {
+	public static Map<String, Object> createDefaultMetadata() {
 		Map<String, Object> metadata = new HashMap<>();
 		metadata.put(TITLE, null);
 		metadata.put(ARTIST, null);

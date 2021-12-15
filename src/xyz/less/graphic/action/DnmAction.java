@@ -17,21 +17,25 @@ public class DnmAction  {
 	private double fromSceneX;
 	private double fromSceneY;
 	
-	private Stage stage;
-	private Node trigger;
-	private Consumer<DnmOffset> action;
-	private boolean enabled;
-	private Node[] ignoreTriggers;
+	private boolean enabled = true;
 	
 	public DnmAction(Stage stage, Node trigger, Consumer<DnmOffset> action, Node... ignoreTriggers) {
-		this.stage = stage;
-		this.trigger = trigger;
-		this.action = action;
-		this.ignoreTriggers = ignoreTriggers;
+		if(stage != null && trigger != null) {
+			setupTrigger(stage, trigger, action);
+		}
+		Guis.applyNodes(node -> {
+			node.setOnMouseDragged(e -> {
+				e.consume();
+			});
+		}, ignoreTriggers);
 	}
 	
 	public DnmAction enable(boolean value) {
 		this.enabled = value;
+		return this;
+	}
+
+	private void setupTrigger(Stage stage, Node trigger, Consumer<DnmOffset> action) {
 		trigger.setOnMousePressed(e -> {
 			e.consume();
 			if(!this.enabled) {
@@ -65,13 +69,6 @@ public class DnmAction  {
 				action.accept(new DnmOffset(offsetX, offsetY));
 			}
 		});
-		
-		Guis.applyNodes(node -> {
-			node.setOnMouseDragged(e -> {
-				e.consume();
-			});
-		}, ignoreTriggers);
-		return this;
 	}
 	
 	public static class DnmOffset {

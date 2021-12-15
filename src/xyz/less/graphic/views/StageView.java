@@ -8,7 +8,7 @@ import xyz.less.graphic.Guis;
 
 public abstract class StageView extends Stage implements Attachable {
 	protected Stage opener;
-	private int count;
+	private int counter;
 	
 	public StageView(Stage opener) {
 		this(opener, -1, -1);
@@ -42,16 +42,34 @@ public abstract class StageView extends Stage implements Attachable {
 		Guis.addStylesheet(stylesheet, this);
 	}
 	
+	/** Counter: start from 0 */
 	protected void startCount() {
-		count = 0;
+		startCount(0);
 	}
 	
-	protected int getCount() {
-		return count;
+	/** Counter: start from n */
+	protected void startCount(int n) {
+		this.counter = n;
 	}
 	
-	protected void increaseCount() {
-		++count;
+	/** Counter: current */
+	protected int current() {
+		return counter;
+	}
+	
+	/** Counter: increase */
+	protected void incCount() {
+		++counter;
+	}
+	
+	/** Counter: decrease */
+	protected void decCount() {
+		--counter;
+	}
+	
+	/** Counter: end */
+	protected void endCount() {
+		counter = -1;
 	}
 	
 	protected abstract void initGraph();

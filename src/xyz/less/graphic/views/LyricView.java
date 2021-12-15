@@ -64,6 +64,7 @@ public class LyricView extends StageView {
 	protected void initGraph() {
 		setSceneRoot(Guis.loadFxml(Fxmls.LYRIC_VIEW));
 		addStyle(Styles.LYRIC_VIEW);
+//		setSceneTransparent();
 		
 		initTop();
 		initCenter();
@@ -88,7 +89,7 @@ public class LyricView extends StageView {
 		
 		Guis.setUserData(1, attachBtn);
 		
-		dnmAction = Guis.addDnmAction(this, getScene().getRoot(), closeBtn);
+		dnmAction = Guis.addDnmAction(this, topNavBox, closeBtn);
 		
 		attachBtn.setOnMouseClicked(e -> {
 			attach = !attach;
@@ -102,6 +103,8 @@ public class LyricView extends StageView {
 		});
 		
 		closeBtn.setOnMouseClicked(e -> hide());
+		//TODO
+		Guis.addHoverStyleClass("theme-bg", getScene().getRoot());
 	}
 
 	private void initCenter() {

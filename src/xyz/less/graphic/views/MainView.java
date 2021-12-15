@@ -160,6 +160,8 @@ public final class MainView extends PlayerView {
 		Guis.addStyleClass("audio-title", titleLbl);
 		Guis.addStyleClass("audio-artist", artistLbl);
 		Guis.addStyleClass("audio-album", albumLbl);
+		//Fix Bugs
+		titleLbl.setPrefWidth(ConfigConstant.APP_WIDTH);
 	}
 	
 	private void initBottom() {
@@ -261,9 +263,9 @@ public final class MainView extends PlayerView {
 	}
 	
 	private void initEvents() {
-		mainStage.addEventHandler(KeyEvent.KEY_RELEASED, (event) -> {
+		mainStage.addEventHandler(KeyEvent.KEY_RELEASED, e -> {
 			//空格键: 播放/暂停音乐
-			if(KeyCode.SPACE == event.getCode()) {
+			if(KeyCode.SPACE == e.getCode()) {
 				togglePlay();
 			}
 		});
@@ -284,6 +286,8 @@ public final class MainView extends PlayerView {
 			}
 			handleDndFailed(url);
 		});
+		
+		Guis.addAutoDrawerEffect(mainStage);
 	}
 
 	protected void initGraphDatas() {
@@ -432,16 +436,16 @@ public final class MainView extends PlayerView {
 
 	//TODO
 	private ImageView getDefaultCoverArt() {
-		if(defaultCoverArt == null) {
+		Guis.ifNotPresent(defaultCoverArt, t -> {
 			defaultCoverArt = new ImageView(Images.DEFAULT_COVER_ART);
 			defaultCoverArt.setFitWidth(ConfigConstant.COVER_ART_FIT_SIZE);
 			defaultCoverArt.setFitHeight(ConfigConstant.COVER_ART_FIT_SIZE);
-		}
+		});
 		return defaultCoverArt;
 	}
 	
 	private void initLyricView() {
-		if(lyricView == null) {
+		Guis.ifNotPresent(lyricView, t -> {
 			lyricView = new LyricView(mainStage);
 			lyricView.setOnHidden(e -> {
 				updateLyricBtn();
@@ -452,14 +456,13 @@ public final class MainView extends PlayerView {
 				updateLyricView(currentMinutes);
 				playlistView.attach(true);
 			});
-		}
+		});
 	}
 
 	private void updateLyricView(double current) {
 		this.currentMinutes = current;
-		if(lyricView != null && lyricView.isShowing()) {
-			lyricView.updateGraph(current);
-		}
+		Guis.ifPresent(lyricView != null && lyricView.isShowing(), 
+				t -> lyricView.updateGraph(current));
 	}
 	
 	private void initSpectrumView() {
@@ -471,11 +474,7 @@ public final class MainView extends PlayerView {
 	
 	private void toggleSpectrumView() {
 		BorderPane mainCenterPane = byId("main_center");
-		if(spectrumOn) {
-			mainCenterPane.setCenter(spectrum);
-		} else {
-			mainCenterPane.setCenter(audioMetaBox);
-		}
+		mainCenterPane.setCenter(spectrumOn ? spectrum : audioMetaBox);
 		updateSpectrumBtn();
 		updateAppTitle();
 	}
@@ -492,7 +491,7 @@ public final class MainView extends PlayerView {
 	}
 
 	private void initPlaylistView() {
-		if(playlistView == null) {
+		Guis.ifNotPresent(playlistView, t -> {
 			playlistView = new PlaylistView(mainStage, getMediaPlayer());
 			
 			playlistView.setOnHidden(e -> {
@@ -501,37 +500,30 @@ public final class MainView extends PlayerView {
 			playlistView.setOnShown(e -> {
 				updatePlaylistBtn();
 			});
-		}
+		});
 	}
 
-	//TODO
 	private void updatePlaylistView() {
-		if(playlistView != null) {
-			playlistView.updateGraph();
-		}
+		Guis.ifPresent(playlistView, 
+				t-> playlistView.updateGraph());
 	}
 	
-	
 	private void updatePlaylistViewTimeLbl() {
-		if(playlistView != null) {
-			playlistView.updateTimeLbl();
-		}
+		Guis.ifPresent(playlistView, 
+				t -> playlistView.updateTimeLbl());
 	}
 	
 	private void resetPlaylistView() {
-		if(playlistView != null) {
-			playlistView.resetGraph(true);
-		}
+		Guis.ifPresent(playlistView, 
+				t -> playlistView.resetGraph(true));
 	}
 
 	public void updateLyricBtn() {
-		int index = lyricView.isShowing() ? 1 : 0;
-		lyricBtn.setImage(Images.LYRIC[index]);
+		Guis.setImage(lyricBtn, Images.LYRIC, lyricView.isShowing());
 	}
 	
 	private void updateSpectrumBtn() {
-		int index = spectrumOn ? 1 : 0;
-		spectrumBtn.setImage(Images.SPECTRUM[index]);
+		Guis.setImage(spectrumBtn, Images.SPECTRUM, spectrumOn);
 	}
 	
 	private void updateAppTitle() {
@@ -539,8 +531,7 @@ public final class MainView extends PlayerView {
 	}
 	
 	private void updatePlaylistBtn() {
-		int index = playlistView.isShowing() ? 1 : 0;
-		playlistBtn.setImage(Images.PLAYLIST[index]);
+		Guis.setImage(playlistBtn, Images.PLAYLIST, playlistView.isShowing());
 	}
 	
 	public void updateProgressBar(double current, double duration) {
@@ -603,16 +594,15 @@ public final class MainView extends PlayerView {
 	}
 	
 	public void updatePlayBtn(boolean playing) {
-		int index = playing ? 1 : 0;
-		Guis.setUserData(index, playBtn);
-		playBtn.setImage(Images.PLAY[index]);
+		Guis.setUserData(Guis.setImage(playBtn, Images.PLAY, playing), 
+				playBtn);
 	}
 	
 	private void updateVolumeBtn(double value) {
 		double lowLimit = volumeSlider.getHalf();
 		int index = value > 0 ? (value >= lowLimit ? 0 : 1) : 2;
-		Guis.setUserData(index, volumeBtn);
-		volumeBtn.setImage(Images.VOLUME[index]);
+		Guis.setUserData(Guis.setImage(volumeBtn, Images.VOLUME, index), 
+				volumeBtn);
 	}
 
 	@Override
@@ -620,10 +610,11 @@ public final class MainView extends PlayerView {
 		mainTitleLbl.setText(title);
 	}
 	
+	@Override
 	public void highlightPlaylist() {
-		if(playlistView != null && playlistView.isShowing()) {
-			playlistView.highlightCurrentPlaying();
-		}
+		Guis.ifPresent(playlistView != null 
+				&& playlistView.isShowing(), 
+				t-> playlistView.highlightCurrentPlaying());
 	}
 	
 	@Override
@@ -643,16 +634,13 @@ public final class MainView extends PlayerView {
 	}
 	
 	private void loadLyric(Audio audio) {
-		if(lyricView != null) {
-			lyricView.loadLyric(audio);
-		}
+		Guis.ifPresent(lyricView, 
+				t -> lyricView.loadLyric(audio));
 	}
 	
 	private boolean loadLyric(String uri) {
-		if(lyricView != null) {
-			return lyricView.loadLyric(uri);
-		}
-		return false;
+		return lyricView == null ? false : 
+			lyricView.loadLyric(uri) ;
 	}
 
 	@Override
@@ -664,9 +652,9 @@ public final class MainView extends PlayerView {
 	
 	@Override
 	public void spectrumDataUpdate(double timestamp, double duration, float[] magnitudes, float[] phases) {
-		if(spectrumOn) {
-			spectrum.updateGraph(timestamp, duration, magnitudes, phases);
-		}
+		Guis.ifPresent(spectrumOn, 
+				t -> spectrum.updateGraph(timestamp, duration, 
+						magnitudes, phases));
 	}
 	
 	//TODO a Bug: 打包成exe文件执行时，

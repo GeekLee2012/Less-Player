@@ -10,17 +10,20 @@ import javafx.scene.input.TransferMode;
  * Drag And Drop
  */
 public class DndAction {
-	private Node trigger;
-	private Consumer<Dragboard> action;
-	private boolean enabled;
+	private boolean enabled = true;
 	
 	public DndAction(Node trigger, Consumer<Dragboard> action) {
-		this.trigger = trigger;
-		this.action = action;
+		if(trigger != null) {
+			setupTrigger(trigger, action);
+		}
 	}
 	
 	public DndAction enable(boolean value) {
 		this.enabled = value;
+		return this;
+	}
+
+	private void setupTrigger(Node trigger, Consumer<Dragboard> action) {
 		trigger.setOnDragOver(e -> {
 			if(this.enabled) {
 				e.acceptTransferModes(TransferMode.COPY);
@@ -33,7 +36,6 @@ public class DndAction {
 				action.accept(e.getDragboard());
 			}
 		});
-		return this;
 	}
 	
 	public static class DndResult<T> {

@@ -21,6 +21,7 @@ import xyz.less.media.FxMediaPlayer;
 import xyz.less.util.StringUtil;
 
 public class PlaylistView extends StageView {
+	//TODO
 	private FxMediaPlayer mediaPlayer;
 	
 //	private double openerX;
@@ -42,6 +43,14 @@ public class PlaylistView extends StageView {
 		
 		initGraph();
 		initEvents();
+	}
+	
+	private void setAttach(boolean attach) {
+		this.attach = attach;
+	}
+
+	private void setAutoTarget(boolean autoTarget) {
+		this.autoTarget = autoTarget;
 	}
 
 	private void initEvents() {
@@ -98,12 +107,12 @@ public class PlaylistView extends StageView {
 		Guis.addDnmAction(this, pane, winBtnsBox);
 		
 		attachBtn.setOnMouseClicked(e -> {
-			attach = !attach;
+			setAttach(!attach);
 			Guis.toggleImage(attachBtn, Images.ATTACH);
 		});
 		
 		targetBtn.setOnMouseClicked(e -> {
-			autoTarget = !autoTarget;
+			setAutoTarget(!autoTarget);
 			Guis.toggleImage(targetBtn, Images.TARGET);
 			targetCurrentPlaying();
 		});
@@ -118,6 +127,10 @@ public class PlaylistView extends StageView {
 	
 	private int indexOf(Node node) {
 		return listView.getItems().indexOf(node);
+	}
+	
+	private int currentIndex() {
+		return mediaPlayer.getCurrentIndex();
 	}
 
 	private AnchorPane createDataRow(String name, String duration) {
@@ -138,7 +151,7 @@ public class PlaylistView extends StageView {
 
 	public void targetCurrentPlaying() {
 		if(autoTarget) {
-			listView.scrollTo(mediaPlayer.getCurrentIndex());
+			listView.scrollTo(currentIndex());
 		}
 	}
  	
@@ -147,9 +160,9 @@ public class PlaylistView extends StageView {
 		String styleClass = "current";
 		listView.getItems().forEach(node -> {
 			Guis.toggleStyleClass(
-					getCount() == mediaPlayer.getCurrentIndex(), 
+					current() == currentIndex(), 
 					styleClass, node);
-			increaseCount();
+			incCount();
 		});
 		
 		targetCurrentPlaying();
@@ -191,10 +204,11 @@ public class PlaylistView extends StageView {
 		listView.getItems().forEach(node -> {
 			Pane pane = (Pane)node;
 			Label timeLbl = (Label)pane.getChildren().get(1);
-			String duration = StringUtil.toMmss(datas.get(getCount()).getDuration());
+			String duration = StringUtil.toMmss(datas.get(current()).getDuration());
 			timeLbl.setText(duration);
-			increaseCount();
+			incCount();
 		});
+		endCount();
 	}
 	
 	public void updateLogoSizeLabelText() {
@@ -218,8 +232,12 @@ public class PlaylistView extends StageView {
 	private void locate2Opener() {
 //		openerX = opener.getX();
 		openerY = opener.getY();
+		double heightDist1 = getHeight() - opener.getHeight();
+		double heightDist2 = heightDist1 - ConfigConstant.LYRIC_HEIGHT - ConfigConstant.LYRIC_PADDING_Y;
 		//TODO
-		double paddingY = lyricOn ? 18 : 88;
+//		double paddingY = lyricOn ? 18 : 88;
+		double paddingY = lyricOn ? heightDist2 / 2 : heightDist1 / 2;
+		
 //		if(!attach) {
 //			opener.setX(openerX - getWidth() / 2 - paddingX);
 //		}

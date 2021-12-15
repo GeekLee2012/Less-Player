@@ -138,8 +138,16 @@ public class FxMediaPlayer {
 				});
 			});
 			delegatePlayer.setOnEndOfMedia(() -> {
+				playerListeners.forEach(listener -> {
+					listener.onEndOfMedia();
+				});
 				resetPlayer();
 				playNext();
+			});
+			delegatePlayer.setOnError(() -> {
+				playerListeners.forEach(listener -> {
+					listener.onError();
+				});
 			});
 		} catch(Exception e) {
 			//TODO
@@ -217,6 +225,7 @@ public class FxMediaPlayer {
 		audio.setTitle(ConfigConstant.UNKOWN_AUDIO_ONLINE);
 		audio.setSource(url);
 		playbackQueue.getPlaylist().add(audio);
+		
 		initDelegatePlayer(url);
 		delegatePlayer.play();
 	}

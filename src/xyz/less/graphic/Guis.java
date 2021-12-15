@@ -24,6 +24,7 @@ import javafx.stage.Stage;
 import xyz.less.graphic.action.DndAction;
 import xyz.less.graphic.action.DnmAction;
 import xyz.less.graphic.action.DnmAction.DnmOffset;
+import xyz.less.graphic.effect.AutoDrawerEffect;
 
 public final class Guis {
 	
@@ -254,14 +255,16 @@ public final class Guis {
 	}
 	
 	public static DnmAction addDnmAction(Stage target, Node trigger, Consumer<DnmOffset> action, Node... ignoreTriggers) {
-		return new DnmAction(target, trigger, action, ignoreTriggers)
-					.enable(true);
+		return new DnmAction(target, trigger, action, ignoreTriggers);
 	}
 	
 	public static DndAction addDndAction(Node node, Consumer<Dragboard> action) {
-		return new DndAction(node, action).enable(true);
+		return new DndAction(node, action);
 	}
 	
+	public static AutoDrawerEffect addAutoDrawerEffect(Stage stage) {
+		return new AutoDrawerEffect(stage);
+	}
 	
 	/** 点击view后，自动切换图片，依赖于userData
 	 * @param view
@@ -296,6 +299,25 @@ public final class Guis {
 		return 0;
 	}
 	
+	public static int setImage(ImageView view, Image[] images, int index) {
+		if(view != null && images != null 
+				&& index < images.length) {
+			view.setImage(images[index]);
+		}
+		return index;
+	}
+	
+	/**
+	 * C Style Boolean->Index
+	 * @param view
+	 * @param images
+	 * @param value true->1, false->0
+	 * @return
+	 */
+	public static int setImage(ImageView view, Image[] images, boolean value) {
+		return setImage(view, images, value ? 1 : 0);
+	}
+	
 	public static void moveStages(double offsetX, double offsetY, Stage... stages) {
 		applyStages(stage -> {
 			stage.setX(stage.getX() + offsetX);
@@ -311,4 +333,24 @@ public final class Guis {
 		}
 		return null;
 	}
+	
+	//TODO Nothing Relative with GUI
+	public static <T> void ifPresent(T t, Consumer<T> consumer) {
+		if(t != null) {
+			if(t instanceof Boolean && !(Boolean)t) {
+				return ;
+			}
+			consumer.accept(t);
+		}
+	}
+	
+	//TODO Nothing Relative with GUI
+	public static <T> void ifNotPresent(T t, Consumer<T> consumer) {
+		if(t == null) {
+			consumer.accept(t);
+		} else if(t instanceof Boolean && !(Boolean)t) {
+			consumer.accept(t);
+		}
+	}
+
 }

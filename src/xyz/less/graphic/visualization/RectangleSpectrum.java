@@ -20,7 +20,6 @@ public class RectangleSpectrum extends Spectrum {
 	private void initGraph() {
 		Guis.addStyleClass("rectangle-spectrum", this);
 		for(int i = 0; i < rectNums; i++) {
-//			Rectangle rect = new Rectangle(0, 0);
 			HBox rect = new HBox();
 			Guis.addStyleClass("sp-rectangle", rect);
 			rectList.add(rect);
@@ -28,17 +27,17 @@ public class RectangleSpectrum extends Spectrum {
 		Guis.addChildren(this, rectList);
 	}
 	
+	@Override
 	public void updateGraph(double timestamp, double duration, 
 			float[] magnitudes, float[] phases) {
 		startCount();
+		//TODO
 		double spacing = getSpacing() + 0.65;
 		double width = (getWidth() - getPaddingX()) / rectNums - spacing;
 		rectList.forEach(rect -> {
 			double percent = getMagnitudePercent(magnitudes[incCount()]);
 			double height = (getHeight() - getPaddingY()) * percent;
 			height = height > rectMinHeight ? height : rectMinHeight; 
-//			rect.setWidth(width);
-//			rect.setHeight(height);
 			rect.setPrefSize(width, height);
 			rect.setMaxSize(width, height);
 		});
