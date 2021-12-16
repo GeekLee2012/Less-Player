@@ -22,7 +22,7 @@ import xyz.less.util.DateUtil;
 
 public class LyricView extends StageView {
 	private Stage owner;
-//	private double openerX;
+//      private double openerX;
 //	private double openerY;
 	private Pane topNavBox;
 	private Label line1;
@@ -221,8 +221,8 @@ public class LyricView extends StageView {
 	}
 
 	private void setNoLyricText() {
-		line1.setText("ÔİÊ±Ã»·¢ÏÖ¸è´Ê");
-		line2.setText("Çë¼ÌĞøĞÀÉÍÒôÀÖ°É~");
+		line1.setText("æš‚æ—¶æ²¡å‘ç°æ­Œè¯");
+		line2.setText("è¯·ç»§ç»­æ¬£èµéŸ³ä¹å§~");
 		Guis.setUserData(null, line1, line2);
 		
 		Guis.addStyleClass("lyric-line-current", line1, line2);
