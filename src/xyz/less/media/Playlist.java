@@ -27,6 +27,11 @@ public class Playlist {
 		return audioList;
 	}
 	
+	public void sort() {
+		audioList.sort((o1, o2)-> o1.compareTo(o2));
+//		audioList.forEach(o -> System.out.println(o.getSource()));
+	}
+	
 	public void add(Audio t) {
 		audioList.add(t);
 		sizeProp.set(size());

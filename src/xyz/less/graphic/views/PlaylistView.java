@@ -212,8 +212,8 @@ public class PlaylistView extends StageView {
 	}
 	
 	public void updateLogoSizeLabelText() {
-		String size = size() > 0 ? size() + "Ê×" : "";
-		String text = String.format("µ±Ç°²¥·Å %1$s", size);
+		String size = size() > 0 ? size() + "é¦–" : "";
+		String text = String.format("å½“å‰æ’­æ”¾ %1$s", size);
 		logoSizeLbl.setText(text);
 	}
 

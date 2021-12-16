@@ -28,6 +28,8 @@ import xyz.less.bean.Audio;
 
 /**
  * Java Sound API Media Player
+ * 测试类而已，什么也没实现
+ * Thread、Supplier、Consumer什么的都没有
  */
 public class JsaMediaPlayer {
 	private List<MediaPlayerListener> playerListeners = new ArrayList<>();
@@ -144,7 +146,7 @@ public class JsaMediaPlayer {
 		}
 		clip.drain();
 		clip.close();
-		System.out.println("���ֲ������~");
+		System.out.println("Wow, Done~");
 	}
 	
 	//TODO

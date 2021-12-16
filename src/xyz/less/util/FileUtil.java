@@ -4,7 +4,7 @@ import java.io.File;
 
 import xyz.less.bean.ConfigConstant;
 
-public class FileUtil {
+public final class FileUtil {
 	
 	public static boolean exists(File file) {
 		return file != null && file.exists();

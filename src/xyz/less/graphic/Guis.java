@@ -21,10 +21,10 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import xyz.less.graphic.action.AutoDrawerAction;
 import xyz.less.graphic.action.DndAction;
 import xyz.less.graphic.action.DnmAction;
 import xyz.less.graphic.action.DnmAction.DnmOffset;
-import xyz.less.graphic.effect.AutoDrawerEffect;
 
 public final class Guis {
 	
@@ -262,8 +262,8 @@ public final class Guis {
 		return new DndAction(node, action);
 	}
 	
-	public static AutoDrawerEffect addAutoDrawerEffect(Stage stage) {
-		return new AutoDrawerEffect(stage);
+	public static AutoDrawerAction addAutoDrawerAction(Stage stage) {
+		return new AutoDrawerAction(stage);
 	}
 	
 	/** 点击view后，自动切换图片，依赖于userData

@@ -1,8 +1,9 @@
 package xyz.less.bean;
 
 import javafx.scene.image.Image;
+import xyz.less.util.StringUtil;
 
-public class Audio {
+public class Audio implements Comparable<Audio> {
 	private String title;
 	private String artist;
 	private String album;
@@ -61,5 +62,14 @@ public class Audio {
 	}
 	public void setSource(String source) {
 		this.source = source;
+	}
+
+	@Override
+	public int compareTo(Audio o) {
+		if(o == null || StringUtil.isEmpty(o.getSource())) {
+			return 1;
+		}
+		//排序规则: 目录优先, 名称次之（不区分大小写）
+		return this.source.compareToIgnoreCase(o.getSource());
 	}
 }

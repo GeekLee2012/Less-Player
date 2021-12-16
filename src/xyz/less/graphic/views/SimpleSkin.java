@@ -4,7 +4,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import xyz.less.bean.ConfigConstant;
 
-//TODO
+//TODO 
+//此Skin并非彼Skin啦，仅是个名字而已(吐个槽)
+//起初想实现Skinable功能的，但能力有限，暂时搁置吧
 public final class SimpleSkin {
 	private Stage mainStage;
 	private PlayerView playerView;

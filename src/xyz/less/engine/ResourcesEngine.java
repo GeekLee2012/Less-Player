@@ -5,7 +5,8 @@ import java.net.URL;
 import javafx.scene.image.Image;
 import xyz.less.bean.Resources;
 
-//TODO
+//TODO 要做什么，还没想好
+//名字取得Niu而已，其实功能一般般啦（鸡肋）
 public final class ResourcesEngine {
 	
 	public static Image getImage(String name) {

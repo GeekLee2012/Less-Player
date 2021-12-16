@@ -44,7 +44,7 @@ public abstract class PlayerView extends StackPane implements MediaPlayerListene
 	}
 	
 	public void setMediaPlayer() {
-		//TODO ×Ô¶¨ÒåMediaPlayer -> SPI
+		//TODO è‡ªå®šä¹‰MediaPlayer -> SPI
 	}
 	
 	public <T> T byId(String id) {
@@ -81,11 +81,11 @@ public abstract class PlayerView extends StackPane implements MediaPlayerListene
 	public abstract void initGraph();
 	
 	protected void initDatas() {
-		//²»ÒªÇó×ÓÀà±ØÐëÊµÏÖ
+		//ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½
 	}
 	
 	protected void highlightPlaylist() {
-		//²»ÒªÇó×ÓÀà±ØÐëÊµÏÖ
+		//ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½
 	}
 	
 	@Override

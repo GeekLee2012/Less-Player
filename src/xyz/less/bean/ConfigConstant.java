@@ -17,9 +17,9 @@ public final class ConfigConstant {
 	public final static double LYRIC_PADDING_Y = 6;
 	
 	public final static String APP_TITLE_DEFAULT_MODE = "Less Player, Less is More !";
-	public final static String DEV_MODE_PREFIX = "[开发者模式]"; 
+	public final static String DEV_MODE_PREFIX = "[寮�鍙戣�呮ā寮廬"; 
 	public final static String APP_TITLE_DEV_MODE = DEV_MODE_PREFIX + " Less Player, More is Less ! ";
-	public final static String PLAYING_PREFIX = "正在播放: ";
+	public final static String PLAYING_PREFIX = "姝ｅ湪鎾斁: ";
 	public final static double PLAYER_ICON_FIT_SIZE = 25;
 	public final static double INITIAL_VOLUME = 0.5;
 	
@@ -35,10 +35,10 @@ public final class ConfigConstant {
 	public final static double COVER_ART_FIT_SIZE = 202;
 	public final static double COVER_ART_BORDERS_WIDTH = 6;
 
-	public final static String UNKOWN_AUDIO_ONLINE = "未知在线歌曲";
-	public final static String UNKOWN_AUDIO = "未知歌曲";
-	public final static String UNKOWN_ARTIST = "未知艺术家";
-	public final static String UNKOWN_ALBUM = "<未知专辑>";
+	public final static String UNKOWN_AUDIO_ONLINE = "鏈煡鍦ㄧ嚎姝屾洸";
+	public final static String UNKOWN_AUDIO = "鏈煡姝屾洸";
+	public final static String UNKOWN_ARTIST = "鏈煡鑹轰汉";
+	public final static String UNKOWN_ALBUM = "<鏈煡涓撹緫>";
 	
 //	public final static String DEFAULT_CURRENT_DURATION_TEXT= "00:00 / 00:00";
 	public final static String CURRENT_DURATION_FORMAT = "%1$s / %2$s";

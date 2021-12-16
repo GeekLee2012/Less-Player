@@ -264,7 +264,7 @@ public final class MainView extends PlayerView {
 	
 	private void initEvents() {
 		mainStage.addEventHandler(KeyEvent.KEY_RELEASED, e -> {
-			//¿Õ¸ñ¼ü: ²¥·Å/ÔİÍ£ÒôÀÖ
+			//ç©ºæ ¼é”®: æ’­æ”¾/æš‚åœéŸ³ä¹
 			if(KeyCode.SPACE == e.getCode()) {
 				togglePlay();
 			}
@@ -287,7 +287,7 @@ public final class MainView extends PlayerView {
 			handleDndFailed(url);
 		});
 		
-		Guis.addAutoDrawerEffect(mainStage);
+		Guis.addAutoDrawerAction(mainStage);
 	}
 
 	protected void initGraphDatas() {
@@ -347,12 +347,12 @@ public final class MainView extends PlayerView {
 				dndResult.setDndType(DndType.IMAGE);
 				updateCoverArt(new Image(result.getUrl()), false);
 				dndResult.setSuccess(true);
-			}else if(FileUtil.isLryic(dndFile)) { //¸è´Ê
+			}else if(FileUtil.isLryic(dndFile)) { //ï¿½ï¿½ï¿½
 				dndResult.setDndType(DndType.LYRIC);
 				boolean success = loadLyric(result.getUrl());
 				dndResult.setSuccess(success);
 			} else if(FileUtil.isDirectory(dndFile)
-					|| FileUtil.isAudio(dndFile)) { //Ä¿Â¼»òÒôÆµ
+					|| FileUtil.isAudio(dndFile)) { //Ä¿Â¼ï¿½ï¿½ï¿½ï¿½Æµ
 				dndResult.setSuccess(true);
 				updateDndWaiting();
 				doHandleDndFile(dndFile);
@@ -371,6 +371,7 @@ public final class MainView extends PlayerView {
 				updateOnDndFail();
 				return ;
 			}
+			getMediaPlayer().getPlaylist().sort();
 			getMediaPlayer().play();
 			updatePlaylistView();
 			updateFuture = getMediaPlayer().updateMetadatas();
@@ -382,37 +383,37 @@ public final class MainView extends PlayerView {
 	
 	private void initHelpText() {
 		doUpdateMetadata(null, false,
-				"ÊÔÒ»ÊÔÍÏ×§¶«Î÷µ½²¥·ÅÆ÷°É~",
-				"ÀàĞÍ: ÎÄ¼ş¡¢ÎÄ¼ş¼Ğ¡¢ÆäËû", 
-				"ÌáÊ¾");
+				"è¯•ä¸€è¯•æ‹–æ‹½ä¸œè¥¿åˆ°æ’­æ”¾å™¨å§~",
+				"ç±»å‹: æ–‡ä»¶ã€æ–‡ä»¶å¤¹ã€å…¶ä»–", 
+				"æç¤º");
 	}
 
 	private void updateDndFailText() {
 		doUpdateMetadata(Images.DND_NOT_FOUND, true,
-				"ÔİÊ±ÎŞ·¨Ê¶±ğÅ¶\rÊÔÒ»ÊÔÍÏ×§ÆäËû°É~",
-				"ÉñÃØ´úºÅ: 404", 
-				"ÀëÆæÊÂ¼ş");
+				"æš‚æ—¶æ— æ³•è¯†åˆ«å“¦\rè¯•ä¸€è¯•æ‹–æ‹½å…¶ä»–å§~",
+				"ç¥ç§˜ä»£å·: 404", 
+				"ç¦»å¥‡äº‹ä»¶");
 	}
 	
 	private void updateDndWaiting() {
 		doUpdateMetadata(null, false,
-				"ÕıÔÚÅ¬Á¦¼ÓÔØ£¬ÇëÄÍĞÄµÈ´ı~",
-				"¾«²Ê¼´½«¿ªÊ¼", 
-				"ÍÏ×§ÎÄ¼ş");
+				"æ­£åœ¨åŠªåŠ›åŠ è½½ï¼Œè¯·è€å¿ƒç­‰å¾…~",
+				"ç²¾å½©å³å°†å¼€å§‹", 
+				"æ‹–æ‹½æ–‡ä»¶");
 	}
 	
 	private void updateDndDone() {
 		doUpdateMetadata(null, false, 
-				"¼ÓÔØÍê³É£¬ÕıÔÚÅ¬Á¦Ê¶±ğ~",
-				"¾«²Ê¼´½«¿ªÊ¼", 
-				"ÍÏ×§ÎÄ¼ş");
+				"åŠ è½½å®Œæˆï¼Œæ­£åœ¨åŠªåŠ›è¯†åˆ«~",
+				"ç²¾å½©å³å°†å¼€å§‹", 
+				"æ‹–æ‹½æ–‡ä»¶");
 	}
 	
 	private void updateNoMediaText() {
 		doUpdateMetadata(null, false, 
-				"ÔİÊ±ÎŞ·¨²¥·ÅÅ¶\rÊÔÒ»ÊÔÍÏ×§ÆäËû°É~",
-				"ÉñÃØ´úºÅ: 500", 
-				"ÀëÆæÊÂ¼ş");
+				"æš‚æ—¶æ— æ³•æ’­æ”¾å“¦\rè¯•ä¸€è¯•æ‹–æ‹½å…¶ä»–å§~",
+				"ç¥ç§˜ä»£å·: 500", 
+				"ç¦»å¥‡äº‹ä»¶");
 	}
 	
 	private void doUpdateMetadata(Image cover, boolean applyTheme, 
@@ -427,7 +428,7 @@ public final class MainView extends PlayerView {
 	}
 
 	private boolean handleDndLinkUrl(String url) {
-		//²å¼şÒıÇæÊµÏÖ
+		//æ’ä»¶å¼•æ“å®ç°
 //		System.out.println(url);
 		getMediaPlayer().playUrl(url);
 		updatePlaylistView();
@@ -559,6 +560,7 @@ public final class MainView extends PlayerView {
 		String album = (String)metadata.get(Metadatas.ALBUM);
 		Image image = (Image)metadata.get(Metadatas.COVER_ART);
 		
+		//TODO å…ƒæ•°æ®å¯èƒ½ä¼šå‡ºç°ä¹±ç 
 		image = image != null ? image : audio.getCoverArt();
 		title = !StringUtil.isBlank(title) ? title : audio.getTitle();
 		artist = !StringUtil.isBlank(artist) ? artist : audio.getArtist();
@@ -569,7 +571,8 @@ public final class MainView extends PlayerView {
 //		System.out.println("artist: " + artist + ", messy: " + StringUtil.isMessyCode(artist));
 //		System.out.println("album: " + album + ", messy: " + StringUtil.isMessyCode(album));
 		
-		String titleDefault = StringUtil.getDefault(title, ConfigConstant.UNKOWN_AUDIO);
+		String titleDefault = StringUtil.getDefault(title, 
+				StringUtil.getDefault(audio.getTitle(), ConfigConstant.UNKOWN_AUDIO));
 		//TODO
 		album = StringUtil.getDefault(album, ConfigConstant.UNKOWN_ALBUM);
 		
@@ -657,7 +660,7 @@ public final class MainView extends PlayerView {
 						magnitudes, phases));
 	}
 	
-	//TODO a Bug: ´ò°ü³ÉexeÎÄ¼şÖ´ĞĞÊ±£¬
-	//´Ó×îĞ¡»¯×´Ì¬ÖĞ»¹Ô­ÎªÕı³£ÏÔÊ¾×´Ì¬Ê±£¬
-	//Ô­±¾ÒÑ´ò¿ªµÄµ±Ç°²¥·ÅÁĞ±íÎ´ÄÜ±»Õı³£ÏÔÊ¾
+	//TODO Bug: æ‰“åŒ…æˆexeæ–‡ä»¶æ‰§è¡Œæ—¶ï¼Œ
+	//ä»æœ€å°åŒ–çŠ¶æ€ä¸­è¿˜åŸä¸ºæ­£å¸¸æ˜¾ç¤ºçŠ¶æ€æ—¶ï¼Œ
+	//åŸæœ¬å·²æ‰“å¼€çš„å½“å‰æ’­æ”¾åˆ—è¡¨æœªèƒ½è¢«æ­£å¸¸æ˜¾ç¤º
 }

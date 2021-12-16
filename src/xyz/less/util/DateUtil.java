@@ -2,7 +2,7 @@ package xyz.less.util;
 
 import java.util.StringTokenizer;
 
-public class DateUtil {
+public final class DateUtil {
 	
 	public static double toMinutes(String mmssSSS) {
 		StringTokenizer tokenizer = new StringTokenizer(mmssSSS);

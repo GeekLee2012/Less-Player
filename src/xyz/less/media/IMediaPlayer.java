@@ -1,5 +1,6 @@
 package xyz.less.media;
 
+//TODO 仅仅画个饼而已
 public interface IMediaPlayer {
 	void init();
 	void play();
