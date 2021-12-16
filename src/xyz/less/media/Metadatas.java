@@ -15,7 +15,7 @@ public final class Metadatas {
 	public static final String DURATION = "duration";
 
 	public static Map<String, Object> readFrom(File file) {
-		//TODO Pluginable
+		//TODO 可随意更换，Pluginable
 		Jaudiotagger tagger = new Jaudiotagger();
 		return tagger.readMetadata(file);
 	}
@@ -56,8 +56,32 @@ public final class Metadatas {
 			new Image(new ByteArrayInputStream(coverArt));
 	}
 	
+	public static void putTitle(Map<String, Object> metadata, String title) {
+		putValue(metadata, TITLE, title);
+	}
+	
+	public static void putArtist(Map<String, Object> metadata, String artist) {
+		putValue(metadata, ARTIST, artist);
+	}
+	
+	public static void putAlbum(Map<String, Object> metadata, String album) {
+		putValue(metadata, ALBUM, album);
+	}
+	
+	public static void putDuration(Map<String, Object> metadata, double duration) {
+		putValue(metadata, DURATION, duration);
+	}
+	
+	public static void putCoverArt(Map<String, Object> metadata, byte[] bytes) {
+		putValue(metadata, COVER_ART, bytes);
+	}
+	
 	public static Object getValue(Map<String, Object> metadata, String key) {
 		return metadata.get(key);
+	}
+	
+	public static void putValue(Map<String, Object> metadata, String key, Object value) {
+		metadata.put(key, value);
 	}
 	
 }

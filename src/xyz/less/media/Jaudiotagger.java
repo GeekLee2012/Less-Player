@@ -31,18 +31,18 @@ public class Jaudiotagger {
 			String title = tag.getFirst(FieldKey.TITLE);
 			String artist = tag.getFirst(FieldKey.ARTIST);
 			String album = tag.getFirst(FieldKey.ALBUM);
-			metadata.put(Metadatas.TITLE, StringUtil.iso88591ToUtf8(title));
-			metadata.put(Metadatas.ARTIST, StringUtil.iso88591ToUtf8(artist));
-			metadata.put(Metadatas.ALBUM, StringUtil.iso88591ToUtf8(album));
+			Metadatas.putTitle(metadata, StringUtil.iso88591ToUtf8(title));
+			Metadatas.putArtist(metadata, StringUtil.iso88591ToUtf8(artist));
+			Metadatas.putAlbum(metadata, StringUtil.iso88591ToUtf8(album));
 			
 			Artwork artwork = tag.getFirstArtwork();
 			if(artwork != null) {
-				metadata.put(Metadatas.COVER_ART, artwork.getBinaryData());
+				Metadatas.putCoverArt(metadata, artwork.getBinaryData());
 			}
 		}
 		if(audioHeader != null) {
 			double duration = audioHeader.getTrackLength() / 60D;
-			metadata.put(Metadatas.DURATION, duration);
+			Metadatas.putDuration(metadata, duration);
 		}
 //		System.out.println(String.format("title: %1$s, artist: %2$s, album: %3$s", title, artist, album));
 		return metadata;
