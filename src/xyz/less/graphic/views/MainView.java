@@ -343,16 +343,16 @@ public final class MainView extends PlayerView {
 		try {
 			List<File> fileList = result.getFiles();
 			File dndFile = fileList.get(0);
-			if(FileUtil.isImage(dndFile)) { //ͼƬ
+			if(FileUtil.isImage(dndFile)) { //图片
 				dndResult.setDndType(DndType.IMAGE);
 				updateCoverArt(new Image(result.getUrl()), false);
 				dndResult.setSuccess(true);
-			}else if(FileUtil.isLryic(dndFile)) { //���
+			}else if(FileUtil.isLryic(dndFile)) { //歌词
 				dndResult.setDndType(DndType.LYRIC);
 				boolean success = loadLyric(result.getUrl());
 				dndResult.setSuccess(success);
 			} else if(FileUtil.isDirectory(dndFile)
-					|| FileUtil.isAudio(dndFile)) { //Ŀ¼����Ƶ
+					|| FileUtil.isAudio(dndFile)) { //目录或音频
 				dndResult.setSuccess(true);
 				updateDndWaiting();
 				doHandleDndFile(dndFile);
