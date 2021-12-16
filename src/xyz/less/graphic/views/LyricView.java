@@ -228,7 +228,7 @@ public class LyricView extends StageView {
 		Guis.addStyleClass("lyric-line-current", line1, line2);
 	}
 	
-	//TODO
+	//TODO 
 	@SuppressWarnings("unused")
 	private void setLyricViewTransparent(boolean value) {
 		if(value) {
