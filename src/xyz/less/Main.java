@@ -27,8 +27,8 @@ public final class Main extends Application {
 	}
 
 	private void initStage() {
-//		Skin skin = new SimpleSkin(mainStage);
-		Skin skin = new MiniSkin(mainStage);
+		Skin skin = new SimpleSkin(mainStage);
+		//Skin skin = new MiniSkin(mainStage);
 		mainStage.setUserData(args);
 		mainStage.setScene(skin.getRootScene());
 		mainStage.initStyle(StageStyle.TRANSPARENT);
