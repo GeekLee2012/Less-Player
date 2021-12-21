@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="main_view" xmlns:fx="http://javafx.com/fxml/1">
+	<children>
+		<AnchorPane fx:id="main_pane">
+			<children>
+				<Label fx:id="close_btn" />
+				<HBox fx:id="actions_box" spacing="15" alignment="CENTER">
+					<children>
+						<ImageView fx:id="playmode_btn" />
+						<ImageView fx:id="play_prev_btn" />
+						<ImageView fx:id="play_btn" />
+						<ImageView fx:id="play_next_btn" />
+						<ImageView fx:id="playlist_btn" />
+					</children>
+				</HBox>
+			</children>
+		</AnchorPane>
+		<AnchorPane fx:id="metadata_lyric_pane" visible="false">
+			<children>
+				<VBox fx:id="metadata_box" spacing="3" alignment="CENTER">
+					<children>
+						<Label fx:id="audio_title" alignment="CENTER"/>
+						<Label fx:id="audio_artist" alignment="CENTER"/>
+					</children>
+				</VBox>
+				<VBox fx:id="lyric_box" spacing="3" alignment="CENTER" visible="false">
+					<children>
+						<Label fx:id="line_1" alignment="CENTER"/>
+						<Label fx:id="line_2" alignment="CENTER"/>
+					</children>
+				</VBox>
+			</children>
+		</AnchorPane>
+		<StackPane fx:id="cover_art_progress_box" alignment="CENTER">
+			<children>
+				<Label fx:id="audio_progress" alignment="CENTER"
+							contentDisplay="GRAPHIC_ONLY" />
+				<Label fx:id="cover_art" alignment="CENTER"
+							contentDisplay="GRAPHIC_ONLY" />
+			</children>
+		</StackPane>
+	</children>
+</AnchorPane>

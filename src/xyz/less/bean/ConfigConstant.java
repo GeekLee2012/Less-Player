@@ -16,6 +16,7 @@ public final class ConfigConstant {
 	public final static double LYRIC_HEIGHT = 150;
 	public final static double LYRIC_PADDING_Y = 6;
 	
+	public final static String APP_TITLE = "Less Player";
 	public final static String APP_TITLE_DEFAULT_MODE = "Less Player, Less is More !";
 	public final static String DEV_MODE_PREFIX = "[开发者模式]"; 
 	public final static String APP_TITLE_DEV_MODE = DEV_MODE_PREFIX + " Less Player, More is Less ! ";

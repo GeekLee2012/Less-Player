@@ -266,7 +266,7 @@ public final class Guis {
 		return new AutoDrawerAction(stage);
 	}
 	
-	/** 点击view后，自动切换图片，依赖于userData
+	/** 鐐瑰嚮view鍚庯紝鑷姩鍒囨崲鍥剧墖锛屼緷璧栦簬userData
 	 * @param view
 	 * @param images
 	 */
@@ -282,7 +282,7 @@ public final class Guis {
 		return 0;
 	}
 	
-	/** 点击view后，自动切换图片，依赖于userData
+	/** 鐐瑰嚮view鍚庯紝鑷姩鍒囨崲鍥剧墖锛屼緷璧栦簬userData
 	 * @param view
 	 * @param images
 	 */

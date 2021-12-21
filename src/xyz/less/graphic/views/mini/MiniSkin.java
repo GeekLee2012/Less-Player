@@ -1,16 +1,16 @@
-package xyz.less.graphic.views;
+package xyz.less.graphic.views.mini;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import xyz.less.bean.ConfigConstant;
+import xyz.less.graphic.views.PlayerView;
+import xyz.less.graphic.views.Skin;
 
-public final class SimpleSkin extends Skin {
+public class MiniSkin extends Skin {
 	private PlayerView playerView;
 	
-	public SimpleSkin(Stage mainStage) {
+	public MiniSkin(Stage mainStage) {
 		super(mainStage);
-		setPlayerView(new MainView(this.mainStage, 
-				ConfigConstant.APP_WIDTH, ConfigConstant.APP_HEIGHT));
+		setPlayerView(new MainView(this.mainStage, 410, 120));
 	}
 	
 	public PlayerView getPlayerView() {
@@ -20,13 +20,13 @@ public final class SimpleSkin extends Skin {
 	public void setPlayerView(PlayerView playerView) {
 		this.playerView = playerView;
 	}
-
+	
 	@Override
 	public void init() {
 		playerView.initGraph();
 		//TODO
 	}
-
+	
 	@Override
 	public Scene createRootScene() {
 		return new Scene(playerView, 

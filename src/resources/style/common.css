@@ -10,7 +10,7 @@
 }
 
 .theme-fg {
-	-fx-background-color: #1ca388;
+	-fx-background-color: #1ca388 !important;
 }
 
 .theme-bg {

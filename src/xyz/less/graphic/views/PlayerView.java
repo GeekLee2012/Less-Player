@@ -70,8 +70,6 @@ public abstract class PlayerView extends StackPane implements MediaPlayerListene
 		return this;
 	}
 	
-	public abstract void setAppTitle(String title);
-	
 	protected abstract void updateProgress(double currentMinutes, double durationMinutes);
 	
 	protected abstract void updateOnPlaying(boolean playing);
@@ -80,13 +78,12 @@ public abstract class PlayerView extends StackPane implements MediaPlayerListene
 
 	public abstract void initGraph();
 	
-	protected void initDatas() {
-		//��Ҫ���������ʵ��
-	}
+	/* 不要求实现 */
+	public void setAppTitle(String title) {}
 	
-	protected void highlightPlaylist() {
-		//��Ҫ���������ʵ��
-	}
+	protected void initDatas() {}
+	
+	protected void highlightPlaylist() {}
 	
 	@Override
 	public void onReady(Audio audio, Map<String, Object> metadata) {
@@ -111,7 +108,7 @@ public abstract class PlayerView extends StackPane implements MediaPlayerListene
 	
 	@Override
 	public void spectrumDataUpdate(double timestamp, double duration, float[] magnitudes, float[] phases) {
-		
+		// TODO Auto-generated method stub
 	}
 	
 	@Override

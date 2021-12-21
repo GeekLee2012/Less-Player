@@ -128,7 +128,22 @@ public class PlaybackQueue {
 	}
 	
 	public static enum PlayMode {
-		NO_REPEAT, REPEAT_ALL, REPEAT_SELF, SHUFFLE
+		NO_REPEAT, REPEAT_ALL, REPEAT_SELF, SHUFFLE;
+		
+		public static PlayMode valueOf(int index) {
+			switch (index) {
+				case 0:
+					return NO_REPEAT;
+				case 1:
+					return REPEAT_ALL;
+				case 2:
+					return REPEAT_SELF;
+				case 3:
+					return SHUFFLE;
+				default:
+					return NO_REPEAT;
+			}
+		}
 	}
 
 }

@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import xyz.less.graphic.Guis;
 
 public class RectangleSpectrum extends Spectrum {
-	private List<HBox> rectList;
+	private List<Region> rectList;
 	private int rectNums;
 	private double rectMinHeight = 1;
 	

@@ -2,7 +2,7 @@
 @import url("slider_bar.css");
 @import url("visualization.css");
 
-/* fx:id不支持分隔符"-" */
+/* fx:id涓嶆敮鎸佸垎闅旂"-" */
 #main_view {
 	-fx-background-color: #313131;
 	/* -fx-background-color: linear-gradient(to right top, #ff00cc, #333399); */

@@ -21,12 +21,16 @@ public final class Resources {
 		public final static URL MAIN_VIEW = fxml("main_view");
 		public final static URL PLAYLIST_VIEW = fxml("playlist_view");
 		public final static URL LYRIC_VIEW = fxml("lyric_view");
+		
+		public final static URL MINI_MAIN_VIEW = fxml("mini/main_view");
 	}
 	
 	public static final class Styles {
 		public final static String MAIN_VIEW = css("main_view");
 		public final static String PLAYLIST_VIEW = css("playlist_view");
 		public final static String LYRIC_VIEW = css("lyric_view");
+		
+		public final static String MINI_MAIN_VIEW = css("mini/main_view");
 	}
 	
 	public static final class Images {
@@ -95,6 +99,13 @@ public final class Resources {
 		public final static Image[] LOCK = {
 				png("unlock_16px"),
 				png("lock_16px")
+			};
+		
+		public final static Image[] PLAY_MODE = { 
+				png("music_repeat_32px"), 
+				png("music_repeat_on_32px"),
+				png("music_repeat_self_32px"),
+				png("music_shuffle_on_32px") 
 			};
 	}
 	

@@ -610,6 +610,7 @@ public final class MainView extends PlayerView {
 
 	@Override
 	public void setAppTitle(String title) {
+		mainStage.setTitle(ConfigConstant.APP_TITLE);
 		mainTitleLbl.setText(title);
 	}
 	

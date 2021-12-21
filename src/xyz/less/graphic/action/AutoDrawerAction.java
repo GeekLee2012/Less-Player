@@ -1,13 +1,19 @@
 package xyz.less.graphic.action;
 
+import java.util.function.Consumer;
+
 import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import xyz.less.graphic.Guis;
 
+//TODO
 public class AutoDrawerAction {
 	private boolean enable = true;
 	private static final double OFFSET = 10;
 	private static final double HANDLE_SIZE = 5;
+	private Consumer<Stage> onHiddenConsumer;
+	private Consumer<Stage> onShownConsumer;
 	
 	public AutoDrawerAction(Stage stage) {
 		setupDrawer(stage);
@@ -18,8 +24,19 @@ public class AutoDrawerAction {
 		return this;
 	}
 	
+	public AutoDrawerAction setOnHidden(Consumer<Stage> onHiddenAction) {
+		this.onHiddenConsumer = onHiddenAction;
+		return this;
+	}
+
+	public AutoDrawerAction setOnShown(Consumer<Stage> onShownAction) {
+		this.onShownConsumer = onShownAction;
+		return this;
+	}
+
 	private void setupDrawer(Stage stage) {
 		stage.getScene().setOnMouseEntered(e -> {
+			e.consume();
 			if(!enable) {
 				return ;
 			}
@@ -34,16 +51,26 @@ public class AutoDrawerAction {
 				stage.setX(0);
 			} else if(x + width >= screenRect.getMaxX() - OFFSET) {
 				stage.setX(screenRect.getMaxX() - width);
-			} 
+			}
+			Guis.ifPresent(onShownConsumer, c -> {
+				c.accept(stage);
+			});
 		});
 		stage.getScene().setOnMouseExited(e -> {
+			e.consume();
 			if(!enable) {
 				return ;
 			}
+			double sx = e.getScreenX();
+			double sy = e.getScreenY();
 			double x = stage.getX();
 			double y = stage.getY();
 			double width = stage.getWidth();
 			double height = stage.getHeight();
+			if(isPointInStage(stage, sx, sy)) {
+				//TODO
+				return ;
+			}
 			Rectangle2D screenRect = Screen.getPrimary().getBounds();
 			if(y <= screenRect.getMinY() + OFFSET) {
 				stage.setY(-height + HANDLE_SIZE);
@@ -52,7 +79,19 @@ public class AutoDrawerAction {
 			} else if(x + width >= screenRect.getMaxX() - OFFSET) {
 				stage.setX(screenRect.getMaxX() - HANDLE_SIZE);
 			} 
+			Guis.ifPresent(onHiddenConsumer, c -> {
+				c.accept(stage);
+			});
 		});
 	}
- 
+	
+	private static boolean isPointInStage(Stage stage, double x, double y) {
+		double sx = stage.getX();
+		double sy = stage.getY();
+		double width = stage.getWidth();
+		double height = stage.getHeight();
+		double error = 5;
+		return (x >= sx - error && x <= sx + width + error)
+				&& (y >= sy - error && y <= sy + height + error);
+	}
 }

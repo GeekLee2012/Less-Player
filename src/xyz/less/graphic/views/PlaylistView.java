@@ -1,6 +1,7 @@
 package xyz.less.graphic.views;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -8,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -28,6 +30,7 @@ public class PlaylistView extends StageView {
 	private double openerY;
 	
 	private Label logoSizeLbl;
+	AnchorPane topPane;
 	private ListView<Node> listView;
 	
 	private boolean attach = true;
@@ -36,10 +39,27 @@ public class PlaylistView extends StageView {
 	private final static double ROW_WIDTH = 335;
 	private final static double DURATION_WIDTH = 72;
 	private final static double ROW_PADDING = 3;
+	private final Consumer<Void> defaultAttachAction = v -> {
+//		openerX = opener.getX();
+		openerY = opener.getY();
+		double heightDist1 = getHeight() - opener.getHeight();
+		double heightDist2 = heightDist1 - ConfigConstant.LYRIC_HEIGHT - ConfigConstant.LYRIC_PADDING_Y;
+		//TODO
+//		double paddingY = lyricOn ? 18 : 88;
+		double paddingY = lyricOn ? heightDist2 / 2 : heightDist1 / 2;
+		
+//		if(!attach) {
+//			opener.setX(openerX - getWidth() / 2 - paddingX);
+//		}
+		setX(opener.getX() + opener.getWidth() + ConfigConstant.PLAYLIST_PADDING_X);
+		setY(openerY - paddingY);
+	};
+	private Consumer<Void> attachAction;
 	
 	public PlaylistView(Stage opener, FxMediaPlayer mediaPlayer) {
 		super(opener, ConfigConstant.PLAYLIST_WIDTH, ConfigConstant.PLAYLIST_HEIGHT);
 		this.mediaPlayer = mediaPlayer;
+		setAttachAction(defaultAttachAction);
 		
 		initGraph();
 		initEvents();
@@ -48,11 +68,15 @@ public class PlaylistView extends StageView {
 	private void setAttach(boolean attach) {
 		this.attach = attach;
 	}
+	
+	public void setAttachAction(Consumer<Void> attachAction) {
+		this.attachAction = attachAction;
+	}
 
 	private void setAutoTarget(boolean autoTarget) {
 		this.autoTarget = autoTarget;
 	}
-
+	
 	private void initEvents() {
 		setOnShowing(e -> {
 			attach();
@@ -71,8 +95,17 @@ public class PlaylistView extends StageView {
 		initCenter();
 	}
 
+	public void setTopVisible(boolean visible) {
+		BorderPane pane = byId("playlist_view");
+		if(visible) {
+			pane.setTop(topPane);
+		} else {
+			pane.setTop(null);
+		}
+	}
+	
 	private void initTop() {
-		AnchorPane pane = byId("playlist_top");
+		topPane = byId("playlist_top");
 		
 		logoSizeLbl = byId("logo_size");
 		Label attachBtn = byId("attach_btn");
@@ -84,8 +117,8 @@ public class PlaylistView extends StageView {
 		AnchorPane.setRightAnchor(winBtnsBox, 2.0);
 		
 		ImageView logo = new ImageView(Images.PLAYLIST[1]);
-		Guis.bind(logoSizeLbl.prefHeightProperty(), pane.prefHeightProperty());
-		Guis.bind(winBtnsBox.prefHeightProperty(), pane.prefHeightProperty());
+		Guis.bind(logoSizeLbl.prefHeightProperty(), topPane.prefHeightProperty());
+		Guis.bind(winBtnsBox.prefHeightProperty(), topPane.prefHeightProperty());
 		
 		Guis.setFitSize(24, logo);
 		Guis.setAlignment(Pos.CENTER_LEFT, logoSizeLbl);
@@ -98,13 +131,13 @@ public class PlaylistView extends StageView {
 		Guis.setGraphic(Images.CLOSE, closeBtn);
 		Guis.setUserData(1, targetBtn, attachBtn);
 		
-		Guis.addStyleClass("bottom-border-dark", pane);
+		Guis.addStyleClass("bottom-border-dark", topPane);
 		Guis.addStyleClass("logo-label", logoSizeLbl);
 		Guis.addStyleClass("label-btn", attachBtn, targetBtn, closeBtn);
 		Guis.addHoverStyleClass("label-hover", attachBtn, targetBtn);
 		Guis.addHoverStyleClass("label-hover-red", closeBtn);
 		
-		Guis.addDnmAction(this, pane, winBtnsBox);
+		Guis.addDnmAction(this, topPane, winBtnsBox);
 		
 		attachBtn.setOnMouseClicked(e -> {
 			setAttach(!attach);
@@ -230,19 +263,9 @@ public class PlaylistView extends StageView {
 	}
 	
 	private void locate2Opener() {
-//		openerX = opener.getX();
-		openerY = opener.getY();
-		double heightDist1 = getHeight() - opener.getHeight();
-		double heightDist2 = heightDist1 - ConfigConstant.LYRIC_HEIGHT - ConfigConstant.LYRIC_PADDING_Y;
-		//TODO
-//		double paddingY = lyricOn ? 18 : 88;
-		double paddingY = lyricOn ? heightDist2 / 2 : heightDist1 / 2;
-		
-//		if(!attach) {
-//			opener.setX(openerX - getWidth() / 2 - paddingX);
-//		}
-		setX(opener.getX() + opener.getWidth() + ConfigConstant.PLAYLIST_PADDING_X);
-		setY(openerY - paddingY);
+		if(attachAction != null) {
+			attachAction.accept(null);
+		}
 	}
 	
 }

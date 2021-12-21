@@ -5,6 +5,8 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import xyz.less.graphic.Guis;
 import xyz.less.graphic.views.SimpleSkin;
+import xyz.less.graphic.views.Skin;
+import xyz.less.graphic.views.mini.MiniSkin;
 
 public final class Main extends Application {
 	private static String[] args;
@@ -25,7 +27,8 @@ public final class Main extends Application {
 	}
 
 	private void initStage() {
-		SimpleSkin skin = new SimpleSkin(mainStage);
+//		Skin skin = new SimpleSkin(mainStage);
+		Skin skin = new MiniSkin(mainStage);
 		mainStage.setUserData(args);
 		mainStage.setScene(skin.getRootScene());
 		mainStage.initStyle(StageStyle.TRANSPARENT);
