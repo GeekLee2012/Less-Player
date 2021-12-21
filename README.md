@@ -9,6 +9,7 @@
 * Right-Player (C++ Qt)  
    作者: MrBeanCpp（B站UP主）  
    [Github源码 https://github.com/MrBeanCpp/Right-Player](https://github.com/MrBeanCpp/Right-Player)
+* 腾讯QQ音乐(迷你模式)
 
 #### 开发环境
 * Windows平台
@@ -20,12 +21,18 @@
 * 基于JavaFX默认播放器API，实现最基本的播放器功能: 播放、暂停、上/下一首、进度条/播放时间、播放模式、音量控制等
 * 支持播放音频类型: mp3、m4a、wav(部分)、mp4(仅音频)
 * 界面: 播放器主界面(包括频谱、歌曲信息)、当前播放(列表)界面、歌词界面
+* 其他: 可选2套简约风格界面(暂时不支持运行期间随意切换，仅可在编码时切换)
 
 #### 界面预览  
+风格1:  
 ![snap 01.png](https://github.com/GeekLee2012/Less-Player/blob/main/snapshot/snap%2001.png)  
 ![snap 02.png](https://github.com/GeekLee2012/Less-Player/blob/main/snapshot/snap%2002.png)   
 ![snap 03.png](https://github.com/GeekLee2012/Less-Player/blob/main/snapshot/snap%2003.png)  
 ![snap 04.png](https://github.com/GeekLee2012/Less-Player/blob/main/snapshot/snap%2004.png)  
+风格2:  
+![snap 05.png](https://github.com/GeekLee2012/Less-Player/blob/main/snapshot/snap%2005.png)  
+![snap 06.png](https://github.com/GeekLee2012/Less-Player/blob/main/snapshot/snap%2006.png)  
+![snap 07.png](https://github.com/GeekLee2012/Less-Player/blob/main/snapshot/snap%2007.png)  
 
 #### 其他
 * Release版本中所使用的.exe文件打包工具: exe4j
