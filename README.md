@@ -34,10 +34,10 @@
 ![snap 06.png](https://github.com/GeekLee2012/Less-Player/blob/main/snapshot/snap%2006.png)  
 ![snap 07.png](https://github.com/GeekLee2012/Less-Player/blob/main/snapshot/snap%2007.png)  
 
-#### 其他
-* Release版本中所使用的.exe文件打包工具: exe4j
-* 界面风格切换补充说明:  
+#### 界面风格切换
 无参数: 普通风格(即界面预览中的风格1)  
 参数-mini(不区分大小写)：Mini风格(即界面预览中的风格2)  
 ![snap 00.png](https://github.com/GeekLee2012/Less-Player/blob/main/snapshot/snap%2000.png)  
 
+#### 其他
+* Release版本中所使用的.exe文件打包工具: exe4j  
