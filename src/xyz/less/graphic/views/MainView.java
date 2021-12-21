@@ -307,7 +307,8 @@ public final class MainView extends PlayerView {
 	private void initPlaylistFromArgs() {
 		String[] args = (String[])mainStage.getUserData();
 		if(args != null && args.length > 0) {
-			String name = StringUtil.toSlash(args[0]);
+			int index = args.length > 1 ? 1 : 0;
+			String name = StringUtil.toSlash(args[index]);
 			doHandleDndFile(new File(name));
 		}
 	}
