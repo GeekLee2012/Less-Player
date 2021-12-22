@@ -11,14 +11,17 @@ import xyz.less.bean.Audio;
 import xyz.less.graphic.Guis;
 import xyz.less.media.FxMediaPlayer;
 import xyz.less.media.MediaPlayerListener;
+import xyz.less.util.StringUtil;
 
 public abstract class PlayerView extends StackPane implements MediaPlayerListener {
 	protected Stage mainStage;
 	private MediaView mediaView;
 	private FxMediaPlayer mediaPlayer;
+	protected String playlistFromArgs;
 	
 	public PlayerView(Stage stage, double width, double height) {
 		this.mainStage = stage;
+		initPlaylistFromArgs();
 		setWidth(width);
 		setHeight(height);
 		setMediaView(new MediaView());
@@ -68,6 +71,14 @@ public abstract class PlayerView extends StackPane implements MediaPlayerListene
 	public PlayerView addIcons(Image... icons) {
 		Guis.addIcons(mainStage, icons);
 		return this;
+	}
+	
+	protected void initPlaylistFromArgs() {
+		String[] args = (String[])mainStage.getUserData();
+		if(args != null && args.length > 0) {
+			int index = args.length > 1 ? 1 : 0;
+			playlistFromArgs = StringUtil.toSlash(args[index]);
+		}
 	}
 	
 	protected abstract void updateProgress(double currentMinutes, double durationMinutes);
@@ -141,5 +152,7 @@ public abstract class PlayerView extends StackPane implements MediaPlayerListene
 			mediaPlayer.play();
 		}
 	}
+
+	public abstract void playFromArgs();
 	
 }

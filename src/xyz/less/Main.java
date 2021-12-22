@@ -19,6 +19,7 @@ public final class Main extends Application {
 
 	private void setMainStage(Stage stage) {
 		this.mainStage = stage;
+		this.mainStage.setUserData(args);
 	}
 
 	@Override
@@ -28,8 +29,7 @@ public final class Main extends Application {
 	}
 
 	private void initStage() {
-		Skin skin = initSkin(args);
-		mainStage.setUserData(args);
+		Skin skin = getSkin(args);
 		mainStage.setScene(skin.getRootScene());
 		mainStage.initStyle(StageStyle.TRANSPARENT);
 		mainStage.setOnCloseRequest(e -> Guis.exitApplication());
@@ -38,12 +38,13 @@ public final class Main extends Application {
 	}
 	
 	//TODO
-	private Skin initSkin(String[] args) {
+	private Skin getSkin(String[] args) {
+		String skinName = "simple";
 		if(args != null && args.length > 0) {
-			String skinName = StringUtil.trim(args[0]);
-			if("-mini".equalsIgnoreCase(skinName)) {
-				return new MiniSkin(mainStage);
-			}
+			skinName = StringUtil.trim(args[0]);
+		}
+		if("-mini".equalsIgnoreCase(skinName)) {
+			return new MiniSkin(mainStage);
 		}
 		return new SimpleSkin(mainStage);
 	}

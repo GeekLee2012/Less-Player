@@ -85,7 +85,6 @@ public final class MainView extends PlayerView {
 		
 		initEvents();
 		initGraphDatas();
-		initPlaylistFromArgs();
 	}
 	
 	private void initStyles() {
@@ -287,7 +286,9 @@ public final class MainView extends PlayerView {
 			handleDndFailed(url);
 		});
 		
-		Guis.addAutoDrawerAction(mainStage);
+		Guis.addAutoDrawerAction(mainStage).setOnHidden(e -> {
+			Guis.ifPresent(playlistView, t -> playlistView.hide());
+		});
 	}
 
 	protected void initGraphDatas() {
@@ -304,13 +305,8 @@ public final class MainView extends PlayerView {
 	}
 	
 	//TODO
-	private void initPlaylistFromArgs() {
-		String[] args = (String[])mainStage.getUserData();
-		if(args != null && args.length > 0) {
-			int index = args.length > 1 ? 1 : 0;
-			String name = StringUtil.toSlash(args[index]);
-			doHandleDndFile(new File(name));
-		}
+	public void playFromArgs() {
+		Guis.ifPresent(playlistFromArgs, t-> doHandleDndFile(new File(playlistFromArgs)));
 	}
 
 	//TODO

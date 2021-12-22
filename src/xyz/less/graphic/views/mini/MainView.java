@@ -79,7 +79,6 @@ public final class MainView extends PlayerView {
 		initContent();
 		initEvents();
 		initGraphDatas();
-		initPlaylistFromArgs();
 	}
 	
 	private void initStyles() {
@@ -226,13 +225,8 @@ public final class MainView extends PlayerView {
 	}
 	
 	//TODO
-	private void initPlaylistFromArgs() {
-		String[] args = (String[])mainStage.getUserData();
-		if(args != null && args.length > 0) {
-			int index = args.length > 1 ? 1 : 0;
-			String name = StringUtil.toSlash(args[index]);
-			doHandleDndFile(new File(name));
-		}
+	public void playFromArgs() {
+		Guis.ifPresent(playlistFromArgs, t-> doHandleDndFile(new File(playlistFromArgs)));
 	}
 
 	//TODO
@@ -291,14 +285,15 @@ public final class MainView extends PlayerView {
 		}, null, () -> updateOnDndFail());
 	}
 
+	//TODO
 	private boolean handleDndLinkUrl(String url) {
 		//插件引擎实现
-//		System.out.println(url);
 		getMediaPlayer().playUrl(url);
 		updatePlaylistView();
 		return true;
 	}
-	
+
+/*
 	private void initHelpText() {
 		doUpdateMetadata(null, 
 				"试一试拖拽东西到播放器吧~",
@@ -328,7 +323,7 @@ public final class MainView extends PlayerView {
 				"暂时无法播放哦\r试一试拖拽其他吧~",
 				"神秘代号: 500");
 	}
-	
+*/
 	private void doUpdateMetadata(Image cover, String title, String artist) {
 		updateCoverArt(cover);
 //		metadataLyricPane.setVisible(true);

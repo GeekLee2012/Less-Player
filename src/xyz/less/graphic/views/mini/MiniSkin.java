@@ -23,8 +23,9 @@ public class MiniSkin extends Skin {
 	
 	@Override
 	public void init() {
-		playerView.initGraph();
 		//TODO
+		playerView.initGraph();
+		playerView.playFromArgs();
 	}
 	
 	@Override

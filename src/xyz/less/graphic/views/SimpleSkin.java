@@ -24,6 +24,7 @@ public final class SimpleSkin extends Skin {
 	@Override
 	public void init() {
 		playerView.initGraph();
+		playerView.playFromArgs();
 		//TODO
 	}
 

@@ -110,12 +110,8 @@ public class ProgressBar extends HBox {
 	
 	public void scroll(ScrollEvent e) {
 		e.consume();
-		double deltaX = e.getDeltaY();
-		double deltaValue = scrollUnit * (getMax() - getMin());
-		if(deltaX > 0) {
-			setValue(getValue() + deltaValue);
-		} else {
-			setValue(getValue() - deltaValue);
-		}
+		double delta = e.getDeltaY() > 0 ? 1 : -1;
+		double deltaValue = delta * scrollUnit * (getMax() - getMin());
+		setValue(getValue() + deltaValue);
 	}
 }

@@ -45,16 +45,22 @@ public class AutoDrawerAction {
 			double width = stage.getWidth();
 //			double height = stage.getHeight();
 			Rectangle2D screenRect = Screen.getPrimary().getBounds();
+			boolean shown = false;
 			if(y <= screenRect.getMinY() + OFFSET) {
+				shown = true;
 				stage.setY(0);
 			}else if(x <= screenRect.getMinX() + OFFSET) {
+				shown = true;
 				stage.setX(0);
 			} else if(x + width >= screenRect.getMaxX() - OFFSET) {
+				shown = true;
 				stage.setX(screenRect.getMaxX() - width);
 			}
-			Guis.ifPresent(onShownConsumer, c -> {
-				c.accept(stage);
-			});
+			if(shown) {
+				Guis.ifPresent(onShownConsumer, c -> {
+					c.accept(stage);
+				});
+			}
 		});
 		stage.getScene().setOnMouseExited(e -> {
 			e.consume();
@@ -72,16 +78,22 @@ public class AutoDrawerAction {
 				return ;
 			}
 			Rectangle2D screenRect = Screen.getPrimary().getBounds();
+			boolean hidden = false;
 			if(y <= screenRect.getMinY() + OFFSET) {
+				hidden = true;
 				stage.setY(-height + HANDLE_SIZE);
 			} else if(x <= screenRect.getMinX() + OFFSET) {
+				hidden = true;
 				stage.setX(-width + HANDLE_SIZE);
 			} else if(x + width >= screenRect.getMaxX() - OFFSET) {
+				hidden = true;
 				stage.setX(screenRect.getMaxX() - HANDLE_SIZE);
-			} 
-			Guis.ifPresent(onHiddenConsumer, c -> {
-				c.accept(stage);
-			});
+			}
+			if(hidden) {
+				Guis.ifPresent(onHiddenConsumer, c -> {
+					c.accept(stage);
+				});
+			}
 		});
 	}
 	
