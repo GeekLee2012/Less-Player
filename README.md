@@ -24,19 +24,19 @@
 * 其他: 可选2套简约风格界面(暂时不支持运行后随意切换，仅可运行时通过入参切换)
 
 #### 界面预览  
-风格1:  
+* 风格1  
 ![snap 01.png](https://github.com/GeekLee2012/Less-Player/blob/main/snapshot/snap%2001.png)  
 ![snap 02.png](https://github.com/GeekLee2012/Less-Player/blob/main/snapshot/snap%2002.png)   
 ![snap 03.png](https://github.com/GeekLee2012/Less-Player/blob/main/snapshot/snap%2003.png)  
 ![snap 04.png](https://github.com/GeekLee2012/Less-Player/blob/main/snapshot/snap%2004.png)  
-风格2:  
+* 风格2  
 ![snap 05.png](https://github.com/GeekLee2012/Less-Player/blob/main/snapshot/snap%2005.png)  
 ![snap 06.png](https://github.com/GeekLee2012/Less-Player/blob/main/snapshot/snap%2006.png)  
 ![snap 07.png](https://github.com/GeekLee2012/Less-Player/blob/main/snapshot/snap%2007.png)  
 
 #### 界面风格切换
-无参数: 普通风格(即界面预览中的风格1)  
-参数-mini(不区分大小写)：Mini风格(即界面预览中的风格2)  
+* 无参数: 普通风格(即风格1)  
+* 参数-mini(不区分大小写)：Mini风格(即风格2)  
 ![snap 00.png](https://github.com/GeekLee2012/Less-Player/blob/main/snapshot/snap%2000.png)  
 
 #### 其他
