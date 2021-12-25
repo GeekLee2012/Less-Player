@@ -11,6 +11,7 @@ import xyz.less.bean.Resources.Fxmls;
 import xyz.less.bean.Resources.Images;
 import xyz.less.bean.Resources.Styles;
 import xyz.less.graphic.Guis;
+import xyz.less.graphic.TwoLinesLyricRenderer;
 import xyz.less.graphic.action.DnmAction;
 import xyz.less.media.LyricParser;
 
