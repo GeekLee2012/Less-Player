@@ -40,8 +40,8 @@
 ![snap 00.png](https://github.com/GeekLee2012/Less-Player/blob/main/snapshot/snap%2000.png)  
 
 * 无参数: 普通风格(即风格1)  
-* 参数-mini：Mini风格(即风格2)  
-* 参数-anim：开启动画(前提条件: 需先开启Mini风格，即同时设置参数: -mini -anim)
+* -mini参数：Mini风格(即风格2)  
+* -anim参数：开启动画(前提条件: 需先开启Mini风格，即同时设置参数: -mini -anim)
 
 #### 其他
 * Release版本中所使用的.exe文件打包工具: exe4j  
