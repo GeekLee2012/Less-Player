@@ -36,7 +36,7 @@
 ![snap 07.png](https://github.com/GeekLee2012/Less-Player/blob/main/snapshot/snap%2007.png)  
 
 #### 启动参数设置（命令行参数）
-参数不区分大小写，设置方式请参考下图
+参数不区分大小写，设置方式请参考下图  
 ![snap 00.png](https://github.com/GeekLee2012/Less-Player/blob/main/snapshot/snap%2000.png)  
 
 * 无参数: 普通风格(即风格1)  
