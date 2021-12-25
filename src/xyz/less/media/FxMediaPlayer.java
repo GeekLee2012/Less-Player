@@ -178,7 +178,7 @@ public class FxMediaPlayer {
 		return audio != null ? audio.getSource() : null; 
 	}
 
-	public void setVolumn(double value) {
+	public void setVolume(double value) {
 		this.volume = value;
 		if(delegatePlayer != null) {
 			delegatePlayer.setVolume(value);

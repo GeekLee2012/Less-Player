@@ -30,6 +30,15 @@ public final class FileUtil {
 		return isFileSupported(file, ConfigConstant.AUDIO_SUFFIXES);
 	}
 	
+	public static String toExternalForm(File file) {
+		try {
+			return file.toURI().toURL().toExternalForm();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public static boolean isFileSupported(File file, String[] suffixes) {
 		return isFile(file) && isSuffixSupported(file.getName(), suffixes);
 	}

@@ -3,23 +3,22 @@ package xyz.less;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import xyz.less.bean.ArgsBean;
 import xyz.less.graphic.Guis;
-import xyz.less.graphic.views.SimpleSkin;
-import xyz.less.graphic.views.Skin;
-import xyz.less.graphic.views.mini.MiniSkin;
-import xyz.less.util.StringUtil;
+import xyz.less.graphic.skin.Skin;
+import xyz.less.graphic.skin.SkinManager;
 
 public final class Main extends Application {
-	private static String[] args;
+	private static ArgsBean argsBean;
 	private Stage mainStage;
 	
-	public static void setArgs(String[] args) {
-		Main.args = args;
+	public static void parseArgs(String[] args) {
+		argsBean = new ArgsBean(args).parse();
 	}
 
 	private void setMainStage(Stage stage) {
 		this.mainStage = stage;
-		this.mainStage.setUserData(args);
+		this.mainStage.setUserData(argsBean);
 	}
 
 	@Override
@@ -29,28 +28,17 @@ public final class Main extends Application {
 	}
 
 	private void initStage() {
-		Skin skin = getSkin(args);
+		SkinManager skinMgr = new SkinManager(mainStage);
+		Skin skin = skinMgr.getSkin(argsBean.getSkinName());
 		mainStage.setScene(skin.getRootScene());
 		mainStage.initStyle(StageStyle.TRANSPARENT);
 		mainStage.setOnCloseRequest(e -> Guis.exitApplication());
 		mainStage.show();
 		skin.init();
 	}
-	
-	//TODO
-	private Skin getSkin(String[] args) {
-		String skinName = "simple";
-		if(args != null && args.length > 0) {
-			skinName = StringUtil.trim(args[0]);
-		}
-		if("-mini".equalsIgnoreCase(skinName)) {
-			return new MiniSkin(mainStage);
-		}
-		return new SimpleSkin(mainStage);
-	}
 
 	public static void main(String[] args) {
-		setArgs(args);
+		parseArgs(args);
 		launch(args);
 	}
 	

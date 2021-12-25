@@ -149,4 +149,11 @@ public final class StringUtil {
 		}
 		return false;
 	}
+	
+	/** 
+	 * URI格式转换，目前仅将空格进行转换
+	 */
+	public static String transformUri(String uri) {
+		return isEmpty(uri) ? uri : trim(uri).replaceAll(" ", "%20");
+	}
 }

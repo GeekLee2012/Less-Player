@@ -1,5 +1,7 @@
 package xyz.less.bean;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.image.Image;
 import xyz.less.util.StringUtil;
 
@@ -10,6 +12,7 @@ public class Audio implements Comparable<Audio> {
 	private double duration;
 	private Image coverArt;
 	private String source;
+	private BooleanProperty playing = new SimpleBooleanProperty(false);
 	
 	public Audio() {
 		
@@ -47,7 +50,6 @@ public class Audio implements Comparable<Audio> {
 	public Image getCoverArt() {
 		return coverArt;
 	}
-
 	public void setCoverArt(Image coverArt) {
 		this.coverArt = coverArt;
 	}
@@ -64,6 +66,16 @@ public class Audio implements Comparable<Audio> {
 		this.source = source;
 	}
 
+	public boolean isPlaying() {
+		return playing.get();
+	}
+	public void setPlaying(boolean playing) {
+		this.playing.set(playing);;
+	}
+	public BooleanProperty playingProperty() {
+		return playing;
+	}
+	
 	@Override
 	public int compareTo(Audio o) {
 		if(o == null || StringUtil.isEmpty(o.getSource())) {

@@ -30,7 +30,7 @@ public class LyricParser {
 	public static final String OFFSET_TAG_NAME = "offset";
 	public static final String META_TAG_DELIM = ":";
 	
-	public Lyric parse(String uri) throws Exception{
+	public Lyric parse(String uri) throws Exception {
 		Path path = Paths.get(URI.create(uri));
 		if(!Files.exists(path)) {
 			LOGGER.info("暂无文件: " 

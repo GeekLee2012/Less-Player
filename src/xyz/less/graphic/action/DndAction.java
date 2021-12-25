@@ -1,7 +1,11 @@
 package xyz.less.graphic.action;
 
+import java.io.File;
+import java.util.List;
 import java.util.function.Consumer;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.Node;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
@@ -12,7 +16,7 @@ import javafx.scene.input.TransferMode;
 public class DndAction {
 	private boolean enabled = true;
 	
-	public DndAction(Node trigger, Consumer<Dragboard> action) {
+	public DndAction(Node trigger, Consumer<DndContext> action) {
 		if(trigger != null) {
 			setupTrigger(trigger, action);
 		}
@@ -23,7 +27,7 @@ public class DndAction {
 		return this;
 	}
 
-	private void setupTrigger(Node trigger, Consumer<Dragboard> action) {
+	private void setupTrigger(Node trigger, Consumer<DndContext> action) {
 		trigger.setOnDragOver(e -> {
 			if(this.enabled) {
 				e.acceptTransferModes(TransferMode.COPY);
@@ -33,26 +37,47 @@ public class DndAction {
 		
 		trigger.setOnDragDropped(e -> {
 			if(this.enabled && action != null) {
-				action.accept(e.getDragboard());
+				action.accept(new DndContext(e.getDragboard()));
 			}
 		});
 	}
 	
-	public static class DndResult<T> {
-		private boolean success;
+	public static class DndContext {
+		private Dragboard board;
+		private BooleanProperty successProp;
 		private DndType dndType;
-		private T userData;
+		private Object userData;
 		
-		public DndResult() {
-			this.success = false;
-			this.dndType = DndType.UNKNOWN;
+		public DndContext() {
+			successProp = new SimpleBooleanProperty(true);
+			setDndType(DndType.UNKNOWN);
 		}
 		
+		public DndContext(Dragboard board) {
+			this();
+			setDragboard(board);
+		}
+		private void setDragboard(Dragboard board) {
+			this.board = board;
+		}
+		public String getUrl() {
+			return board.getUrl();
+		}
+		public File getFile() {
+			List<File> files = board.getFiles();
+			if(files == null || files.isEmpty()) {
+				return null;
+			}
+			return files.get(0);
+		}
 		public boolean isSuccess() {
-			return success;
+			return this.successProp.get();
 		}
 		public void setSuccess(boolean success) {
-			this.success = success;
+			this.successProp.set(success);
+		}
+		public BooleanProperty successProperty() {
+			return this.successProp;
 		}
 		public DndType getDndType() {
 			return dndType;
@@ -61,16 +86,41 @@ public class DndAction {
 			this.dndType = dndType;
 		}
 
-		public T getUserData() {
+		public Object getUserData() {
 			return userData;
 		}
 
-		public void setUserData(T userData) {
+		public void setUserData(Object userData) {
 			this.userData = userData;
+		}
+		
+		public boolean isImage() {
+			return dndType == DndType.IMAGE;
+		}
+		
+		public boolean isLyric() {
+			return dndType == DndType.LYRIC;
+		}
+		
+		public boolean isAudio() {
+			return dndType == DndType.AUDIO;
+		}
+		
+		public boolean isDirectory() {
+			return dndType == DndType.DIR;
+		}
+		
+		public boolean isFile() {
+			return dndType == DndType.FILE;
+		}
+		
+		public boolean isLink() {
+			return dndType == DndType.LINK;
 		}
 	}
 	
 	public enum DndType {
-		IMAGE, LYRIC, FILE, LINK, UNKNOWN;
+		IMAGE, LYRIC, AUDIO, DIR, FILE, LINK, UNKNOWN;
 	}
+
 }

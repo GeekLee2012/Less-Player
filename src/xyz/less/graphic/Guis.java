@@ -17,12 +17,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.Dragboard;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import xyz.less.graphic.action.AutoDrawerAction;
 import xyz.less.graphic.action.DndAction;
+import xyz.less.graphic.action.DndAction.DndContext;
 import xyz.less.graphic.action.DnmAction;
 import xyz.less.graphic.action.DnmAction.DnmOffset;
 
@@ -258,7 +258,7 @@ public final class Guis {
 		return new DnmAction(target, trigger, action, ignoreTriggers);
 	}
 	
-	public static DndAction addDndAction(Node node, Consumer<Dragboard> action) {
+	public static DndAction addDndAction(Node node, Consumer<DndContext> action) {
 		return new DndAction(node, action);
 	}
 	
@@ -316,6 +316,10 @@ public final class Guis {
 	 */
 	public static int setImage(ImageView view, Image[] images, boolean value) {
 		return setImage(view, images, value ? 1 : 0);
+	}
+	
+	public static void setTransparent(Stage mainStage) {
+		Guis.applyStages(s -> s.getScene().setFill(null), mainStage);
 	}
 	
 	public static void moveStages(double offsetX, double offsetY, Stage... stages) {

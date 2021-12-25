@@ -7,7 +7,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import xyz.less.graphic.Guis;
 
-//TODO
+//TODO 抽屉效果
 public class AutoDrawerAction {
 	private boolean enable = true;
 	private static final double OFFSET = 10;
