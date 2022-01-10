@@ -25,6 +25,8 @@
 
 #playlist_view .list-view .list-cell {
 	-fx-background-color: transparent;
+	-fx-padding-left: 5;
+	-fx-padding-right: 0;
 }
 
 #playlist_view .list-view .list-cell:hover {
@@ -37,7 +39,7 @@
 }
 
 #playlist_view .list-view .list-cell .label {
-	-fx-padding: 5;
+	-fx-padding: 5 0;
 }
 
 #playlist_view .scroll-bar {
