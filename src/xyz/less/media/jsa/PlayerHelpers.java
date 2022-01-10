@@ -9,10 +9,10 @@ public final class PlayerHelpers {
 	public static IPlayHelper select(Audio audio) {
 		if(Resources.isFlac(audio)) {
 			return new FlacPlayHelper(audio);
-		} else if(Resources.isAac(audio)) {
-			return new AacPlayHelper(audio);
-		} else {
-			return new DefaultPlayHelper(audio);
 		}
+		if(Resources.isAac(audio)) {
+			return new AacPlayHelper(audio);
+		}
+		return new DefaultPlayHelper(audio);
 	}
 }

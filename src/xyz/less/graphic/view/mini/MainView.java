@@ -38,7 +38,6 @@ import xyz.less.graphic.view.PlaylistView;
 import xyz.less.media.LyricParser;
 import xyz.less.media.Metadatas;
 import xyz.less.media.PlaybackQueue.PlayMode;
-import xyz.less.util.FileUtil;
 import xyz.less.util.StringUtil;
 
 /**
@@ -278,9 +277,6 @@ public final class MainView extends PlayerView {
 	}
 
 	private void handleDndFile(File dndFile) {
-		if(!FileUtil.exists(dndFile)) {
-			return ;
-		}
 		updateDndWaiting();
 		AsyncServices.cancel(loadFuture, updateFuture);
 		loadFuture = getMediaPlayer().loadFrom(dndFile);
@@ -327,8 +323,16 @@ public final class MainView extends PlayerView {
 		doUpdateMetadata(Images.DND_NOT_FOUND, true,
 				"暂时无法识别哦，",
 				"试一试拖拽其他吧~");
+		adjustCoverArt();
 	}
 	
+	private void adjustCoverArt() {
+		if(coverArtLbl.getRotate() > 0) {
+			coverArtLbl.setRotate(0);
+		}
+		coverAperture.setVisible(false);
+	}
+
 	private void updateDndWaiting() {
 		showMetadataBox(true);
 		setInfoTextStyle(true);
@@ -358,6 +362,7 @@ public final class MainView extends PlayerView {
 			playlistView = new PlaylistView(mainStage, getMediaPlayer());
 			playlistView.setTopVisible(false);
 			playlistView.setWidth(mainStage.getWidth());
+			playlistView.setRowWidth(379); //TODO
 			playlistView.setHeight(315); // 显示8首歌曲
 			
 			playlistView.setAttachAction(s -> {

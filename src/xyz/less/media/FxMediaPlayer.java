@@ -6,9 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
+import java.util.function.Consumer;
 
-import javafx.application.Platform;
 import javafx.scene.media.MediaView;
+import xyz.less.async.AsyncServices;
 import xyz.less.bean.Audio;
 import xyz.less.bean.Constants;
 import xyz.less.engine.MediaEngine;
@@ -201,75 +202,59 @@ public final class FxMediaPlayer implements IMediaPlayerListener {
 	}
 	
 	/****** MediaPlayerListener ******/
+	protected void notifyAllListeners(Consumer<? super IMediaPlayerListener> action) {
+		AsyncServices.runLater(() -> playerListeners.forEach(action));
+	}
+	
 	@Override
 	public void onReady(Audio audio, Map<String, Object> metadata) {
-		Platform.runLater(() -> {
-			playerListeners.forEach(e -> e.onReady(audio, metadata));
-		});
+		notifyAllListeners(e -> e.onReady(audio, metadata));
 	}
 
 	@Override
 	public void onPlaying() {
-		Platform.runLater(() -> {
-			playerListeners.forEach(e -> e.onPlaying());
-		});
+		notifyAllListeners(e -> e.onPlaying());
 	}
 
 	@Override
 	public void onCurrentChanged(double currentMinutes, double durationMinutes) {
-		Platform.runLater(() -> {
-			playerListeners.forEach(e -> e.onCurrentChanged(currentMinutes, durationMinutes));
-		});
+		notifyAllListeners(e -> e.onCurrentChanged(currentMinutes, durationMinutes));
 	}
 
 	@Override
 	public void spectrumDataUpdate(double timestamp, double duration, float[] magnitudes, float[] phases) {
-		Platform.runLater(() -> {
-			playerListeners.forEach(e -> e.spectrumDataUpdate(timestamp, duration, magnitudes, phases));
-		});
+		notifyAllListeners(e -> e.spectrumDataUpdate(timestamp, duration, magnitudes, phases));
 	}
 
 	@Override
 	public void onPaused() {
-		Platform.runLater(() -> {
-			playerListeners.forEach(e -> e.onPaused());
-		});
+		notifyAllListeners(e -> e.onPaused());
 	}
 
 	@Override
 	public void onEndOfMedia() {
-		Platform.runLater(() -> {
-			playerListeners.forEach(e -> e.onEndOfMedia());
-			playNext();
-		});
+		notifyAllListeners(e -> e.onEndOfMedia());
+		playNext();
 	}
 
 	@Override
 	public void onError() {
-		Platform.runLater(() -> {
-			playerListeners.forEach(e -> e.onError());
-			retryPlay();
-		});
+		notifyAllListeners(e -> e.onError());
+		retryPlay();
 	}
 
 	@Override
 	public void onReset() {
-		Platform.runLater(() -> {
-			playerListeners.forEach(e -> e.onReset());
-		});
+		notifyAllListeners(e -> e.onReset());
 	}
 
 	@Override
 	public void onNoMedia() {
-		Platform.runLater(() -> {
-			playerListeners.forEach(e -> e.onNoMedia());
-		});
+		notifyAllListeners(e -> e.onNoMedia());
 	}
 
 	@Override
 	public void onNoPlayableMedia() {
-		Platform.runLater(() -> {
-			playerListeners.forEach(e -> e.onNoPlayableMedia());
-		});
+		notifyAllListeners(e -> e.onNoPlayableMedia());
 	}
 }

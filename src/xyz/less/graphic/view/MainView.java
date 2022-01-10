@@ -281,7 +281,8 @@ public final class MainView extends PlayerView {
 		});
 		
 		//自动隐藏
-		if(isEnableAutoDrawer()) {
+		boolean noDrawer = true;
+		if(isEnableAutoDrawer() && !noDrawer) {
 			Guis.addAutoDrawerAction(getMainStage()).setOnHidden(e -> {
 				Guis.ifPresent(playlistView, t -> playlistView.hide());
 			});
@@ -497,6 +498,7 @@ public final class MainView extends PlayerView {
 	private void initPlaylistView() {
 		Guis.ifNotPresent(playlistView, t -> {
 			playlistView = new PlaylistView(getMainStage(), getMediaPlayer());
+			playlistView.setRowWidth(SimpleSkin.PLAYLIST_ROW_WIDTH);
 			
 			playlistView.setOnHidden(e -> {
 				updatePlaylistBtn();

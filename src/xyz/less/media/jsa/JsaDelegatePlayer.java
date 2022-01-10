@@ -21,10 +21,11 @@ import xyz.less.media.AbstractDelegatePlayer;
 //TODO
 public final class JsaDelegatePlayer extends AbstractDelegatePlayer {
 	private final PlayService playService = new PlayService();
-	private volatile boolean paused;
+	private volatile boolean paused = true;
 	
 	public JsaDelegatePlayer() {
 		super(MediaEngine.SUFFIXES_2);
+		addSuffixes(MediaEngine.getAudioSystemSupportedTypes());
 	}
 	
 	@Override
@@ -35,7 +36,7 @@ public final class JsaDelegatePlayer extends AbstractDelegatePlayer {
 			setAudioChanged(false);
 		}
 		setPaused(false);
-		playService.continuePlaying();
+		playService.continuePlay();
 	}
 	
 	@Override
@@ -68,11 +69,6 @@ public final class JsaDelegatePlayer extends AbstractDelegatePlayer {
 	}
 	
 	@Override
-	public boolean isInit() {
-		return currentAudio != null;
-	}
-	
-	@Override
 	public boolean isNotPlaying() {
 		return paused || !playService.isTaskRunning();
 	}
@@ -87,14 +83,20 @@ public final class JsaDelegatePlayer extends AbstractDelegatePlayer {
 		@Override
 		public boolean cancel() {
 			if(isTaskRunning()) {
-				continuePlaying();
 				task.cancel(true);
+				task.notifyContinuePlay();
 				task = null;
 			}
 			doSeekPlay(0);
 			return super.cancel();
 		}
 		
+		public void continuePlay() {
+			if(task != null) {
+				task.notifyContinuePlay();
+			}
+		}
+
 		public void doSeekPlay(double percent) {
 			double seekTime = currentAudio.getDuration() * percent;
 			if(task != null) {
@@ -107,21 +109,8 @@ public final class JsaDelegatePlayer extends AbstractDelegatePlayer {
 			if(Main.getAppContext().isMiniSkin()) { //Mini风格不设置volume
 				return ;
 			}
-			try {
-				if(task != null && task.line != null) {
-					FloatControl ctrl = (FloatControl) task.line.getControl(Type.MASTER_GAIN);
-					float max = ctrl.getMaximum();
-					float min = ctrl.getMinimum();
-					double limit = 0.15;
-					float percent = (float)(Math.abs(volume - limit)/limit);
-					float value = volume == limit ? 0 :
-						(volume > limit ? max * percent : min * percent);
-					value = value > max ? max : value;
-					value = value < min ? min : value;
-					ctrl.setValue(value);
-				}
-			} catch(Exception e) {
-				e.printStackTrace();
+			if(task != null) {
+				task.setVolume(volume);
 			}
 		}
 
@@ -129,15 +118,6 @@ public final class JsaDelegatePlayer extends AbstractDelegatePlayer {
 			return task != null && !task.stopped;
 		}
 
-		public void continuePlaying() {
-			try {
-				synchronized (task.lock) {
-					task.lock.notifyAll();
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
 		
 		@Override
 		protected Task<Void> createTask() {
@@ -210,6 +190,35 @@ public final class JsaDelegatePlayer extends AbstractDelegatePlayer {
 			}
 		}
 		
+		public void setVolume(double volume) {
+			try {
+				if(line != null) {
+					FloatControl ctrl = (FloatControl) line.getControl(Type.MASTER_GAIN);
+					float max = ctrl.getMaximum();
+					float min = ctrl.getMinimum();
+					double limit = 0.15;
+					float percent = (float)(Math.abs(volume - limit)/limit);
+					float value = volume == limit ? 0 :
+						(volume > limit ? max * percent : min * percent);
+					value = value > max ? max : value;
+					value = value < min ? min : value;
+					ctrl.setValue(value);
+				}
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		public void notifyContinuePlay() {
+			try {
+				synchronized (lock) {
+					lock.notifyAll();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
 		//TODO
 		private void doPlay(Audio audio) throws Exception {
 			stopped = false;
@@ -219,30 +228,24 @@ public final class JsaDelegatePlayer extends AbstractDelegatePlayer {
 			playHelper = PlayerHelpers.select(audio);
 			AudioFormat format = playHelper.getAudioFormat();
 			openLine(format);
+//			boolean firstReset = true;
 			while (!stopped) {
 				checkPasued();
 				startLine();
 				byte[] srcBytes = playHelper.readNext();
-				if(srcBytes == null) {
+				if(playHelper.isEOF()) {
 					end = true;
 					break ;
 				}
-//				double seekTime = getSeekTime();
-//				if(seekTime > 0) {
-//					totalWriteBytes += srcBytes.length;
-//					double current = bytes2Minutes(totalWriteBytes, format);
-//					System.out.println(seekTime + " : " + current);
-//					if(current < seekTime) {
-//						continue ;
-//					}
-//				}
-				int writeBytes = 0;
-				if(srcBytes.length > 0) {
-					writeBytes = line.write(srcBytes, 0, srcBytes.length);
+				if(srcBytes == null) {
+					continue ;
 				}
-				totalWriteBytes += writeBytes;
+				totalWriteBytes += srcBytes.length;
+				double current = bytes2Minutes(totalWriteBytes, format);
+//				double seekTime = getSeekTime();
+				int writeBytes = line.write(srcBytes, 0, srcBytes.length);
 				if(writeBytes > 0) {
-					onCurrentChanged(bytes2Minutes(totalWriteBytes, format), currentAudio.getDuration());
+					onCurrentChanged(current, currentAudio.getDuration());
 				}
 			}
 			closeLine();

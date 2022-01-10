@@ -12,6 +12,7 @@ public final class SimpleSkin extends PlayerSkin {
 	public final static double PLAYLIST_WIDTH = 366;
 	public final static double PLAYLIST_HEIGHT = 520;
 	public final static double PLAYLIST_PADDING_X = 6;
+	public final static double PLAYLIST_ROW_WIDTH = 335;
 	
 	public final static double LYRIC_WIDTH = 666;
 	public final static double LYRIC_HEIGHT = 150;

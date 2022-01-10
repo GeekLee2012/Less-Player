@@ -1,9 +1,12 @@
 package xyz.less.media;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import javax.sound.sampled.AudioFormat;
 
@@ -21,6 +24,16 @@ public abstract class AbstractDelegatePlayer implements IDelegatePlayer {
 	protected double volume;
 	
 	public AbstractDelegatePlayer(String... suffixes) {
+		addSuffixes(suffixes);
+	}
+	
+	protected void addSuffixes(String... suffixes) {
+		if(suffixes != null) {
+			addSuffixes(Arrays.asList(suffixes));
+		}
+	}
+	
+	protected void addSuffixes(Collection<String> suffixes) {
 		if(suffixes != null) {
 			for(String suffix : suffixes) {
 				this.suffixes.add(suffix);
@@ -36,7 +49,7 @@ public abstract class AbstractDelegatePlayer implements IDelegatePlayer {
 	
 	@Override
 	public boolean isInit() {
-		return false;
+		return currentAudio != null;
 	}
 	
 	@Override
@@ -118,44 +131,48 @@ public abstract class AbstractDelegatePlayer implements IDelegatePlayer {
 	}
 	
 	/****** NotifyAll MediaPlayerListeners *****/
+	protected void notifyAllListeners(Consumer<? super IMediaPlayerListener> action) {
+		listeners.forEach(action);
+	}
+	
 	public void onReady(Audio audio, Map<String, Object> metadata) {
-		listeners.forEach(e -> e.onReady(audio, metadata));
+		notifyAllListeners(e -> e.onReady(audio, metadata));
 	}
 
 	public void onPlaying() {
-		listeners.forEach(e -> e.onPlaying());
+		notifyAllListeners(e -> e.onPlaying());
 	}
 
 	public void onCurrentChanged(double currentMinutes, double durationMinutes) {
-		listeners.forEach(e -> e.onCurrentChanged(currentMinutes, durationMinutes));
+		notifyAllListeners(e -> e.onCurrentChanged(currentMinutes, durationMinutes));
 	}
 
 	public void spectrumDataUpdate(double timestamp, double duration, float[] magnitudes, float[] phases) {
-		listeners.forEach(e -> e.spectrumDataUpdate(timestamp, duration, magnitudes, phases));
+		notifyAllListeners(e -> e.spectrumDataUpdate(timestamp, duration, magnitudes, phases));
 	}
 
 	public void onPaused() {
-		listeners.forEach(e -> e.onPaused());
+		notifyAllListeners(e -> e.onPaused());
 	}
 
 	public void onEndOfMedia() {
-		listeners.forEach(e -> e.onEndOfMedia());
+		notifyAllListeners(e -> e.onEndOfMedia());
 	}
 
 	public void onError() {
-		listeners.forEach(e -> e.onError());
+		notifyAllListeners(e -> e.onError());
 	}
 
 	public void onReset() {
-		listeners.forEach(e -> e.onReset());
+		notifyAllListeners(e -> e.onReset());
 	}
 
 	public void onNoMedia() {
-		listeners.forEach(e -> e.onNoMedia());
+		notifyAllListeners(e -> e.onNoMedia());
 	}
 
 	public void onNoPlayableMedia() {
-		listeners.forEach(e -> e.onNoPlayableMedia());
+		notifyAllListeners(e -> e.onNoPlayableMedia());
 	}
-	 
+	
 }

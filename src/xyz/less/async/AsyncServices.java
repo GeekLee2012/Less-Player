@@ -25,12 +25,16 @@ public class AsyncServices {
 	}
 	
 	public static void cancel(Future<?>... futures) {
-		if(futures != null) {
-			Arrays.asList(futures).forEach(future -> {
-				if(future != null) {
-					future.cancel(true);
-				}
-			});
+		try {
+			if(futures != null) {
+				Arrays.asList(futures).forEach(future -> {
+					if(future != null) {
+						future.cancel(true);
+					}
+				});
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -41,19 +45,12 @@ public class AsyncServices {
 		return submit(() -> {
 			try {
 				future.get(TIMEOUT, TimeUnit.SECONDS);
-				if(task != null) {
-					task.run();
-				}
-			} catch(CancellationException ce) {
-				//ce.printStackTrace();
-				if(onCancelledTask != null) {
-					onCancelledTask.run();
-				}
-			} catch(Exception e) {
-				e.printStackTrace();
-				if(onFailedTask != null) {
-					onFailedTask.run();
-				}
+				doInvoke(task);
+			} catch(CancellationException e1) {
+				doInvoke(onCancelledTask);
+			} catch(Exception e2) {
+				e2.printStackTrace();
+				doInvoke(onFailedTask);
 			}
 		});
 	}
@@ -63,32 +60,28 @@ public class AsyncServices {
 	}
 	
 	public static Future<?> submitFxTaskOnFutureDone(Future<?> future, Runnable task, Runnable onCancelledTask, Runnable onFailedTask) {
-		if(future == null) {
-			return submit(task);
-		}
-		return submitOnFutureDone(future, () -> {
-			Platform.runLater(()-> {
-				if(task != null) {
-					task.run();
-				}
-			});
-		}, () -> {
-			Platform.runLater(()-> {
-				if(onCancelledTask != null) {
-					onCancelledTask.run();
-				}
-			});
-		}, () -> {
-			Platform.runLater(()-> {
-				if(onFailedTask != null) {
-					onFailedTask.run();
-				}
-			});
-		});
+		return future == null ? submit(wrapTask2RunLater(task)) 
+			: submitOnFutureDone(future,  
+					wrapTask2RunLater(task), 
+					wrapTask2RunLater(onCancelledTask), 
+					wrapTask2RunLater(onFailedTask));
 	}
 
 	public static Future<?> submit(FileScanTask task) {
 		return fjPool.submit(task);
 	}
 	
+	public static void runLater(Runnable task) {
+		Platform.runLater(task);
+	}
+	
+	public static Runnable wrapTask2RunLater(Runnable task) {
+		return () -> runLater(task);
+	}
+	
+	private static void doInvoke(Runnable task) {
+		if(task != null) {
+			task.run();
+		}
+	}
 }

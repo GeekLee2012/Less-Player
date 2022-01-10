@@ -34,9 +34,8 @@ public class PlaylistView extends StageView {
 	private boolean attach = true;
 	private boolean lyricOn = false;
 	private boolean autoTarget = true;
-	private final static double ROW_WIDTH = 335;
-	private final static double DURATION_WIDTH = 72;
-//	private final static double ROW_PADDING = 3;
+	private double rowWidth = 335;
+	public double durationWidth = 72;
 	private final Consumer<Void> defaultAttachAction = v -> {
 //		openerX = opener.getX();
 		openerY = opener.getY();
@@ -151,9 +150,10 @@ public class PlaylistView extends StageView {
 		listView = byId("list_view");
 		listView.setCellFactory(lv -> {
 			PlaylistItem item = new PlaylistItem();
-			item.setItemWidth(ROW_WIDTH);
-			item.setTitleWidth(ROW_WIDTH - DURATION_WIDTH);
-			item.setDurationWidth(DURATION_WIDTH);
+			item.setItemWidth(rowWidth);
+			item.setPaddingLeft(5);
+			item.setTitleWidth(rowWidth - durationWidth - 10);
+			item.setDurationWidth(durationWidth);
 			item.setOnMouseClicked(e -> {
 				if(e.getClickCount() > 1) {
 					mediaPlayer.play(indexOf(item.getItem()));
@@ -229,6 +229,10 @@ public class PlaylistView extends StageView {
 		if(attachAction != null) {
 			attachAction.accept(null);
 		}
+	}
+	
+	public void setRowWidth(double rowWidth) {
+		this.rowWidth = rowWidth;
 	}
 	
 }

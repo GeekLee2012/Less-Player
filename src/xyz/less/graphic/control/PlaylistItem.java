@@ -16,7 +16,8 @@ public class PlaylistItem extends ListCell<Audio> {
 	private Label durationLbl;
 	
 	private String styleClass = "current";
-	private double padding = 3;
+	private double paddingLeft = 0;
+	private double paddingRight = 3;
 	
 	public PlaylistItem() {
 		initGraph();
@@ -31,7 +32,6 @@ public class PlaylistItem extends ListCell<Audio> {
 		itemBox = new AnchorPane(titleLbl, durationLbl);
 		Guis.addStyleClass("item-box", itemBox);
 		layoutGraph();
-		
 		setGraphicNode(itemBox);
 	}
 	
@@ -40,8 +40,8 @@ public class PlaylistItem extends ListCell<Audio> {
 	}
 	
 	protected void layoutGraph() {
-		AnchorPane.setLeftAnchor(titleLbl, 0D);
-		AnchorPane.setRightAnchor(durationLbl, padding);
+		AnchorPane.setLeftAnchor(titleLbl, paddingLeft);
+		AnchorPane.setRightAnchor(durationLbl, paddingRight);
 	}
 	
 	protected void updateGraph(Audio item) {
@@ -54,7 +54,7 @@ public class PlaylistItem extends ListCell<Audio> {
 	}
 	
 	public void setTitleWidth(double width) {
-		titleLbl.setPrefWidth(width);
+		titleLbl.setMaxWidth(width);
 	}
 	
 	public void setDurationWidth(double width) {
@@ -62,7 +62,18 @@ public class PlaylistItem extends ListCell<Audio> {
 	}
 	
 	public void setPaddingX(double padding) {
-		this.padding = padding;
+		paddingLeft = padding;
+		paddingRight = padding;
+		layoutGraph();
+	}
+	
+	public void setPaddingLeft(double left) {
+		paddingLeft = left;
+		layoutGraph();
+	}
+	
+	public void setPaddingRight(double right) {
+		paddingRight = right;
 		layoutGraph();
 	}
 	
