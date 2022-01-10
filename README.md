@@ -15,7 +15,7 @@
 * Windows平台
 * JDK版本: 1.8.0_291
 * IDE: Eclipse 2021-09 (4.21.0)
-* 依赖(开源)库: Jaudiotagger、jFlac、JAAD
+* 依赖(开源)库: Jaudiotagger、jFlac、JAAD、Jorbis
 
 #### 目前功能
 * 播放器基本功能: 播放、暂停、上/下一首、进度条/播放时间、播放模式、音量控制等
