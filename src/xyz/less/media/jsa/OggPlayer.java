@@ -162,6 +162,7 @@ public class OggPlayer {
 		bis.reset();
 		initializeJOrbis();
 		needToStop = false;
+		paused = false;
 
 		boolean chained = false;
 		int bytes;
@@ -386,6 +387,7 @@ public class OggPlayer {
 
 	public void stop() {
 		needToStop = true;
+		paused = true;
 	}
 
 	/**

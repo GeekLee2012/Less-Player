@@ -6,9 +6,12 @@ import java.util.Map;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.AudioHeader;
+import org.jaudiotagger.audio.flac.metadatablock.MetadataBlockDataPicture;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.Tag;
+import org.jaudiotagger.tag.flac.FlacTag;
 import org.jaudiotagger.tag.images.Artwork;
+import org.jaudiotagger.tag.vorbiscomment.VorbisCommentTag;
 
 import xyz.less.util.StringUtil;
 
@@ -35,9 +38,23 @@ public class Jaudiotagger {
 			Metadatas.putArtist(metadata, StringUtil.iso88591ToUtf8(artist));
 			Metadatas.putAlbum(metadata, StringUtil.iso88591ToUtf8(album));
 			
-			Artwork artwork = tag.getFirstArtwork();
-			if(artwork != null) {
-				Metadatas.putCoverArt(metadata, artwork.getBinaryData());
+			byte[] imageData = null;
+			try {
+				if(tag instanceof FlacTag) {
+					MetadataBlockDataPicture image = ((FlacTag)tag).getImages().get(0);
+					imageData = image.getImageData();
+				} else if(tag instanceof VorbisCommentTag) {
+					imageData = ((VorbisCommentTag)tag).getArtworkBinaryData();
+					System.out.println(imageData);
+				} else {
+					Artwork artwork = tag.getFirstArtwork();
+					imageData = artwork != null ? artwork.getBinaryData(): null;
+				}
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			if(imageData != null) {
+				Metadatas.putCoverArt(metadata, imageData);
 			}
 		}
 		if(audioHeader != null) {

@@ -589,7 +589,7 @@ public final class MainView extends PlayerView {
 	public void updateCoverArt(Image image, boolean applyTheme) {
 		Guis.toggleStyleClass(applyTheme, "theme-fg", coverArtLbl);
 		ImageView graphic = getDefaultCoverArt();
-		if(image != null) {
+		if(image != null && !image.isError()) {
 			graphic = new ImageView(image);
 			double bordersWidth = SimpleSkin.COVER_ART_BORDERS_WIDTH;
 			graphic.setFitWidth(coverArtLbl.getWidth() - bordersWidth);

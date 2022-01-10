@@ -16,10 +16,11 @@ public class OggDelegatePlayer extends AbstractDelegatePlayer {
 	
 	@Override
 	public boolean init(Audio audio) {
+		super.init(audio);
 		player.addListeners(listeners);
 		player.setAudio(audio);
-		onReady(audio, markUnsupported(copyMetadata(audio)));
-		return super.init(audio);
+		onReady(getCurrentAudio(), markUnsupported(copyMetadata(getCurrentAudio())));
+		return true;
 	}
 	
 	@Override
@@ -30,7 +31,7 @@ public class OggDelegatePlayer extends AbstractDelegatePlayer {
 			setAudioChanged(false);
 		}
 		onPlaying();
-		player.setPaused(false);
+//		player.setPaused(false);
 	}
 
 	@Override
@@ -46,11 +47,10 @@ public class OggDelegatePlayer extends AbstractDelegatePlayer {
 
 	@Override
 	public boolean reset() {
-		player.setPaused(false);
-		playService.cancel();
-		setCurrentAudio(null);
 		player.stop();
 		player.close();
+		playService.cancel();
+		setCurrentAudio(null);
 		onReset();
 		return false;
 	}

@@ -443,7 +443,7 @@ public final class MainView extends PlayerView {
 	
 	public void updateCoverArt(Image image, boolean applyTheme) {
 		//TODO
-		useDefaultCoverArt = (image == null);
+		useDefaultCoverArt = (image == null || image.isError());
 		image = useDefaultCoverArt ? Images.DEFAULT_COVER_ART : image;
 		ImageView graphic = new ImageView(image);
 		double size = 85;

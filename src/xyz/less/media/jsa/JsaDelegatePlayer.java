@@ -74,7 +74,7 @@ public final class JsaDelegatePlayer extends AbstractDelegatePlayer {
 	}
 	
 	private void onReady() {
-		onReady(currentAudio, markUnsupported(copyMetadata(currentAudio)));
+		onReady(getCurrentAudio(), markUnsupported(copyMetadata(currentAudio)));
 	}
 	
 	class PlayService extends Service<Void> {
@@ -141,7 +141,7 @@ public final class JsaDelegatePlayer extends AbstractDelegatePlayer {
 		
 		@Override
 		protected Void call() throws Exception {
-			doPlay(currentAudio);
+			doPlay(getCurrentAudio());
 			return null;
 		}
 		
@@ -245,7 +245,7 @@ public final class JsaDelegatePlayer extends AbstractDelegatePlayer {
 //				double seekTime = getSeekTime();
 				int writeBytes = line.write(srcBytes, 0, srcBytes.length);
 				if(writeBytes > 0) {
-					onCurrentChanged(current, currentAudio.getDuration());
+					onCurrentChanged(current, getCurrentAudio().getDuration());
 				}
 			}
 			closeLine();
