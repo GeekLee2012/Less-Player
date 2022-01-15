@@ -30,8 +30,8 @@ public class OggDelegatePlayer extends AbstractDelegatePlayer {
 			playService.restart();
 			setAudioChanged(false);
 		}
-		onPlaying();
-        player.setPaused(false);
+                player.setPaused(false);
+		onPlaying();   
 	}
 
 	@Override
