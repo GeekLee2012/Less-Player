@@ -8,6 +8,7 @@ public abstract class PlayerSkin extends Skin {
 	protected PlayerView playerView;
 	protected PlaylistView playlistView;
 	protected String name;
+	private boolean inited;
 	
 	public PlayerSkin(String name, PlayerView playerView) {
 		super(playerView.getMainStage());
@@ -43,9 +44,14 @@ public abstract class PlayerSkin extends Skin {
 	@Override
 	public void init() {
 		//TODO
+		if(inited) {
+			return ;
+		}
 		playerView.initGraph();
 		playerView.playFromArgs();
+		inited = true;
 	}
+	
 	
 	@Override
 	public void restore() {

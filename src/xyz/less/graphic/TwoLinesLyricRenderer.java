@@ -44,7 +44,7 @@ public class TwoLinesLyricRenderer {
 	
 	public TwoLinesLyricRenderer setOnNoLyric(Runnable action) {
 		if(action != null) {
-			this.noLyricAction = action;
+			noLyricAction = action;
 		}
 		return this;
 	}
@@ -78,7 +78,7 @@ public class TwoLinesLyricRenderer {
 	
 	private void doRender(double currentMinutes) {
 		if(!hasLyricDatas()) {
-			noLyricAction.run();
+			showNoLyric();
 			return ;
 		}
 		highlightLbl = line1;
@@ -101,6 +101,10 @@ public class TwoLinesLyricRenderer {
 		highlightLyric();
 	}
 	
+	public void showNoLyric() {
+		noLyricAction.run();
+	}
+
 	private void highlightLyric() {
 		Label[] lines = { line1, line2 };
 		Arrays.asList(lines).forEach(line -> {

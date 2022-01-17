@@ -484,13 +484,17 @@ public final class MainView extends PlayerView {
 	
 	private void loadLyric(Audio audio) {
 		//TODO
-		String source = audio.getSource();
-		int index = source.lastIndexOf(".");
-		String uri = source.substring(0, index) + Resources.LYRIC_SUFFIXES[0];
-		boolean hasLyric = loadLyric(uri);
-		
-		lyricBox.setVisible(hasLyric);
-		metadataBox.setVisible(!hasLyric);
+		if(audio != null) {
+			String source = audio.getSource();
+			int index = source.lastIndexOf(".");
+			String uri = source.substring(0, index) + Resources.LYRIC_SUFFIXES[0];
+			boolean hasLyric = loadLyric(uri);
+			lyricBox.setVisible(hasLyric);
+			metadataBox.setVisible(!hasLyric);
+		} else {
+			lyricBox.setVisible(false);
+			metadataBox.setVisible(true);
+		}
 	}
 
 	
@@ -534,9 +538,8 @@ public final class MainView extends PlayerView {
 	public void restore() {
 		boolean isPlaying = !getMediaPlayer().isNotPlaying();
 		updateOnPlaying(isPlaying);
-		if(isPlaying) {
-			updateOnReady(getCurrentAudio(), getCurrentMetadata());
-		}
+		updateOnReady(getCurrentAudio(), getCurrentMetadata());
+		updatePlaylistView();
 	}
 	
 }

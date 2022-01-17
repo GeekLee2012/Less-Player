@@ -40,6 +40,10 @@ public final class Guis {
 		return bySelector(selector, stage.getScene());
 	}
 	
+	public static <T> T byId(String id, Scene scene) {
+		return bySelector("#" + id, scene);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public static <T> T bySelector(String selector, Scene sence) {
 		return (T)sence.lookup(selector);

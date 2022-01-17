@@ -158,7 +158,7 @@ public final class MainView extends PlayerView {
 		Guis.addStyleClass("audio-artist", artistLbl);
 		Guis.addStyleClass("audio-album", albumLbl);
 		//Fix Bugs
-		titleLbl.setPrefWidth(getMainStage().getWidth());
+//		titleLbl.setPrefWidth(getMainStage().getWidth());
 	}
 	
 	private void initBottom() {
@@ -636,8 +636,10 @@ public final class MainView extends PlayerView {
 	public void restore() {
 		boolean isPlaying = !getMediaPlayer().isNotPlaying();
 		updateOnPlaying(isPlaying);
-		if(isPlaying) {
-			updateOnReady(getCurrentAudio(), getCurrentMetadata());
+		updateOnReady(getCurrentAudio(), getCurrentMetadata());
+		updatePlaylistView();
+		if(getCurrentAudio() == null) {
+			initHelpText();
 		}
 	}
 	

@@ -9,17 +9,17 @@ import javafx.stage.Stage;
 //起初想实现Skinable功能的，但能力有限，暂时搁置吧
 public abstract class Skin {
 	protected Stage mainStage;
+	protected Scene scene;
 	
 	public Skin(Stage mainStage) {
 		this.mainStage = mainStage;
 	}
 	
 	public Scene getRootScene() {
-		Scene scene = mainStage.getScene();
-		if(scene != null) {
-			return scene;
+		if(scene == null) {
+			scene = createRootScene();
 		}
-		return createRootScene();
+		return scene;
 	}
 	
 	public abstract void init();

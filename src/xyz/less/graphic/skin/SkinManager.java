@@ -1,33 +1,44 @@
 package xyz.less.graphic.skin;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javafx.stage.Stage;
 import xyz.less.bean.AppContext;
 
 //TODO
 public final class SkinManager {
+	private Map<String, Skin> cachedSkins = new HashMap<>();
 	
 	public Skin getSkin(String name) {
-		if(MiniSkin.NAME.equalsIgnoreCase(name)) {
-			return new MiniSkin();
+		Skin cached = cachedSkins.get(name);
+		if(cached == null) {
+			if(MiniSkin.NAME.equalsIgnoreCase(name)) {
+				cached = new MiniSkin();
+			} else {
+				cached = new SimpleSkin(); 
+			}
+			cachedSkins.put(name, cached);
 		}
-		return new SimpleSkin();
+		return cached;
 	}
 	
 	//TODO
 	public Skin switchToSkin(String name) {
-		getMainStage().hide();
 		Skin skin = getSkin(name);
-		AppContext.get().setSkinName(skin.getName());
-		getMainStage().setScene(skin.createRootScene());
-		getMainStage().centerOnScreen();
-		getMainStage().show();
+		reloadMainStage(skin);
 		skin.init();
 		skin.restore();
 		return skin;
 	}
 	
 	
-	private Stage getMainStage() {
-		return AppContext.get().getMainStage();
+	private void reloadMainStage(Skin skin) {
+		Stage mainStage = AppContext.get().getMainStage();
+		mainStage.hide();
+		mainStage.setScene(skin.getRootScene());
+		mainStage.centerOnScreen();
+		mainStage.show();
+		AppContext.get().setSkinName(skin.getName());
 	}
 }
