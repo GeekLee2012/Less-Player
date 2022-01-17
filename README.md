@@ -21,8 +21,8 @@
 * 播放器基本功能: 播放/暂停、上/下一首、进度条/播放时间、播放模式、音量控制等
 * 支持音频类型: mp3、flac、ogg、wav、aac、m4a
 * 界面: 主界面(包括歌曲信息、频谱、进度条、控制按钮等)、当前播放(列表)、歌词界面
-* 风格: 支持2套简约风格界面 (暂时不支持运行后随意切换，仅可以在启动时通过入参实现切换)
-* 动画: 在迷你风格界面下，歌曲专辑封面可支持自动旋转动画(需手动设置指定参数)
+* 风格: 支持2套简约风格界面，可在运行后随意切换
+* 动画: 在迷你风格界面下，歌曲专辑封面可支持自动旋转动画
 * PS: flac和ogg暂时不支持进度控制，部分wav可能不能播放(API受限)
 
 #### 界面预览  
@@ -36,14 +36,6 @@
 ![snap 06.png](https://github.com/GeekLee2012/Less-Player/blob/main/snapshot/snap%2006.png)  
 ![snap 07.png](https://github.com/GeekLee2012/Less-Player/blob/main/snapshot/snap%2007.png)  
 
-#### 启动参数设置（命令行参数）
-参数不区分大小写，设置方式请参考下图  
-![snap 00.png](https://github.com/GeekLee2012/Less-Player/blob/main/snapshot/snap%2000.png)  
-
-* 无参数: 普通风格(即风格1)  
-* -mini参数：Mini风格(即风格2)  
-* -mina参数：开启动画的Mini风格(即参数: -mini -anim的缩写)
-* -miniAll参数：开启动画和封面开孔效果(仿胶片?)的Mini风格(即开启相关的全部参数: -mini -anim -aperture)
 
 #### 其他
 * Release版本中所使用的.exe文件打包工具: exe4j  
