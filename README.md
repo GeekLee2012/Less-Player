@@ -36,6 +36,16 @@
 ![snap 06.png](https://github.com/GeekLee2012/Less-Player/blob/main/snapshot/snap%2006.png)  
 ![snap 07.png](https://github.com/GeekLee2012/Less-Player/blob/main/snapshot/snap%2007.png)  
 
+#### 开发说明
+目前版本将拆分模块，进行模块化开发，暂时不考虑引入Maven/Gradle等
+##### 源码目录
+* libs: 依赖库目录(第三方依赖)
+* src: 主模块源码根目录
+* Less-Player-xxx: 其他模块根目录
+
+##### 模块依赖
+PS: A -> B, 表示: A 依赖 B
+* 主模块 -> Less-Player-Api
 
 #### 其他
 * Release版本中所使用的.exe文件打包工具: exe4j  
