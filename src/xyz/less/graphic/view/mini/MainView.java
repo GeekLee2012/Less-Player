@@ -536,9 +536,8 @@ public final class MainView extends PlayerView {
 	
 	@Override
 	public void restore() {
-		boolean isPlaying = !getMediaPlayer().isNotPlaying();
-		updateOnPlaying(isPlaying);
-		updateOnReady(getCurrentAudio(), getCurrentMetadata());
+		initGraphDatas();
+		super.restore();
 		updatePlaylistView();
 	}
 	

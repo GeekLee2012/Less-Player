@@ -154,6 +154,9 @@ public abstract class PlayerView extends StackPane implements IMediaPlayerListen
 	
 	public void restore() {
 		//由子类重写
+		boolean isPlaying = !getMediaPlayer().isNotPlaying();
+		updateOnPlaying(isPlaying);
+		updateOnReady(getCurrentAudio(), getCurrentMetadata());
 	}
 	
 	protected void highlightPlaylist() {
