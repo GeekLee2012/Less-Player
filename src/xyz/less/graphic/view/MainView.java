@@ -419,11 +419,13 @@ public final class MainView extends PlayerView {
 	}
 	
 	private void initSpectrumView() {
-		spectrum = new RectangleSpectrum(66);
-		//Grid频谱样式
-//		spectrum = new GridSpectrum(32, 28);
-		spectrum.setSpacing(1);
-		spectrum.setAlignment(Pos.BOTTOM_CENTER);
+		Guis.ifNotPresent(spectrum, t -> {
+			spectrum = new RectangleSpectrum(66);
+			//Grid频谱样式
+//			spectrum = new GridSpectrum(32, 28);
+			spectrum.setSpacing(1);
+			spectrum.setAlignment(Pos.BOTTOM_CENTER);
+		});
 	}
 	
 	private void toggleSpectrumView() {
