@@ -10,9 +10,14 @@
 	-fx-background-color: #464646;
 	-fx-pref-width: 93;
 	-fx-pref-height: 93;
+	-fx-border-color: #464646;
 	-fx-border-width: 0;
 	-fx-background-radius: 99;
 	-fx-border-radius: 99;
+}
+
+.cover-art-fix {
+	-fx-border-width: 3 !important;
 }
 
 #cover_art {
