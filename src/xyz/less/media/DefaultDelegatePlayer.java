@@ -5,7 +5,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
 import javafx.util.Duration;
 import xyz.less.bean.Audio;
-import xyz.less.engine.MediaEngine;
+import xyz.less.service.MediaService;
 
 /**
  * 基于JavaFX MediaPlayer简单封装
@@ -14,7 +14,7 @@ public final class DefaultDelegatePlayer extends AbstractDelegatePlayer {
 	private MediaPlayer mediaPlayer;
 	
 	public DefaultDelegatePlayer() {
-		super(MediaEngine.SUFFIXES_1);
+		super(MediaService.SUFFIXES_1);
 	}
 	
 	@Override

@@ -72,6 +72,7 @@ public class RotateAnimation extends AnimationTimer {
 	
 	public void resetRotate() {
 		rotate = 0;
+		node.setRotate(0);
 	}
 	
 	private double toMills(double nanosec) {

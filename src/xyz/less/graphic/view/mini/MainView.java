@@ -180,10 +180,10 @@ public final class MainView extends PlayerView {
 		}, coverArtBox);
 		
 		logoMask.setOnMouseClicked(e -> {
-			getAppContext().getSkinManager().switchToSkin(SimpleSkin.NAME);
+			switchToSkin(SimpleSkin.NAME);
 		});
 		logoBtn.setOnMouseClicked(e -> {
-			getAppContext().getSkinManager().switchToSkin(SimpleSkin.NAME);
+			switchToSkin(SimpleSkin.NAME);
 		});
 		
 		
@@ -294,11 +294,6 @@ public final class MainView extends PlayerView {
 		return loadLyric(url);
 	}
 	
-	@Override
-	protected void onDndAudioFileSuccess() {
-		updatePlaylist();
-	}
-	
 	private void updateNoMediaText() {
 		showMetadataBox(true);
 		setInfoTextStyle(true);
@@ -319,6 +314,7 @@ public final class MainView extends PlayerView {
 	
 	private void doUpdateMetadata(Image cover, boolean applyTheme, String title, String artist) {
 		updateCoverArt(cover, applyTheme);
+		System.out.println(title + " : " + artist);
 		audioTitleLbl.setText(StringUtil.getDefault(title, Constants.UNKOWN_AUDIO));
 		audioArtistLbl.setText(StringUtil.getDefault(artist, Constants.UNKOWN_ARTIST));
 	}
@@ -367,6 +363,8 @@ public final class MainView extends PlayerView {
 	
 	//TODO
 	public void updateProgressBar(double current, double duration) {
+		current = (current > 0 ? current : 0);
+		double percent = duration > 0 ? current/duration : 0;
 		double r = getProgressArcRadius();
 		Arc arc = new Arc();
 		arc.setRadiusX(r);
@@ -374,7 +372,7 @@ public final class MainView extends PlayerView {
 		arc.setCenterX(r);
 		arc.setCenterY(r);
 		arc.setStartAngle(90);
-		arc.setLength(-360 * current/duration);
+		arc.setLength(-360 * percent);
 //		arc.setFill(Paint.valueOf("#1ca388"));
 		arc.setType(ArcType.ROUND);
 		audioProgress.setClip(arc);
@@ -417,6 +415,8 @@ public final class MainView extends PlayerView {
 	public void updateCoverArt(Image image, boolean applyTheme) {
 		//TODO
 		Guis.toggleStyleClass(applyTheme, "theme-fg", coverArtLbl);
+		Guis.toggleStyleClass(applyTheme, "cover-art-fix", coverArtProgressBox);
+		
 		useDefaultCoverArt = (image == null || image.isError());
 		image = useDefaultCoverArt ? Images.DEFAULT_COVER_ART : image;
 		ImageView graphic = new ImageView(image);

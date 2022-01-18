@@ -16,14 +16,15 @@ import xyz.less.async.AsyncServices;
 import xyz.less.bean.AppContext;
 import xyz.less.bean.Audio;
 import xyz.less.bean.Constants;
-import xyz.less.engine.PluginEngine;
 import xyz.less.graphic.Guis;
 import xyz.less.graphic.action.DndAction.DndContext;
 import xyz.less.graphic.handler.DefaultDndHandle;
 import xyz.less.graphic.handler.IDndHandle;
 import xyz.less.graphic.skin.PlayerSkin;
+import xyz.less.graphic.skin.Skin;
 import xyz.less.media.FxMediaPlayer;
 import xyz.less.media.IMediaPlayerListener;
+import xyz.less.service.PluginsService;
 import xyz.less.util.FileUtil;
 import xyz.less.util.StringUtil;
 
@@ -47,6 +48,10 @@ public abstract class PlayerView extends StackPane implements IMediaPlayerListen
 	
 	public FxMediaPlayer getMediaPlayer() {
 		return getAppContext().getMediaPlayer();
+	}
+	
+	public Skin switchToSkin(String skinName) {
+		return getAppContext().switchToSkin(skinName);
 	}
 	
 	public void setupMediaPlayer() {
@@ -225,7 +230,7 @@ public abstract class PlayerView extends StackPane implements IMediaPlayerListen
 	
 	@Override
 	public void onNoMedia() {
-		updateProgress(0, 0);
+		updateProgress(-1, -1);
 		updateOnPlaying(false);
 		updatePlaylist();
 	}
@@ -294,7 +299,7 @@ public abstract class PlayerView extends StackPane implements IMediaPlayerListen
 		private Future<?> updateFuture;
 		
 		public void enable(PlayerView view) {
-			PluginEngine.reload();
+//			PluginEngine.reloadDndPlugins();
 			Guis.addDndAction(view, ctx -> {
 				getDndHandle().handle(ctx);
 			});
@@ -356,6 +361,7 @@ public abstract class PlayerView extends StackPane implements IMediaPlayerListen
 				}
 				getMediaPlayer().getPlaylist().sort();
 				getMediaPlayer().play();
+				updatePlaylist();
 				updateFuture = getMediaPlayer().updateMetadatas();
 				onDndAudioFileSuccess();
 			}, null, () -> dndHandle.getContext().setSuccess(false));
@@ -392,18 +398,18 @@ public abstract class PlayerView extends StackPane implements IMediaPlayerListen
 	/****** DndPlugins ******/
 	private void onDndDone(Image image) {
 		onDndSuccess(image);
-		PluginEngine.getDndPlugin().onDndSuccess(image);
+		PluginsService.getDndPlugin().onDndSuccess(image);
 	}
 	
 	private void onDndDone(File file) {
-		PluginEngine.getDndPlugin().onDndDone(file);
+		PluginsService.getDndPlugin().onDndDone(file);
 	}
 	
 	private void onDndLinkDone(String url) {
-		PluginEngine.getDndPlugin().onDndLinkDone(url);
+		PluginsService.getDndPlugin().onDndLinkDone(url);
 	}
 	
 	private void onDndJarDone(File file) {
-		AsyncServices.submit(() -> PluginEngine.loadJar(file));
+		AsyncServices.submit(() -> PluginsService.loadJar(file));
 	}
 }

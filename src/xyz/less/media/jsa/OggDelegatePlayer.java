@@ -3,15 +3,15 @@ package xyz.less.media.jsa;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import xyz.less.bean.Audio;
-import xyz.less.engine.MediaEngine;
 import xyz.less.media.AbstractDelegatePlayer;
+import xyz.less.service.MediaService;
 
 public class OggDelegatePlayer extends AbstractDelegatePlayer {
 	private final PlayService playService = new PlayService();
 	private OggPlayer player = new OggPlayer();
 	
 	public OggDelegatePlayer() {
-		super(MediaEngine.SUFFIXES_3);
+		super(MediaService.SUFFIXES_3);
 	}
 	
 	@Override

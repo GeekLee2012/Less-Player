@@ -1,9 +1,9 @@
 package xyz.less.rpc;
 
 import java.io.IOException;
+import java.net.BindException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
-import java.nio.channels.AlreadyBoundException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
@@ -23,6 +23,10 @@ public final class RpcServer {
 	private ThreadLocal<RpcMessage> msgThreadLocal = new ThreadLocal<>();
 	
 	public RpcServer(int port) {
+		doInit(port);
+	}
+	
+	private void doInit(int port) {
 		boolean retry = false;
 		do {
 			retry = false;
@@ -39,7 +43,7 @@ public final class RpcServer {
 				ApiProvider.setRpcPort(addr.getPort());
 				
 				System.out.println("[Server] bind @" + addr.getPort());
-			} catch (AlreadyBoundException e) {
+			} catch (BindException e) {
 				e.printStackTrace();
 				retry = true;
 			} catch (Exception e) {
@@ -48,7 +52,7 @@ public final class RpcServer {
 			}
 		} while(retry);
 	}
-	
+
 	public void start() {
 		while(true) {
 			try {

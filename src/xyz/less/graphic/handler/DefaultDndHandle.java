@@ -5,9 +5,9 @@ import java.util.function.Consumer;
 
 import javafx.scene.image.Image;
 import xyz.less.bean.Resources;
-import xyz.less.engine.MediaEngine;
 import xyz.less.graphic.action.DndAction.DndContext;
 import xyz.less.graphic.action.DndAction.DndType;
+import xyz.less.service.MediaService;
 import xyz.less.util.FileUtil;
 
 public class DefaultDndHandle implements IDndHandle {
@@ -47,7 +47,7 @@ public class DefaultDndHandle implements IDndHandle {
 			context.setDndType(DndType.LYRIC);
 		} else if(FileUtil.isDirectory(file)) { //目录
 			context.setDndType(DndType.DIR);
-		} else if(MediaEngine.isSupportedAudioFile(file)) { //音频
+		} else if(MediaService.isSupportedAudioFile(file)) { //音频
 			context.setDndType(DndType.AUDIO);
 		} else if(Resources.isJar(file)) { //jar包
 			context.setDndType(DndType.JAR);

@@ -6,7 +6,7 @@ import javafx.stage.StageStyle;
 import xyz.less.bean.AppContext;
 import xyz.less.bean.Configuration;
 import xyz.less.graphic.Guis;
-import xyz.less.rpc.RpcService;
+import xyz.less.service.PluginsService;
 
 public final class Main extends Application {
 	
@@ -17,7 +17,7 @@ public final class Main extends Application {
 		AppContext context = AppContext.get();
 		context.setMainStage(mainStage);
 		context.switchToSkin(context.getSkinName());
-		RpcService.start();
+		PluginsService.start();
 	}
 	
 	private static void initContext(String[] args) {

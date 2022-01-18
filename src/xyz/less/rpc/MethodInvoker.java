@@ -8,15 +8,27 @@ import javafx.application.Platform;
 public class MethodInvoker {
 	private String methodName;
 	private Object[] args;
+	private Throwable exception;
 	@SuppressWarnings("unused")
 	private Class<?> returnType;
-	private Throwable exception;
 	
 	public MethodInvoker(String methodName, Object[] args, Class<?> returnType) {
 		super();
 		this.methodName = methodName;
 		this.args = args;
 		this.returnType = returnType;
+	}
+	
+	public void setException(Throwable exception) {
+		this.exception = exception;
+	}
+	
+	public Throwable getException() {
+		return exception;
+	}
+	
+	public boolean success() {
+		return exception == null;
 	}
 
 	public Object invoke(Object target) throws Exception {
@@ -46,18 +58,6 @@ public class MethodInvoker {
 			argTypes[i++] = arg.getClass();
 		}
 		return argTypes;
-	}
-	
-	public void setException(Throwable exception) {
-		this.exception = exception;
-	}
-	
-	public Throwable getException() {
-		return exception;
-	}
-	
-	public boolean success() {
-		return exception == null;
 	}
 	
 }

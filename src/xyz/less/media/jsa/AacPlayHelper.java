@@ -8,7 +8,7 @@ import net.sourceforge.jaad.aac.Decoder;
 import net.sourceforge.jaad.aac.SampleBuffer;
 import net.sourceforge.jaad.adts.ADTSDemultiplexer;
 import xyz.less.bean.Audio;
-import xyz.less.engine.MediaEngine;
+import xyz.less.service.MediaService;
 
 /**
  * 备用AAC Player
@@ -23,7 +23,7 @@ public final class AacPlayHelper implements IPlayHelper {
 	
 	public AacPlayHelper(Audio audio) {
 		try {
-			stream = MediaEngine.getInputStream(audio);
+			stream = MediaService.getInputStream(audio);
 			adts = new ADTSDemultiplexer(stream);
 			decoder = new Decoder(adts.getDecoderSpecificInfo());
 			firstBytes = readNext();

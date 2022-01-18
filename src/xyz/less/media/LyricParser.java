@@ -118,9 +118,19 @@ public class LyricParser {
 		}
 		String value = list.get(count - 1);
 		for(int i = 0; i < list.size() - 1; i++) {
-			lyric.getDatas().put(unifyTime(list.get(i)), value);
+			String time = list.get(i);
+			if(isValidTime(time)) {
+				lyric.getDatas().put(unifyTime(time), value);
+			}
 		}
 		return ;
+	}
+
+	//TODO Regex
+	private boolean isValidTime(String time) {
+		time = StringUtil.trim(time);
+		String[] parts = time.split(":");
+		return parts.length == 2;
 	}
 
 	private boolean isTimeDataTag(String line) {

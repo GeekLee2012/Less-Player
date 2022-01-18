@@ -12,8 +12,8 @@ import javafx.concurrent.Task;
 import xyz.less.bean.AppContext;
 import xyz.less.bean.Audio;
 import xyz.less.bean.Resources;
-import xyz.less.engine.MediaEngine;
 import xyz.less.media.AbstractDelegatePlayer;
+import xyz.less.service.MediaService;
 
 /**
  * 基于Java Sound API的MediaPlayer
@@ -25,8 +25,8 @@ public final class JsaDelegatePlayer extends AbstractDelegatePlayer {
 	private volatile boolean paused = true;
 	
 	public JsaDelegatePlayer() {
-		super(MediaEngine.SUFFIXES_2);
-		addSuffixes(MediaEngine.getAudioSystemSupportedTypes());
+		super(MediaService.SUFFIXES_2);
+		addSuffixes(MediaService.getAudioSystemSupportedTypes());
 	}
 	
 	@Override

@@ -116,6 +116,7 @@ public class LyricView extends StageView {
 			setCurrentAudio(audio);
 			loadLyric(currentAudio.getSource());
 		} else {
+			lyricRenderer.reset();
 			lyricRenderer.showNoLyric();
 		}
 	}

@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javafx.scene.control.Label;
+import xyz.less.bean.AppContext;
 import xyz.less.bean.Constants;
 import xyz.less.bean.Lyric;
 import xyz.less.util.DateUtil;
@@ -76,7 +77,7 @@ public class TwoLinesLyricRenderer {
 		}
 	}
 	
-	private void doRender(double currentMinutes) {
+	private void doRender(double currentMinutes) throws Exception {
 		if(!hasLyricDatas()) {
 			showNoLyric();
 			return ;
@@ -135,6 +136,9 @@ public class TwoLinesLyricRenderer {
 		for(int i = 0; i < size; i++) {
 			String key = timeKeyList.get(i);
 			double minutes = DateUtil.toMinutes(key);
+			if(minutes < 0) {
+				continue ;
+			}
 			double lyricTime = minutes + offsetMinutes;
 			if (currentMinutes < lyricTime) {
 				return i > 1 ? i - 1 : 0; 
@@ -153,7 +157,12 @@ public class TwoLinesLyricRenderer {
 	}
 	
 	public boolean hasLyricDatas() {
-		return timeKeyList.size() > 0;
+		return isAudioExist() && timeKeyList.size() > 0;
+	}
+	
+	private boolean isAudioExist() {
+		return AppContext.get().getMediaPlayer()
+				.getCurrentAudio() != null;
 	}
 	
 	protected void setNoLyricText() {

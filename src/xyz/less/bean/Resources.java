@@ -4,7 +4,7 @@ import java.io.File;
 import java.net.URL;
 
 import javafx.scene.image.Image;
-import xyz.less.engine.ResourcesEngine;
+import xyz.less.service.ResourcesService;
 import xyz.less.util.FileUtil;
 import xyz.less.util.StringUtil;
 
@@ -109,15 +109,15 @@ public final class Resources {
 	}
 	
 	public static URL fxml(String name) {
-		return ResourcesEngine.getFxml(name);
+		return ResourcesService.getFxml(name);
 	}
 	
 	public static String css(String name) {
-		return ResourcesEngine.getStyle(name);
+		return ResourcesService.getStyle(name);
 	}
 	
 	public static Image image(String name) {
-		return ResourcesEngine.getImage(name);
+		return ResourcesService.getImage(name);
 	}
 	
 	private static Image png(String name) {

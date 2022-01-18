@@ -8,7 +8,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
 import xyz.less.bean.Audio;
-import xyz.less.engine.MediaEngine;
+import xyz.less.service.MediaService;
 
 public final class DefaultPlayHelper implements IPlayHelper {
 	private AudioInputStream audioStream;
@@ -17,7 +17,7 @@ public final class DefaultPlayHelper implements IPlayHelper {
 	
 	public DefaultPlayHelper(Audio audio) {
 		try {
-			stream = MediaEngine.getInputStream(audio);
+			stream = MediaService.getInputStream(audio);
 			audioStream = AudioSystem.getAudioInputStream(stream);
 		} catch (Exception e) {
 			e.printStackTrace();

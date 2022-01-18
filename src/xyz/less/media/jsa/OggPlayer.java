@@ -27,9 +27,9 @@ import com.jcraft.jorbis.DspState;
 import com.jcraft.jorbis.Info;
 
 import xyz.less.bean.Audio;
-import xyz.less.engine.MediaEngine;
 import xyz.less.media.AbstractDelegatePlayer;
 import xyz.less.media.IMediaPlayerListener;
+import xyz.less.service.MediaService;
 
 /**
  * 
@@ -548,7 +548,7 @@ public class OggPlayer {
 	public void setAudio(Audio audio) {
 		this.audio = audio;
 		try {
-			changeStream(MediaEngine.getInputStream(audio));
+			changeStream(MediaService.getInputStream(audio));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

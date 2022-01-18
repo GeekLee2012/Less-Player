@@ -14,7 +14,7 @@ import xyz.less.async.AsyncServices;
 import xyz.less.async.FileScanTask;
 import xyz.less.bean.Audio;
 import xyz.less.bean.Resources;
-import xyz.less.engine.MediaEngine;
+import xyz.less.service.MediaService;
 import xyz.less.util.FileUtil;
 import xyz.less.util.StringUtil;
 
@@ -57,11 +57,11 @@ public class Playlist {
 		return AsyncServices.submit(new FileScanTask(
 				StringUtil.toSlash(dir.getAbsolutePath()), 
 				file -> addFromFile(file), 
-				MediaEngine.ALL_SUFFIXES));
+				MediaService.ALL_SUFFIXES));
 	}
 	
 	private void addFromFile(File file) {
-		if(!MediaEngine.isSupportedAudioFile(file)) {
+		if(!MediaService.isSupportedAudioFile(file)) {
 			return ;
 		}
 		try {

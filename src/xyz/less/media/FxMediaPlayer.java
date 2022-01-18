@@ -15,8 +15,8 @@ import xyz.less.api.provider.PlaylistApiProvider;
 import xyz.less.async.AsyncServices;
 import xyz.less.bean.Audio;
 import xyz.less.bean.Constants;
-import xyz.less.engine.MediaEngine;
 import xyz.less.media.PlaybackQueue.PlayMode;
+import xyz.less.service.MediaService;
 
 //TODO 不知道写成了个啥！！！
 public final class FxMediaPlayer implements IMediaPlayerListener, IExportable {
@@ -204,7 +204,7 @@ public final class FxMediaPlayer implements IMediaPlayerListener, IExportable {
 		if(delegatePlayer != null) {
 			delegatePlayer.reset();
 		}
-		delegatePlayer = MediaEngine.select(getCurrentAudio());
+		delegatePlayer = MediaService.select(getCurrentAudio());
 		doSetDelegateVolume();
 		delegatePlayer.addListener(this);
 		delegatePlayer.setMediaView(mediaView);

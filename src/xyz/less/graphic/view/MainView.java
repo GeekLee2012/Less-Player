@@ -143,7 +143,7 @@ public final class MainView extends PlayerView {
 		
 		miniSkinBtn.setOnMouseClicked(e -> {
 			toggleLyricView(false);
-			getAppContext().getSkinManager().switchToSkin(MiniSkin.NAME);
+			switchToSkin(MiniSkin.NAME);
 		});
 		
 		pinBtn.setOnMouseClicked(e -> {
@@ -362,11 +362,6 @@ public final class MainView extends PlayerView {
 		return loadLyric(url);
 	}
 	
-	@Override
-	protected void onDndAudioFileSuccess() {
-		updatePlaylist();
-	}
-	
 	private void doUpdateOnDndFailed() {
 		resetPlaylistView();
 		getMediaPlayer().resetPlaybackQueue(true);
@@ -433,9 +428,12 @@ public final class MainView extends PlayerView {
 	}
 
 	private void updateLyricView(double current) {
-		this.currentMinutes = current;
+		this.currentMinutes = (current > 0 ? current : 0);
 		Guis.ifPresent(lyricView != null && lyricView.isShowing(), 
 				t -> lyricView.updateGraph(current));
+		if(current < 0) {
+			Guis.ifPresent(lyricView, t -> lyricView.hide());
+		}
 	}
 	
 	private void initSpectrumView() {
@@ -514,12 +512,13 @@ public final class MainView extends PlayerView {
 	
 	public void updateProgressBar(double current, double duration) {
 		progressBar.setSeekable(getMediaPlayer().isSeekable());
-		if(duration > 0) {
-			progressBar.updateProgress(current/duration);
-		}
+		double percent = duration > 0 ? (current/duration) : 0;
+		progressBar.updateProgress(percent);
 	}
 	
 	public void updateTimeText(double current, double duration) {
+		current = current > 0 ? current : 0; 
+		duration = duration > 0 ? duration : 0; 
 		timeLbl.setText(String.format(Constants.CURRENT_DURATION_FORMAT, 
 				StringUtil.toMmss(current),
 				StringUtil.toMmss(duration)));
@@ -559,6 +558,10 @@ public final class MainView extends PlayerView {
 		
 		doUpdateMetadata(image, false, title, artist, album);
 		updateAppTitle();
+	}
+	
+	public void updateCoverArt(Image image) {
+		updateCoverArt(image, false);
 	}
 	
 	//TODO

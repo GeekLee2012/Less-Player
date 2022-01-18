@@ -10,7 +10,7 @@ import org.kc7bfi.jflac.metadata.StreamInfo;
 import org.kc7bfi.jflac.util.ByteData;
 
 import xyz.less.bean.Audio;
-import xyz.less.engine.MediaEngine;
+import xyz.less.service.MediaService;
 
 public final class FlacPlayHelper implements IPlayHelper {
 	private FLACDecoder decoder;
@@ -18,7 +18,7 @@ public final class FlacPlayHelper implements IPlayHelper {
 	
 	public FlacPlayHelper(Audio audio) {
 		try {
-			decoder = new FLACDecoder(MediaEngine.getInputStream(audio));
+			decoder = new FLACDecoder(MediaService.getInputStream(audio));
 			stream = decoder.getBitInputStream();		} catch (Exception e) {
 			e.printStackTrace();
 		}
