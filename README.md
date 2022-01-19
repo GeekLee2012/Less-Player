@@ -36,7 +36,7 @@
 ![snap 06.png](https://github.com/GeekLee2012/Less-Player/blob/main/snapshot/snap%2006.png)  
 ![snap 07.png](https://github.com/GeekLee2012/Less-Player/blob/main/snapshot/snap%2007.png)  
 
-#### 开发说明
+#### 开发者说
 目前版本将拆分模块，进行模块化开发，暂时不考虑引入Maven/Gradle等  
 PS：关于目前和后期开发计划 (bushi计划)，请参考TODO.md
 
