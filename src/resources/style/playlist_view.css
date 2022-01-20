@@ -40,6 +40,7 @@
 
 #playlist_view .list-view .list-cell .label {
 	-fx-padding: 5 0;
+	-fx-font-size: 15;
 }
 
 #playlist_view .scroll-bar {
