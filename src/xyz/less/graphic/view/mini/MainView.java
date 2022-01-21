@@ -314,7 +314,6 @@ public final class MainView extends PlayerView {
 	
 	private void doUpdateMetadata(Image cover, boolean applyTheme, String title, String artist) {
 		updateCoverArt(cover, applyTheme);
-		System.out.println(title + " : " + artist);
 		audioTitleLbl.setText(StringUtil.getDefault(title, Constants.UNKOWN_AUDIO));
 		audioArtistLbl.setText(StringUtil.getDefault(artist, Constants.UNKOWN_ARTIST));
 	}

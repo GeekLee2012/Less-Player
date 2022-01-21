@@ -33,11 +33,12 @@ import xyz.less.util.StringUtil;
  */
 public final class MainView extends PlayerView {
 	private Label mainTitleLbl;
-	private Label timeLbl;
+	private BorderPane mainCenterPane;
 	private Label coverArtLbl;
 	private Label titleLbl;
 	private Label artistLbl;
 	private Label albumLbl;
+	private Label timeLbl;
 	private ImageView defaultCoverArt;
 	private ProgressBar progressBar;
 	private ImageView lyricBtn;
@@ -63,6 +64,8 @@ public final class MainView extends PlayerView {
 	private ISpectrum spectrum;
 	private boolean spectrumOn;
 	private SpectrumManager spectrumMgr;
+	private EventHandler<? super MouseEvent> prevSpHandler;
+	private EventHandler<? super MouseEvent> nextSpHandler;
 	
 	public MainView(double width, double height) {
 		super(width, height);
@@ -163,6 +166,8 @@ public final class MainView extends PlayerView {
 	}
 	
 	private void initCenter() {
+		mainCenterPane = byId("main_center");
+		
 		coverArtLbl = byId("cover_art");
 		titleLbl = byId("audio_title");
 		artistLbl = byId("audio_artist");
@@ -175,6 +180,12 @@ public final class MainView extends PlayerView {
 		Guis.addStyleClass("audio-album", albumLbl);
 		//Fix Bugs
 //		titleLbl.setPrefWidth(getMainStage().getWidth());
+		
+		mainCenterPane.centerProperty().addListener((o, ov, nv) -> {
+			if(nv instanceof ISpectrum) {
+				nv.setOnMouseClicked(nextSpHandler);
+			}
+		});
 	}
 	
 	private void initBottom() {
@@ -439,21 +450,30 @@ public final class MainView extends PlayerView {
 		Guis.ifNotPresent(spectrum, t -> {
 			spectrum = spectrumMgr.next();
 		});
-	}
-	
-	private void toggleSpectrumView() {
-		BorderPane mainCenterPane = byId("main_center");
-		mainCenterPane.setCenter(spectrumOn ? spectrum.toNode() : audioMetaBox);
-		EventHandler<? super MouseEvent> handler = null;
-		if(spectrumOn) {
-			handler = (MouseEvent e) -> {
+		
+		Guis.ifNotPresent(prevSpHandler, t -> {
+			prevSpHandler = (MouseEvent e) -> {
+				if(e.getClickCount() > 1 && spectrumMgr != null) {
+					spectrum = spectrumMgr.prev();
+					mainCenterPane.setCenter(spectrum.toNode());
+				}
+			};
+		});
+		
+		Guis.ifNotPresent(nextSpHandler, t -> {
+			nextSpHandler = (MouseEvent e) -> {
 				if(e.getClickCount() > 1 && spectrumMgr != null) {
 					spectrum = spectrumMgr.next();
 					mainCenterPane.setCenter(spectrum.toNode());
 				}
 			};
-		}
-		mainCenterPane.setOnMouseClicked(handler);
+		});
+		
+	}
+	
+	private void toggleSpectrumView() {
+		mainCenterPane.setCenter(spectrumOn ? spectrum.toNode() : audioMetaBox);
+		mainCenterPane.getLeft().setOnMouseClicked(spectrumOn ? prevSpHandler : null);
 		updateSpectrumBtn();
 		updateAppTitle();
 	}

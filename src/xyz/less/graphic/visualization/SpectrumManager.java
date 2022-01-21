@@ -17,8 +17,18 @@ public final class SpectrumManager {
 		CLS_LIST.add(RhythmSpectrum.class);
 	}
 	
+	public ISpectrum prev() {
+		return byIndex(--index);
+	}
+	
 	public ISpectrum next() {
-		index = (++index) % CLS_LIST.size();
+		return byIndex(++index);
+	}
+	
+	private ISpectrum byIndex(int value) {
+		//循环
+		value = value >= 0 ? value : CLS_LIST.size() - 1;
+		index = value % CLS_LIST.size();
 		return getSpectrum(CLS_LIST.get(index));
 	}
 	
