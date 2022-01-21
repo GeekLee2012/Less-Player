@@ -25,7 +25,7 @@
 	-fx-stroke: #464646;
 }
 
-.rhythm-region {
+.circle-region {
 	-fx-max-width: 6;
 	-fx-max-height: 6;
 	-fx-background-color: #1ca388; /*#acd*/
