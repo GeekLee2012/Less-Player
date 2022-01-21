@@ -1,0 +1,26 @@
+@import url("common.css");
+
+#lyric_view {
+	-fx-background-color: #313131;
+	/* -fx-background-color: transparent; */
+	/* -fx-background-image: url('/resources/images/AIMP_GOM_bg4.png'); */
+	-fx-padding: 5 5 25 5;
+}
+
+#lyric_view .label {
+	-fx-padding: 2 10;
+}
+
+#top_nav {
+	-fx-pref-height: 20;
+}
+
+.lyric-line {
+	-fx-font-size: 25;
+	-fx-font-weight: bold;
+}
+
+.lyric-line-current {
+	-fx-font-size: 30;
+	-fx-text-fill: #1ca388;
+}

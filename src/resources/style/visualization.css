@@ -1,0 +1,36 @@
+.rectangle-spectrum, .grid-spectrum, .polyline-spectrum {
+	-fx-background-color: transparent;
+	-fx-background-radius: 3;
+	-fx-padding: 0 0 3 5;
+}
+
+.sp-rectangle {
+	-fx-background-color: #1ca388;
+	-fx-fill: #1ca388 !important;
+}
+
+.grid-spectrum {
+	-fx-background-color: transparent;
+	-fx-background-radius: 3;
+	-fx-padding: 0 0 0 10;
+}
+
+.grid-rectangle {
+	-fx-fill: transparent;
+	-fx-stroke: #46464659; 
+}
+
+.sp-polyline {
+	-fx-fill: #1ca388;
+	-fx-stroke: #464646;
+}
+
+.rhythm-region {
+	-fx-max-width: 6;
+	-fx-max-height: 6;
+	-fx-background-color: #1ca388; /*#acd*/
+	-fx-border-width: 0.5;
+	-fx-border-color: #464646;
+	-fx-border-radius: 5;
+	-fx-background-radius: 5;
+}
