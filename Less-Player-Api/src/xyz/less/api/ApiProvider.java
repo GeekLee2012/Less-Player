@@ -12,7 +12,7 @@ import xyz.less.rpc.RpcClient;
 import xyz.less.rpc.RpcInvoker;
 
 public final class ApiProvider {
-	private static int rpcPort = Constants.RPC_PORT;
+	private static int rpcPort = Constants.DEFAULT_RPC_PORT;
 	private static Map<Class<?>, RpcClient> cachedClients = new HashMap<>();
 	
 	@SuppressWarnings("unchecked")

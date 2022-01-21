@@ -15,14 +15,14 @@ import xyz.less.util.StringUtil;
 public class FileScanTask extends RecursiveAction {
 	private static final long serialVersionUID = 1L;
 	
-	private String scanPathUri;
-	private List<File> result = new ArrayList<>();
+	private String scanUri;
+//	private List<File> result = new ArrayList<>();
 	private Consumer<File> consumer;
 	private String[] suffixes;
 	private List<FileScanTask> subTaskList;
 	
-	public FileScanTask(String scanPathUri, Consumer<File> consumer, String... suffixes) {
-		this.scanPathUri = scanPathUri;
+	public FileScanTask(String uri, Consumer<File> consumer, String... suffixes) {
+		this.scanUri = uri;
 		this.consumer = consumer;
 		this.suffixes = suffixes;
 	}
@@ -31,10 +31,10 @@ public class FileScanTask extends RecursiveAction {
 	protected void compute() {
 		subTaskList = new ArrayList<>();
 		
-		if(StringUtil.isBlank(scanPathUri)) {
+		if(StringUtil.isBlank(scanUri)) {
 			return ;
 		}
-		Path path = Paths.get(scanPathUri);
+		Path path = Paths.get(scanUri);
 		if(!Files.exists(path)) {
 			return ;
 		}
@@ -42,14 +42,12 @@ public class FileScanTask extends RecursiveAction {
 		for(File file : fileList) {
 			if(file.isDirectory()) {
 				FileScanTask task = new FileScanTask(file.getAbsolutePath(), consumer, this.suffixes);
-				//task.fork();
 				subTaskList.add(task);
 			} else if(FileUtil.isSuffixSupported(file.getName(), suffixes)) {
-				this.result.add(file);
+//				this.result.add(file);
 				if(consumer != null) {
 					consumer.accept(file);
 				}
-//				System.out.println(file.getAbsolutePath());
 			}
 		}
 		

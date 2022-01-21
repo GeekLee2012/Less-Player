@@ -80,7 +80,7 @@ public class AsyncServices {
 	}
 	
 	public static Runnable wrapTask2RunLater(Runnable task) {
-		return () -> runLater(task);
+		return task != null ? () -> runLater(task) : null;
 	}
 	
 	private static void doInvoke(Runnable task) {

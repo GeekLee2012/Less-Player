@@ -32,7 +32,7 @@ public final class FileUtil {
 	}
 	
 	public static boolean isSuffixSupported(String name, String... suffixes) {
-		if(suffixes == null) {
+		if(suffixes == null || suffixes.length < 1) {
 			return true;
 		}
 		for(String suffix : suffixes) {
