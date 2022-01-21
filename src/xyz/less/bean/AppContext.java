@@ -61,7 +61,7 @@ public final class AppContext {
 		if(mediaPlayer == null) {
 			mediaPlayer = new FxMediaPlayer();
 			mediaPlayer.setMediaView(new MediaView());
-			mediaPlayer.setVolume(Constants.INITIAL_VOLUME);
+			mediaPlayer.setVolume(Constants.DEFAULT_VOLUME);
 			mediaPlayer.setPlayMode(PlayMode.SHUFFLE);
 		}
 		return mediaPlayer;

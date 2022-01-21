@@ -10,7 +10,7 @@ import xyz.less.bean.Constants;
 import xyz.less.bean.Lyric;
 import xyz.less.util.DateUtil;
 
-//TODO LyricRender
+//TODO 抽象LyricRender
 public class TwoLinesLyricRenderer {
 	private Label line1;
 	private Label line2;

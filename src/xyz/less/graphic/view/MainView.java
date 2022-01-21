@@ -194,7 +194,6 @@ public final class MainView extends PlayerView {
 		progressBar = byId("progress_bar");
 		timeLbl = byId("audio_time");
 		lyricBtn = byId("lyric_btn");
-		
 		spectrumBtn = byId("spectrum_btn");
 		
 		repeatBtn = byId("repeat_btn");
@@ -242,10 +241,10 @@ public final class MainView extends PlayerView {
 		});
 		
 		spectrumBtn.setOnMouseClicked(e -> {
-			if(getMediaPlayer().isInit()) {
+			Guis.ifPresent(getCurrentAudio(), t -> {
 				spectrumOn = !spectrumOn;
 				toggleSpectrumView();
-			}
+			});
 		});
 		
 		repeatBtn.setOnMouseClicked(e -> {
@@ -303,15 +302,18 @@ public final class MainView extends PlayerView {
 
 	@Override
 	protected void initDatas() {
-		setAppTitle(Constants.APP_TITLE_DEFAULT_MODE);
+		setAppTitle(Constants.APP_TITLE);
 		addIcons(Images.LOGO);
+		
 		volumeSlider.setValue(getMediaPlayer().getVolume());
 		updateVolumeBtn(volumeSlider.getValue());
 		updatePlayModeBtn();
+		
 		initLyricView();
 		initPlaylistView();
 		initSpectrumView();
 		updateProgress(-1, -1);
+		
 		initHelpText();
 	}
 	
@@ -486,7 +488,7 @@ public final class MainView extends PlayerView {
 					: Constants.APP_TITLE_DEV_MODE;
 		} 
 		return spectrumOn ? Constants.PLAYING_PREFIX + result 
-				: Constants.APP_TITLE_DEFAULT_MODE;
+				: Constants.APP_TITLE;
 	}
 
 	private void initPlaylistView() {
@@ -691,9 +693,8 @@ public final class MainView extends PlayerView {
 	
 	@Override
 	protected void onRestore() {
-		if(isNoMedia()) {
-			initHelpText();
-		}
+		Guis.ifNotPresent(getCurrentAudio(), e -> initHelpText());
+		Guis.ifPresent(spectrumOn, e -> toggleSpectrumView());
 	}
 	//TODO Bug: 打包成exe文件执行时，
 	//从最小化状态中还原为正常显示状态时，

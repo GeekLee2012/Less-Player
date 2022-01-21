@@ -13,16 +13,19 @@ public final class SkinManager {
 	public Skin getSkin(String name) {
 		Skin cached = cachedSkins.get(name);
 		if(cached == null) {
-			if(MiniSkin.NAME.equalsIgnoreCase(name)) {
-				cached = new MiniSkin();
-			} else {
-				cached = new SimpleSkin(); 
-			}
-			cachedSkins.put(name, cached);
+			cached = getInstance(name);
+			cachedSkins.put(cached.getName(), cached);
 		}
 		return cached;
 	}
 	
+	private Skin getInstance(String name) {
+		if(MiniSkin.NAME.equalsIgnoreCase(name)) {
+			return new MiniSkin();
+		}
+		return new SimpleSkin();
+	}
+
 	//TODO
 	public Skin switchToSkin(String name) {
 		Skin skin = getSkin(name);
@@ -32,10 +35,10 @@ public final class SkinManager {
 	
 	private boolean reloadMainStage(Skin skin) {
 		Stage mainStage = AppContext.get().getMainStage();
-		if(mainStage.isShowing()) {
+		boolean isReload = (mainStage.getScene() != null);
+		if(isReload) {
 			mainStage.hide();
 		}
-		boolean isReload = (mainStage.getScene() != null);
 		mainStage.setScene(skin.getRootScene());
 		mainStage.centerOnScreen();
 		mainStage.show();

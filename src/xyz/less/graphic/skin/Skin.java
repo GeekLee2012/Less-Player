@@ -8,7 +8,7 @@ import javafx.scene.Scene;
 //起初想实现Skinable功能的，但能力有限，暂时搁置吧
 public abstract class Skin {
 	private String name;
-	protected boolean isInit;
+	private boolean isInit;
 	protected Scene scene;
 	
 	public Skin(String name) {
@@ -26,17 +26,14 @@ public abstract class Skin {
 		return scene;
 	}
 	
-	public boolean isInit() {
-		return isInit;
-	}
-	
 	public Skin load() {
 		return load(false);
 	}
 	
 	public Skin load(boolean isReload) {
-		if(!isInit()) {
+		if(!isInit) {
 			init();
+			isInit = true;
 		}
 		if(isReload) {
 			restore();

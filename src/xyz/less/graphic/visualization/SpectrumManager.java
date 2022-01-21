@@ -14,7 +14,7 @@ public final class SpectrumManager {
 		CLS_LIST.add(RectangleSpectrum.class);
 		CLS_LIST.add(GridSpectrum.class);
 		CLS_LIST.add(PolyLineSpectrum.class);
-		CLS_LIST.add(RhythmSpectrum.class);
+		CLS_LIST.add(CircleSpectrum.class);
 	}
 	
 	public ISpectrum prev() {
@@ -47,12 +47,10 @@ public final class SpectrumManager {
 			return new GridSpectrum(32, 28);
 		} else if(cls == PolyLineSpectrum.class){
 			return new PolyLineSpectrum(66, 405); 
-		} else if(cls == RhythmSpectrum.class){
-			return new RhythmSpectrum(50, 36); 
+		} else if(cls == CircleSpectrum.class){
+			return new CircleSpectrum(50, 36); 
 		}
 		return new RectangleSpectrum(66);
 	}
-	
-	
 	
 }

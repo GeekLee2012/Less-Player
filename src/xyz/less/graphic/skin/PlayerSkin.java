@@ -37,7 +37,6 @@ public abstract class PlayerSkin extends Skin {
 		//TODO
 		playerView.initGraph();
 		playerView.playFromArgs();
-		isInit = true;
 	}
 	
 	

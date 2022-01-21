@@ -63,10 +63,6 @@ public abstract class PlayerView extends StackPane implements IMediaPlayerListen
 		return getMediaPlayer().getCurrentAudio();
 	}
 	
-	public boolean isNoMedia() {
-		return getCurrentAudio() == null;
-	}
-	
 	public Map<String, Object> getCurrentMetadata() {
 		return getMediaPlayer().getCurrentMetadata();
 	}
@@ -173,7 +169,7 @@ public abstract class PlayerView extends StackPane implements IMediaPlayerListen
 	}
 	
 	public void setAppTitle() {
-		getMainStage().setTitle(Constants.APP_TITLE);
+		getMainStage().setTitle(Constants.APP_NAME);
 	}
 	
 	

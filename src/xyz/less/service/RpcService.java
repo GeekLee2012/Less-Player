@@ -9,7 +9,7 @@ public final class RpcService {
 
 	//TODO
 	public static void start() {
-		RpcServer server = new RpcServer(Constants.RPC_PORT);
+		RpcServer server = new RpcServer(Constants.DEFAULT_RPC_PORT);
 		Runtime.getRuntime().addShutdownHook(new Thread(()-> {
 			server.close();
 		}));
