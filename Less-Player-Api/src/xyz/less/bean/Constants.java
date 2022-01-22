@@ -7,9 +7,9 @@ public final class Constants {
 	//TODO
 	public final static String APP_NAME = "Less Player";
 	public final static String APP_TITLE = "Less Player, Less is More !";
-	public final static String DEV_MODE_PREFIX = "[开发者模式]"; 
-	public final static String APP_TITLE_DEV_MODE = DEV_MODE_PREFIX + " Less Player, More is Less ! ";
-	public final static String PLAYING_PREFIX = ""; //正在播放: 
+	public final static String BACK_MODE_PREFIX = "[TEST]"; //背面
+	public final static String APP_TITLE_BACK_MODE = BACK_MODE_PREFIX + " Less Player, More is Less ! ";
+	public final static String PLAYING_PREFIX = APP_NAME + " - "; //正在播放: 
 	
 	public final static double DEFAULT_VOLUME = 0.5;
 
