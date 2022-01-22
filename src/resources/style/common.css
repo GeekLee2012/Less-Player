@@ -39,11 +39,11 @@
 	-fx-cursor: hand;
 }
 
-.dev-mode-bg {
+.back-mode-bg {
 	-fx-background-color: #ec4141;
 }
 
-.dev-mode-text {
+.back-mode-text {
 	-fx-text-fill: #ec4141 !important;
 }
 
