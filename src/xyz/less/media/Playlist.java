@@ -28,7 +28,7 @@ public final class Playlist {
 	
 	public Playlist sort() {
 		audioList.sort((o1, o2)-> o1.compareTo(o2));
-		audioList.forEach(o -> System.out.println(o.getSource()));
+		//audioList.forEach(o -> System.out.println(o.getSource()));
 		return this;
 	}
 	
