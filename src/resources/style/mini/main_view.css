@@ -85,12 +85,10 @@
 }
 
 #logo_mask {
-	-fx-pref-width: 87;
-	-fx-pref-height: 87;
-	-fx-background-color: #464646;
+	-fx-background-color: #4646467F;
 	-fx-border-width: 0;
 	-fx-border-radius: 99;
 	-fx-background-radius: 99;
 	-fx-cursor: hand;
-	-fx-opacity: 0.5; 
+	/*-fx-opacity: 0.5; */
 }

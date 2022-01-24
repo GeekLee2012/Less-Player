@@ -39,7 +39,7 @@
 }
 
 #playlist_view .list-view .list-cell .label {
-	-fx-padding: 5 0;
+	-fx-padding: 6 0 !important;
 	-fx-font-size: 15;
 }
 
@@ -78,12 +78,16 @@
 	-fx-pref-height: 0;
 }
 
+#playlist_view .scroll-pane > .viewport {
+	-fx-background-color: transparent; 
+}
+
 #playlist_view .current .label {
 	-fx-text-fill: #1ca388;
 	-fx-font-size: 16 !important;
 	-fx-font-weight: bold !important;
 }
 
-#playlist_view .scroll-pane > .viewport {
-	-fx-background-color: transparent; 
+#playlist_view .list-view .list-cell .item-box {
+	-fx-padding: 0 3 0 5 !important;
 }
