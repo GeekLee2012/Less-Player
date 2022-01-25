@@ -12,10 +12,10 @@
 * 腾讯QQ音乐（迷你模式）
 
 #### 开发环境
-* Windows平台
+* OS: Windows 7或以上
 * JDK版本: 1.8.0_291
 * IDE: Eclipse 2021-09 (4.21.0)
-* 依赖（第三方）库: Jaudiotagger、jFlac、JAAD、Jorbis
+* libs（第三方依赖库）: Jaudiotagger、jFlac、JAAD、Jorbis
 
 #### 主要功能
 * 播放器基本功能: 播放/暂停、上/下一首、进度条/播放时间、播放模式、音量控制等
