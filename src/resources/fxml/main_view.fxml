@@ -63,7 +63,14 @@
 					<children>
 						<ImageView fx:id="lyric_btn" />
 						<ImageView fx:id="spectrum_btn" />
-						<Label fx:id="audio_time" />
+						<HBox spacing="2" alignment="CENTER">
+							<children>
+								<Label fx:id="audio_time_current" alignment="CENTER_LEFT" />
+								<Label fx:id="audio_time_separator" text="/" alignment="CENTER" contentDisplay="TEXT_ONLY"/>
+								<Label fx:id="audio_time_duration" alignment="CENTER" />
+							</children>
+						</HBox>
+						<!-- <Label fx:id="audio_time" /> -->
 					</children>
 				</HBox>
 			</left>

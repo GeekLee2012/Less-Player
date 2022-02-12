@@ -37,7 +37,9 @@ public final class MainView extends PlayerView {
 	private Label audioTitleLbl;
 	private Label audioArtistLbl;
 	private Label audioAlbumLbl;
-	private Label audioTimeLbl;
+//	private Label audioTimeLbl;
+	private Label audioTimeCurrentLbl;
+	private Label audioTimeDurationLbl;
 	private ImageView defaultCoverArt;
 	private ProgressBar progressBar;
 	private ImageView lyricBtn;
@@ -191,7 +193,9 @@ public final class MainView extends PlayerView {
 		BorderPane pane = byId("main_bottom");
 		
 		progressBar = byId("progress_bar");
-		audioTimeLbl = byId("audio_time");
+//		audioTimeLbl = byId("audio_time");
+		audioTimeCurrentLbl = byId("audio_time_current");
+		audioTimeDurationLbl = byId("audio_time_duration");
 		lyricBtn = byId("lyric_btn");
 		spectrumBtn = byId("spectrum_btn");
 		
@@ -537,9 +541,11 @@ public final class MainView extends PlayerView {
 		current = current > 0 ? current : 0; 
 		duration = duration > 0 ? duration : 0; 
 		current = current > duration ? duration : current;
-		audioTimeLbl.setText(String.format(Constants.CURRENT_DURATION_FORMAT, 
-				StringUtil.toMmss(current),
-				StringUtil.toMmss(duration)));
+		audioTimeCurrentLbl.setText(StringUtil.toMmss(current));
+		audioTimeDurationLbl.setText(StringUtil.toMmss(duration));
+//		audioTimeLbl.setText(String.format(Constants.CURRENT_DURATION_FORMAT,
+//				StringUtil.toMmss(current),
+//				StringUtil.toMmss(duration)));
 	}
 	
 	@Override

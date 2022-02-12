@@ -24,12 +24,6 @@
 	-fx-padding: 0 0 0 12;
 }
 
-#audio_time {
-	-fx-font-size: 16;
-	-fx-font-weight: bold;
-	-fx-padding: 5;
-}
-
 .app-title {
 	-fx-padding: 3 10;
 	-fx-font-size: 16;
@@ -60,6 +54,26 @@
 	-fx-font-size: 18 !important;
 	-fx-font-weight: bold;
 	-fx-text-fill: #c0c0c0;
+}
+
+/*
+#audio_time {
+	-fx-font-size: 16;
+	-fx-font-weight: bold;
+	-fx-padding: 5;
+}
+*/
+
+#audio_time_current, #audio_time_duration {
+	-fx-font-size: 16;
+	-fx-font-weight: bold;
+	-fx-padding: 5 0;
+	-fx-pref-width: 43;
+}
+
+#audio_time_separator {
+    -fx-padding: 5 0;
+    -fx-pref-width: 3;
 }
 
 .playlist-btn {
