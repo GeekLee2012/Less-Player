@@ -73,6 +73,7 @@ public final class DefaultMediaService implements IMediaService, IMediaPlayerLis
 		delegate.setCurrent(audio);
 		delegate.addListener(this);
 		delegate.setVolume(volume);
+		System.out.println("[Delegate Player] " + delegate.getClass());
 		return delegate;
 	}
 
@@ -255,6 +256,7 @@ public final class DefaultMediaService implements IMediaService, IMediaPlayerLis
 		this.cachedMetadata = metadata;
 		this.retrySet.clear();
 		listenersMgr.onReady(audio, metadata);
+		System.out.println("[Current Playing]" + audio.getTitle() + ", Source：" + audio.getSource());
 	}
 
 	@Override
@@ -284,8 +286,8 @@ public final class DefaultMediaService implements IMediaService, IMediaPlayerLis
 	}
 
 	@Override
-	public void onError() {
-		listenersMgr.onError();
+	public void onError(Exception ex) {
+		listenersMgr.onError(ex);
 		retryPlay();
 	}
 

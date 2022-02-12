@@ -116,14 +116,15 @@ public final class DefaultFxPlayer implements IMediaPlayer {
 				Duration duration = media.getDuration();
 				listenersMgr.onCurrentChanged(nv.toMinutes(), duration.toMinutes());
 			});
-			
+
 			player.setOnReady(() -> listenersMgr.onReady(audio, media.getMetadata()));
 			player.setOnPlaying(() -> listenersMgr.onPlaying());
 			player.setOnPaused(() -> listenersMgr.onPaused());
 			player.setOnEndOfMedia(() -> listenersMgr.onEndOfMedia());
-			player.setOnError(() -> listenersMgr.onError());
+			player.setOnError(() -> listenersMgr.onError(new RuntimeException("未知异常")));
 		} catch(Exception e) {
-			listenersMgr.onError();
+			e.printStackTrace();
+			listenersMgr.onError(e);
 		}
 	}
 	

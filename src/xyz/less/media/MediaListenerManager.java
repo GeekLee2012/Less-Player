@@ -61,8 +61,8 @@ public final class MediaListenerManager {
 		notifyAll(e -> e.onEndOfMedia());
 	}
 
-	public void onError() {
-		notifyAll(e -> e.onError());
+	public void onError(Exception ex) {
+		notifyAll(e -> e.onError(ex));
 	}
 
 	public void onReset() {

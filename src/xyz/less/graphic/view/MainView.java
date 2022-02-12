@@ -539,7 +539,7 @@ public final class MainView extends PlayerView {
 	
 	public void updateAudioTimeText(double current, double duration) {
 		current = current > 0 ? current : 0; 
-		duration = duration > 0 ? duration : 0; 
+		duration = duration > 0 ? duration : 0;
 		current = current > duration ? duration : current;
 		audioTimeCurrentLbl.setText(StringUtil.toMmss(current));
 		audioTimeDurationLbl.setText(StringUtil.toMmss(duration));

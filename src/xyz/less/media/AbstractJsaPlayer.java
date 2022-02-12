@@ -47,7 +47,7 @@ public abstract class AbstractJsaPlayer extends Service<Audio> implements IMedia
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			listenersMgr.onError();
+			listenersMgr.onError(e);
 		}
 	}
 	
@@ -271,7 +271,7 @@ public abstract class AbstractJsaPlayer extends Service<Audio> implements IMedia
 					doStart();
 				} catch (Exception e) {
 					e.printStackTrace();
-					listenersMgr.onError();
+					listenersMgr.onError(e);
 				}
 				return null;
 			}

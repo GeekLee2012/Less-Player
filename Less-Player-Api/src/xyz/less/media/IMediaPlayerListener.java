@@ -11,7 +11,7 @@ public interface IMediaPlayerListener {
 	void onSpectrumDataUpdate(double timestamp, double duration, float[] magnitudes, float[] phases);
 	void onPaused();
 	void onEndOfMedia();
-	void onError();
+	void onError(Exception ex);
 	void onReset();
 	void onNoMedia();
 	void onNoPlayableMedia();

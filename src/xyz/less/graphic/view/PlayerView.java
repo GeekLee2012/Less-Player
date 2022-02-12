@@ -284,7 +284,7 @@ public abstract class PlayerView extends StackPane implements IMediaPlayerListen
 	}
 	
 	@Override
-	public void onError() {
+	public void onError(Exception ex) {
 		//由子类重写
 	}
 	
