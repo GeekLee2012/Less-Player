@@ -53,7 +53,7 @@
 	-fx-font-weight: bold;
 	-fx-wrap-text: true;
 	-fx-padding: 5 15 25 15;
-	-fx-text-fill: #f0f0f0;
+	/*-fx-text-fill: #f0f0f0;*/
 }
 
 .audio-artist, .audio-album {
