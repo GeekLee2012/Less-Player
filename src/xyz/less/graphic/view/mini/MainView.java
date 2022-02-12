@@ -300,15 +300,16 @@ public final class MainView extends PlayerView {
 	
 	//TODO
 	private void initPlaylistView() {
-		if(playlistView == null) {
-			playlistView = new PlaylistView(getMainStage());
-		}
 		Stage mainStage = getMainStage();
+		if(playlistView == null) {
+			// 显示8首歌曲
+			playlistView = new PlaylistView(getMainStage(), mainStage.getWidth(), 336);
+		}
 		Guis.ifPresent(playlistView, t -> {
 			playlistView.setTopVisible(false);
-			playlistView.setWidth(mainStage.getWidth());
 			playlistView.setRowWidth(379); //TODO
-			playlistView.setHeight(336); // 显示8首歌曲
+//			playlistView.setWidth(mainStage.getWidth());
+//			playlistView.setHeight(336); // 显示8首歌曲
 			
 			playlistView.setAttachAction(s -> {
 				playlistView.setX(mainStage.getX());

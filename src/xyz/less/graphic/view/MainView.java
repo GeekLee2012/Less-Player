@@ -487,7 +487,7 @@ public final class MainView extends PlayerView {
 
 	private void initPlaylistView() {
 		if(playlistView == null) {
-			playlistView = new PlaylistView(getMainStage());
+			playlistView = new PlaylistView(getMainStage(), SimpleSkin.PLAYLIST_WIDTH, SimpleSkin.PLAYLIST_HEIGHT);
 		}
 		Guis.ifPresent(playlistView, t -> {
 //			playlistView.setTopVisible(true);

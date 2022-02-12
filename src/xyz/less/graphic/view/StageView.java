@@ -17,7 +17,9 @@ public abstract class StageView extends Stage implements Attachable {
 	public StageView(Stage opener, double width, double height) {
 		this.opener = opener;
 		setWidth(width);
+		setMaxWidth(width);
 		setHeight(height);
+		setMaxHeight(height);
 		initOwner(opener);
 		initStyle(StageStyle.TRANSPARENT);
 	}

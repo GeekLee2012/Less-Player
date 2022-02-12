@@ -101,6 +101,9 @@ public final class PlaybackQueue {
 	}
 	
 	public Audio getCurrent() {
+		if (!isEnable()) {
+			return null;
+		}
 		if(currentIndex < 0) {
 			next();
 		}

@@ -37,8 +37,8 @@ public class PlaylistView extends StageView {
 	
 	private Consumer<Void> attachAction;
 	
-	public PlaylistView(Stage opener) {
-		super(opener, SimpleSkin.PLAYLIST_WIDTH, SimpleSkin.PLAYLIST_HEIGHT);
+	public PlaylistView(Stage opener, double width, double height) {
+		super(opener, width, height);
 		this.mediaSerive = AppContext.get().getMediaService();
 		initAttachAction();
 		initGraph();
