@@ -15,14 +15,13 @@ public final class Main extends Application {
 		mainStage.initStyle(StageStyle.TRANSPARENT);
 		mainStage.setOnCloseRequest(e -> Guis.exitApplication());
 		AppContext context = AppContext.get();
-		context.setMainStage(mainStage);
-		context.switchToSkin(context.getSkinName());
+		context.setMainStage(mainStage)
+				.switchToSkin(context.getSkinName());
 		PluginsService.start();
 	}
 	
 	private static void initContext(String[] args) {
-		Configuration cfg = Configuration.parseFrom(args);
-		AppContext.get().setConfiguration(cfg);
+		AppContext.get().setConfiguration(Configuration.parseFrom(args));
 	}
 	
 	public static void main(String[] args) {
