@@ -10,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
+import xyz.less.util.FileUtil;
 
 /**
  * Drag and Drop
@@ -64,15 +65,22 @@ public final class DndAction {
 		}
 		
 		public String getUrl() {
-			return board.getUrl();
+			if(board.hasUrl()) {
+				return board.getUrl();
+			} else if (board.hasFiles()) {
+				return FileUtil.toExternalForm(getFile());
+			}
+			return null;
 		}
 		
 		public File getFile() {
-			List<File> files = board.getFiles();
-			if(files == null || files.isEmpty()) {
-				return null;
+			if(board.hasFiles()) {
+				List<File> files = board.getFiles();
+				if(files != null && !files.isEmpty()) {
+					return files.get(0);
+				}
 			}
-			return files.get(0);
+			return null;
 		}
 		
 		public boolean isSuccess() {
