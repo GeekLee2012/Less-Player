@@ -25,6 +25,7 @@ import xyz.less.bean.Resources.Images;
 import xyz.less.graphic.Guis;
 import xyz.less.graphic.TwoLinesLyricRenderer;
 import xyz.less.graphic.anim.RotateAnimation;
+import xyz.less.graphic.control.DnmAction;
 import xyz.less.graphic.skin.MiniSkin;
 import xyz.less.graphic.skin.SimpleSkin;
 import xyz.less.graphic.view.Attachable;
@@ -178,15 +179,15 @@ public final class MainView extends PlayerView {
 		}, logoBtn, logoMask);
 		
 		
-		Guis.addDnmAction(getMainStage(), getMainStage().getScene().getRoot(), dnmOffset -> {
+		Guis.addDnmAction(getMainStage(), getMainStage().getScene().getRoot(), arg -> {
 			Guis.applyStages(stage -> {
 				if(stage instanceof Attachable) {
-					((Attachable)stage).attach();
+					((Attachable)stage).attach(arg.getX(), arg.getY());
 				}
 			}, playlistView);
-		}, coverArtProgressBox,playModeBtn, playPrevBtn, 
+		}, coverArtProgressBox,playModeBtn, playPrevBtn,
 			playBtn, playNextBtn, playlistBtn, closeBtn);
-		
+
 		rotateAnim.setNode(coverArtLbl);
 		rotateAnim.setDuration(Duration.seconds(animDuration));
 		

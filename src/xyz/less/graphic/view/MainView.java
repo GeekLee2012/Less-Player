@@ -11,6 +11,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import xyz.less.api.provider.Exporter;
 import xyz.less.api.provider.GraphicApiProvider;
 import xyz.less.api.provider.MediaPlayerApiProvider;
@@ -18,6 +19,7 @@ import xyz.less.bean.Audio;
 import xyz.less.bean.Constants;
 import xyz.less.bean.Resources.Images;
 import xyz.less.graphic.Guis;
+import xyz.less.graphic.control.DnmAction;
 import xyz.less.graphic.control.ProgressBar;
 import xyz.less.graphic.control.SliderBar;
 import xyz.less.graphic.skin.MiniSkin;
@@ -133,7 +135,7 @@ public final class MainView extends PlayerView {
 				}
 			}, playlistView, lyricView);
 		}, logoBtn, winBtnsBox);
-		
+
 		logoBtn.setOnMouseClicked(e -> {
 			isBackMode = !isBackMode;
 			updateAppTitle();
