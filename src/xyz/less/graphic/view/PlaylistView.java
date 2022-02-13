@@ -21,7 +21,7 @@ import xyz.less.graphic.skin.SimpleSkin;
 import xyz.less.service.IMediaService;
 
 public class PlaylistView extends StageView {
-	private IMediaService mediaSerive;
+	private IMediaService mediaService;
 	
 //	private double openerX;
 //	private double openerY;
@@ -39,7 +39,8 @@ public class PlaylistView extends StageView {
 	
 	public PlaylistView(Stage opener, double width, double height) {
 		super(opener, width, height);
-		this.mediaSerive = AppContext.get().getMediaService();
+		this.openerSizeToScene = true;
+		this.mediaService = AppContext.get().getMediaService();
 		initAttachAction();
 		initGraph();
 		initEvents();
@@ -51,7 +52,7 @@ public class PlaylistView extends StageView {
 			double heightDist2 = heightDist1 - SimpleSkin.LYRIC_HEIGHT - SimpleSkin.LYRIC_PADDING_Y;
 //			double paddingY = lyricOn ? 18 : 88;
 			double paddingY = lyricOn ? heightDist2 / 2 : heightDist1 / 2;
-			
+
 			setX(pos.getX() + opener.getWidth() + SimpleSkin.PLAYLIST_PADDING_X);
 			setY(pos.getY() - paddingY);
 			
@@ -161,8 +162,8 @@ public class PlaylistView extends StageView {
 			item.setDurationWidth(durationWidth);
 			item.setOnMouseClicked(e -> {
 				if(e.getClickCount() > 1) {
-					mediaSerive.setCurrent(item.getItem());
-					mediaSerive.play();
+					mediaService.setCurrent(item.getItem());
+					mediaService.play();
 				}
 			});
 			return item;
@@ -175,7 +176,7 @@ public class PlaylistView extends StageView {
 	}
 	
 	private int currentIndex() {
-		return mediaSerive.getCurrentIndex();
+		return mediaService.getCurrentIndex();
 	}
 	
 	public void targetCurrentPlaying() {
@@ -209,7 +210,7 @@ public class PlaylistView extends StageView {
 
 	public void updateGraph() {
 		resetGraph(false);
-		List<Audio> datas = mediaSerive.getPlaylist();
+		List<Audio> datas = mediaService.getPlaylist();
 		listView.getItems().addAll(datas);
 		updateLogoSizeLabelText();
 	}
@@ -231,9 +232,9 @@ public class PlaylistView extends StageView {
 	}
 
 	@Override
-	public void locate2Opener(double x, double y) {
+	public void locate2Opener() {
 		if(attachAction != null) {
-			attachAction.accept(new DnmAction.Pos(x, y));
+			attachAction.accept(new DnmAction.Pos(opener.getX(), opener.getY()));
 		}
 	}
 	

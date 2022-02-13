@@ -182,7 +182,7 @@ public final class MainView extends PlayerView {
 		Guis.addDnmAction(getMainStage(), getMainStage().getScene().getRoot(), arg -> {
 			Guis.applyStages(stage -> {
 				if(stage instanceof Attachable) {
-					((Attachable)stage).attach(arg.getX(), arg.getY());
+					((Attachable)stage).attach();
 				}
 			}, playlistView);
 		}, coverArtProgressBox,playModeBtn, playPrevBtn,

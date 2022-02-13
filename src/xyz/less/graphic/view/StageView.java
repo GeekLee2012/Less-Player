@@ -10,6 +10,7 @@ public abstract class StageView extends Stage implements Attachable {
 	protected Stage opener;
 	private int counter;
 	protected boolean attach = true;
+	protected  boolean openerSizeToScene = false;
 	
 	public StageView(Stage opener) {
 		this(opener, -1, -1);
@@ -88,17 +89,15 @@ public abstract class StageView extends Stage implements Attachable {
 
 	@Override
 	public void attach() {
-		attach(opener.getX(), opener.getY());
-	}
-
-	@Override
-	public void attach(double x, double y) {
 		if(attach) {
-			locate2Opener(x, y);
+			if(openerSizeToScene) {
+				opener.sizeToScene(); //Fix a bug, also create another same bug
+			}
+			locate2Opener();
 		}
 	}
 
-	protected void locate2Opener(double x, double y) {
+	protected void locate2Opener() {
 		//TODO
 	}
 }

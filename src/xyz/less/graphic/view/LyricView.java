@@ -141,8 +141,8 @@ public class LyricView extends StageView {
 	}
 
 	@Override
-	public void locate2Opener(double x, double y) {
-		setX(x);
-		setY(y + opener.getHeight() + SimpleSkin.LYRIC_PADDING_Y);
+	public void locate2Opener() {
+		setX(opener.getX());
+		setY(opener.getY() + opener.getHeight() + SimpleSkin.LYRIC_PADDING_Y);
 	}
 }
