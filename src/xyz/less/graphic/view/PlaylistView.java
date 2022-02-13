@@ -15,6 +15,7 @@ import xyz.less.bean.AppContext;
 import xyz.less.bean.Audio;
 import xyz.less.bean.Resources.Images;
 import xyz.less.graphic.Guis;
+import xyz.less.graphic.control.DnmAction;
 import xyz.less.graphic.control.PlaylistItem;
 import xyz.less.graphic.skin.SimpleSkin;
 import xyz.less.service.IMediaService;
@@ -28,14 +29,13 @@ public class PlaylistView extends StageView {
 	private Label logoSizeLbl;
 	private AnchorPane topPane;
 	private ListView<Audio> listView;
-	
-	private boolean attach = true;
+
 	private boolean lyricOn = false;
 	private boolean autoTarget = true;
 	private double rowWidth = 335;
 	public double durationWidth = 72;
 	
-	private Consumer<Void> attachAction;
+	private Consumer<DnmAction.Pos> attachAction;
 	
 	public PlaylistView(Stage opener, double width, double height) {
 		super(opener, width, height);
@@ -46,15 +46,15 @@ public class PlaylistView extends StageView {
 	}
 	
 	private void initAttachAction() {
-		setAttachAction(v -> {
+		setAttachAction(pos -> {
 //			openerX = opener.getX();
-			openerY = opener.getY();
+			openerY = pos.getY();
 			double heightDist1 = getHeight() - opener.getHeight();
 			double heightDist2 = heightDist1 - SimpleSkin.LYRIC_HEIGHT - SimpleSkin.LYRIC_PADDING_Y;
 //			double paddingY = lyricOn ? 18 : 88;
 			double paddingY = lyricOn ? heightDist2 / 2 : heightDist1 / 2;
 			
-			setX(opener.getX() + opener.getWidth() + SimpleSkin.PLAYLIST_PADDING_X);
+			setX(pos.getX() + opener.getWidth() + SimpleSkin.PLAYLIST_PADDING_X);
 			setY(openerY - paddingY);
 			
 			//TODO fix a UI bug
@@ -66,7 +66,7 @@ public class PlaylistView extends StageView {
 		this.attach = attach;
 	}
 	
-	public void setAttachAction(Consumer<Void> attachAction) {
+	public void setAttachAction(Consumer<DnmAction.Pos> attachAction) {
 		this.attachAction = attachAction;
 	}
 
@@ -229,14 +229,13 @@ public class PlaylistView extends StageView {
 	
 	public void attach(boolean lyricOn) {
 		this.lyricOn = lyricOn;
-		if(attach) {
-			locate2Opener();
-		}
+		super.attach();
 	}
-	
-	private void locate2Opener() {
+
+	@Override
+	public void locate2Opener(double x, double y) {
 		if(attachAction != null) {
-			attachAction.accept(null);
+			attachAction.accept(new DnmAction.Pos(x, y));
 		}
 	}
 	

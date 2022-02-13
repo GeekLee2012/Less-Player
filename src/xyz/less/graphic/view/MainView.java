@@ -126,10 +126,10 @@ public final class MainView extends PlayerView {
 		Guis.bind(logoTitleBox.prefHeightProperty(), pane.prefHeightProperty());
 		Guis.bind(winBtnsBox.prefHeightProperty(), pane.prefHeightProperty());
 		
-		Guis.addDnmAction(getMainStage(), pane, dnmOffset -> {
+		Guis.addDnmAction(getMainStage(), pane, arg -> {
 			Guis.applyStages(stage -> {
 				if(stage instanceof Attachable) {
-					((Attachable)stage).attach();
+					((Attachable)stage).attach(arg.getX(), arg.getY());
 				}
 			}, playlistView, lyricView);
 		}, logoBtn, winBtnsBox);

@@ -27,7 +27,6 @@ import xyz.less.graphic.control.AutoDrawerAction;
 import xyz.less.graphic.control.DndAction;
 import xyz.less.graphic.control.DnmAction;
 import xyz.less.graphic.control.DndAction.DndContext;
-import xyz.less.graphic.control.DnmAction.DnmOffset;
 
 public final class Guis {
 	
@@ -261,14 +260,14 @@ public final class Guis {
 	/** Drag And Move
 	 * @param target
 	 * @param trigger
-	 * @param ignoreChildren
+	 * @param ignoreTriggers
 	 * @return
 	 */
 	public static DnmAction addDnmAction(Stage target, Node trigger, Node... ignoreTriggers) {
 		return addDnmAction(target, trigger, null, ignoreTriggers);
 	}
 	
-	public static DnmAction addDnmAction(Stage target, Node trigger, Consumer<DnmOffset> action, Node... ignoreTriggers) {
+	public static DnmAction addDnmAction(Stage target, Node trigger, Consumer<DnmAction.Pos> action, Node... ignoreTriggers) {
 		return new DnmAction(target, trigger, action, ignoreTriggers);
 	}
 	

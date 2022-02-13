@@ -24,7 +24,6 @@ public class LyricView extends StageView {
 	private boolean locked;
 	private DnmAction dnmAction;
 	private Label lockBtn;
-	private boolean attach = true;
 	private Audio currentAudio;
 	
 	public LyricView(Stage opener) {
@@ -144,17 +143,10 @@ public class LyricView extends StageView {
 			dnmAction.enable(true);
 		}
 	}
-	
+
 	@Override
-	public void attach() {
-		if(attach) {
-			locate2Opener();
-		}
-	}
-	
-	private void locate2Opener() {
-//		openerX = opener.getX();
-		setX(opener.getX());
-		setY(opener.getY() + opener.getHeight() + SimpleSkin.LYRIC_PADDING_Y);
+	public void locate2Opener(double x, double y) {
+		setX(x);
+		setY(y + opener.getHeight() + SimpleSkin.LYRIC_PADDING_Y);
 	}
 }

@@ -9,6 +9,7 @@ import xyz.less.graphic.Guis;
 public abstract class StageView extends Stage implements Attachable {
 	protected Stage opener;
 	private int counter;
+	protected boolean attach = true;
 	
 	public StageView(Stage opener) {
 		this(opener, -1, -1);
@@ -84,8 +85,20 @@ public abstract class StageView extends Stage implements Attachable {
 		}
 		return isShowing();
 	}
-	
+
+	@Override
 	public void attach() {
-		
+		attach(opener.getX(), opener.getY());
+	}
+
+	@Override
+	public void attach(double x, double y) {
+		if(attach) {
+			locate2Opener(x, y);
+		}
+	}
+
+	protected void locate2Opener(double x, double y) {
+		//TODO
 	}
 }

@@ -311,9 +311,11 @@ public final class MainView extends PlayerView {
 //			playlistView.setWidth(mainStage.getWidth());
 //			playlistView.setHeight(336); // 显示8首歌曲
 			
-			playlistView.setAttachAction(s -> {
-				playlistView.setX(mainStage.getX());
-				playlistView.setY(mainStage.getY() + mainStage.getHeight() + 1);
+			playlistView.setAttachAction(pos -> {
+				System.out.println(mainStage.getX() + " , " + mainStage.getY());
+				System.out.println(pos.getX() + " : " + pos.getY());
+				playlistView.setX(pos.getX());
+				playlistView.setY(pos.getY() + mainStage.getHeight() + 1);
 			});
 			playlistView.getScene().getRoot().getStyleClass().add("playlistView-padding");
 			

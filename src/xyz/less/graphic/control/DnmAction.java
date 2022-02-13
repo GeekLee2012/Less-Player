@@ -10,10 +10,6 @@ import xyz.less.graphic.Guis;
  * Drag and Move
  */
 public final class DnmAction  {
-//	private double fromX;
-//	private double fromY;
-	private double fromScreenX;
-	private double fromScreenY;
 	private double fromSceneX;
 	private double fromSceneY;
 	
@@ -21,7 +17,7 @@ public final class DnmAction  {
 	private boolean alwaysOnTop;
 	private boolean dragged;
 	
-	public DnmAction(Stage stage, Node trigger, Consumer<DnmOffset> action, Node... ignoreTriggers) {
+	public DnmAction(Stage stage, Node trigger, Consumer<Pos> action, Node... ignoreTriggers) {
 		if(stage != null && trigger != null) {
 			setupTrigger(stage, trigger, action);
 		}
@@ -37,17 +33,13 @@ public final class DnmAction  {
 		return this;
 	}
 
-	private void setupTrigger(Stage stage, Node trigger, Consumer<DnmOffset> action) {
+	private void setupTrigger(Stage stage, Node trigger, Consumer<Pos> action) {
 		trigger.setOnMousePressed(e -> {
 			e.consume();
 			if(!this.enabled) {
 				return ;
 			}
 			alwaysOnTop = stage.isAlwaysOnTop();
-//			fromX = stage.getX();
-//			fromY = stage.getY();
-			fromScreenX = e.getScreenX();
-			fromScreenY = e.getScreenY();
 			fromSceneX = e.getSceneX();
 			fromSceneY = e.getSceneY();
 		});
@@ -59,20 +51,15 @@ public final class DnmAction  {
 			}
 			dragged = true;
 			stage.setAlwaysOnTop(true); //移动时保持置顶
-			
-			double toScreenX = e.getScreenX();
-			double toScreenY = e.getScreenY();
-			double offsetX = toScreenX - fromScreenX;
-			double offsetY = toScreenY - fromScreenY;
-//			double toX = fromX + offsetX;
-//			double toY = fromY + offsetY;
-			
-			double toX = toScreenX - fromSceneX;
-			double toY = toScreenY - fromSceneY;
+
+			double toX = e.getScreenX() - fromSceneX;
+			double toY = e.getScreenY() - fromSceneY;
+
 			stage.setX(toX);
 			stage.setY(toY);
+
 			if(action != null) {
-				action.accept(new DnmOffset(offsetX, offsetY));
+				action.accept(new Pos(toX, toY));
 			}
 		});
 		
@@ -83,30 +70,25 @@ public final class DnmAction  {
 			}
 		});
 	}
-	
-	public static class DnmOffset {
-		private double offsetX;
-		private double offsetY;
-		public DnmOffset(double offsetX, double offsetY) {
-			this.offsetX = offsetX;
-			this.offsetY = offsetY;
+
+	public static class Pos {
+		private double x;
+		private double y;
+
+		public Pos(double x, double y) {
+			this.x = x;
+			this.y = y;
 		}
-		public double getOffsetX() {
-			return offsetX;
+
+		public double getX() {
+			return x;
 		}
-		public void setOffsetX(double offsetX) {
-			this.offsetX = offsetX;
+
+		public double getY() {
+			return y;
 		}
-		public double getOffsetY() {
-			return offsetY;
-		}
-		public void setOffsetY(double offsetY) {
-			this.offsetY = offsetY;
-		}
-		@Override
-		public String toString() {
-			return "DnmOffset [offsetX=" + offsetX + ", offsetY=" + offsetY + "]";
-		}
+
 	}
+
 }
 
