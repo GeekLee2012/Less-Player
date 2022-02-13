@@ -10,6 +10,7 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.concurrent.Future;
 
 import xyz.less.api.ApiProvider;
 import xyz.less.api.provider.Exporter;
@@ -80,6 +81,12 @@ public final class RpcServer {
 			}
 		}
 	}
+
+	public Future<?> startAsync() {
+		return AsyncServices.submit(() -> {
+			start();
+		});
+	}
 	
 	private void doHandleKey(SelectionKey key) throws Exception {
 		if(!key.isValid()) {
@@ -93,33 +100,49 @@ public final class RpcServer {
 			System.out.println("[Server]Client Accepted");
 		}
 		if(key.isReadable()) {
-			RpcMessage msg = decodeMessage(key);
-			if(msg != null && msg.isValid()) {
-				RpcRequest request = msg.getRequest();
-				System.out.println("[Server]Recv: " + request);
-				if(request != null) {
-					AsyncServices.submit(() -> {
-						try {
-							//执行方法调用
-							Object provider = Exporter.getProvider(request.getClassName());
-							if(provider != null) {
-								MethodInvoker methodInvoker = new MethodInvoker(
-										request.getMethodName(), 
-										request.getArgs(), 
-										request.getArgTypes(),
-										request.getReturnType());
-								Object returnObj = methodInvoker.invoke(provider);
-								//返回响应
-								doResponse(key, new RpcResult(msg.getId(), methodInvoker.success(), returnObj, methodInvoker.getException()));
-							} else {
-								doResponse(key, new RpcResult(msg.getId(), false, null, new RuntimeException("API Not Found!")));
-							}
-						} catch (Exception e) {
-							e.printStackTrace();
+			//并发问题
+			handleRpcMessage(key);
+		}
+	}
+
+	private RpcMessage decodeRpcMessageSafely(SelectionKey key) {
+		try {
+			return decodeMessage(key);
+		} catch (Exception e) {
+			e.printStackTrace();
+			cachedMsg.remove();
+			cachedBuf.clear();
+		}
+		return null;
+	}
+
+	private void handleRpcMessage(SelectionKey key) {
+		RpcMessage msg = decodeRpcMessageSafely(key);
+		if(msg != null && msg.isValid()) {
+			cachedMsg.remove();
+			RpcRequest request = msg.getRequest();
+			System.out.println("[Server]Recv: " + request);
+			if(request != null) {
+				AsyncServices.submit(() -> {
+					try {
+						//执行方法调用
+						Object provider = Exporter.getProvider(request.getClassName());
+						if(provider != null) {
+							MethodInvoker methodInvoker = new MethodInvoker(
+									request.getMethodName(),
+									request.getArgs(),
+									request.getArgTypes(),
+									request.getReturnType());
+							Object returnObj = methodInvoker.invoke(provider);
+							//返回响应
+							doResponse(key, new RpcResult(msg.getId(), methodInvoker.success(), returnObj, methodInvoker.getException()));
+						} else {
+							doResponse(key, new RpcResult(msg.getId(), false, null, new RuntimeException("API Not Found!")));
 						}
-					});
-				}
-				cachedMsg.remove();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				});
 			}
 		}
 	}
@@ -135,9 +158,9 @@ public final class RpcServer {
 		if(size > 0) {
 			cachedBuf.put(buffer);
 			cachedBuf.flip(); //切换为读操作
+			size = cachedBuf.limit();
 		}
-		int cachedSize = cachedBuf.limit();
-		if(cachedSize > 0) {
+		if(size > 0) {
 			int offset = 0;
 			if(msg == null) { 
 				byte[] bytes = new byte[RpcMessage.MAGIC_CODE.length()];
@@ -157,13 +180,14 @@ public final class RpcServer {
 //				System.out.println(msg.getId());
 			} 
 			//粘包处理
-			int unsolveSize = cachedSize - offset;
-			if(msg != null && msg.remaining() > 0) {
-				if(msg.remaining() >= unsolveSize) {
-					byte[] bytes = new byte[unsolveSize];
+			int unsolvedSize = size - offset;
+			if(msg != null && msg.remaining() > 0 && unsolvedSize > 0) {
+				if(msg.remaining() >= unsolvedSize) {
+					byte[] bytes = new byte[unsolvedSize];
 					cachedBuf.get(bytes);
 					msg.appendToBody(bytes);
 					cachedBuf.clear();
+					System.out.println("CachedBuffer Clear");
 				} else { //发生粘包
 					byte[] bytes = new byte[msg.remaining()];
 					cachedBuf.get(bytes);
@@ -204,5 +228,5 @@ public final class RpcServer {
 		}
 		System.out.println("[Server]closed");
 	}
-	
+
 }

@@ -134,6 +134,9 @@ public final class RpcClient {
 	}
 
 	public Future<RpcResult> send(RpcRequest request) throws Exception {
+		while (!chann.isConnected()) {
+			//TODO
+		}
 		CompletableFuture<RpcResult> future = new CompletableFuture<>();
 		RpcMessage msg = new RpcMessage(request);
 		sendingQueue.offer(msg);

@@ -334,14 +334,7 @@ public final class Guis {
 	public static void setTransparent(Stage mainStage) {
 		Guis.applyStages(s -> s.getScene().setFill(null), mainStage);
 	}
-	
-	public static void moveStages(double offsetX, double offsetY, Stage... stages) {
-		applyStages(stage -> {
-			stage.setX(stage.getX() + offsetX);
-			stage.setY(stage.getY() + offsetY);
-		}, stages);
-	}
-	
+
 	public static Parent loadFxml(URL url) {
 		try {
 			return FXMLLoader.load(url);
@@ -349,6 +342,10 @@ public final class Guis {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public static void addShutdownHook(Runnable action) {
+		Runtime.getRuntime().addShutdownHook(new Thread(action));
 	}
 	
 	//TODO Nothing Relative with GUI

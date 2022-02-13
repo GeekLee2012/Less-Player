@@ -59,7 +59,7 @@ public final class ApiProvider {
 		return client;
 	}
 	
-	private static void starClient(RpcClient client) {
+	private static void startClient(RpcClient client) {
 		AsyncServices.submit(()-> {
 			try {
 				client.start();
@@ -75,7 +75,7 @@ public final class ApiProvider {
 		
 		public ApiHandler(Class<T> apiClass) {
 			rpcClient = getRpcClient(apiClass);
-			starClient(rpcClient);
+			startClient(rpcClient);
 			rpcInvoker = new RpcInvoker<>(rpcClient, apiClass);
 		}
 
