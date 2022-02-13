@@ -112,6 +112,7 @@ public final class RpcServer {
 			e.printStackTrace();
 			cachedMsg.remove();
 			cachedBuf.clear();
+			key.cancel();
 		}
 		return null;
 	}
@@ -196,11 +197,10 @@ public final class RpcServer {
 					cachedBuf.compact();
 				}
 			}
-		} 
-//		else if(len < 0){
-//			key.cancel();
-//			sc.close();
-//		}
+		} else {
+			key.cancel();
+			sc.close();
+		}
 		return msg;
 	}
 

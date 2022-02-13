@@ -21,9 +21,7 @@ public final class RpcService {
 		
 		Exporter.printAll();
 
-		AsyncServices.submit(() -> {
-			server.start();
-		});
+		server.startAsync();
 	}
 	
 }
