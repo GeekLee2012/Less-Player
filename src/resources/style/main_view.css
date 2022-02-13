@@ -3,9 +3,10 @@
 @import url("visualization.css");
 
 /* fx:id不支持分隔符"-" */
+
 #main_view {
+	/* -fx-background-color: linear-gradient(to right top, #ff00cc, #333399);  */
 	-fx-background-color: #313131;
-	/* -fx-background-color: linear-gradient(to right top, #ff00cc, #333399); */
 }
 
 #main_top {
@@ -42,11 +43,11 @@
 }
 
 .audio-title {
-	-fx-min-height: 125;
+	-fx-pref-height: 125;
 	-fx-font-size: 28 !important;
 	-fx-font-weight: bold;
 	-fx-wrap-text: true;
-	-fx-padding: 5 15 25 15;
+	-fx-padding: 5 5 25 15;
 	/*-fx-text-fill: #f0f0f0;*/
 }
 
