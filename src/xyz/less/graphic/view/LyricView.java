@@ -26,8 +26,8 @@ public class LyricView extends StageView {
 	private Label lockBtn;
 	private Audio currentAudio;
 	
-	public LyricView(Stage opener) {
-		super(opener, SimpleSkin.LYRIC_WIDTH, SimpleSkin.LYRIC_HEIGHT);
+	public LyricView(Stage opener, double width, double height) {
+		super(opener, width, height);
 		hideTaskBarIcon();
 		initGraph();
 		initEvents();

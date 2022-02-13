@@ -417,7 +417,7 @@ public final class MainView extends PlayerView {
 	
 	private void initLyricView() {
 		Guis.ifNotPresent(lyricView, t -> {
-			lyricView = new LyricView(getMainStage());
+			lyricView = new LyricView(getMainStage(), SimpleSkin.LYRIC_WIDTH, SimpleSkin.LYRIC_HEIGHT);
 			lyricView.setOnHidden(e -> {
 				updateLyricBtn();
 				playlistView.attach(false);
