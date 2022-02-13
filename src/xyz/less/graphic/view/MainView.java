@@ -497,9 +497,11 @@ public final class MainView extends PlayerView {
 			
 			playlistView.setOnHidden(e -> {
 				updatePlaylistBtn();
+				playlistView.attach();
 			});
 			playlistView.setOnShown(e -> {
 				updatePlaylistBtn();
+				playlistView.attach();
 			});
 		});
 	}

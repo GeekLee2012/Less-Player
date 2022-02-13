@@ -137,11 +137,7 @@ public class LyricView extends StageView {
 	}
 	
 	private void lockLyricView() {
-		if(locked) {
-			dnmAction.enable(false);
-		} else {
-			dnmAction.enable(true);
-		}
+		dnmAction.enable(!locked);
 	}
 
 	@Override

@@ -172,7 +172,7 @@ public final class MainView extends PlayerView {
 			logoBtn.setVisible(false);
 		}, coverArtBox);
 		
-		//TODO易造成误操作
+		//TODO 易造成误操作
 		Guis.setOnMouseClicked(e -> {
 			switchToSkin(SimpleSkin.NAME);
 		}, logoBtn, logoMask);
@@ -308,12 +308,8 @@ public final class MainView extends PlayerView {
 		Guis.ifPresent(playlistView, t -> {
 			playlistView.setTopVisible(false);
 			playlistView.setRowWidth(379); //TODO
-//			playlistView.setWidth(mainStage.getWidth());
-//			playlistView.setHeight(336); // 显示8首歌曲
 			
 			playlistView.setAttachAction(pos -> {
-				System.out.println(mainStage.getX() + " , " + mainStage.getY());
-				System.out.println(pos.getX() + " : " + pos.getY());
 				playlistView.setX(pos.getX());
 				playlistView.setY(pos.getY() + mainStage.getHeight() + 1);
 			});
@@ -321,10 +317,12 @@ public final class MainView extends PlayerView {
 			
 			playlistView.setOnShown(e -> {
 				updatePlaylistBtn();
+				playlistView.attach();
 			});
 			
 			playlistView.setOnHidden(e -> {
 				updatePlaylistBtn();
+				playlistView.attach();
 			});
 		});
 	}

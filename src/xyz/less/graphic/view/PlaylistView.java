@@ -24,7 +24,7 @@ public class PlaylistView extends StageView {
 	private IMediaService mediaSerive;
 	
 //	private double openerX;
-	private double openerY;
+//	private double openerY;
 	
 	private Label logoSizeLbl;
 	private AnchorPane topPane;
@@ -47,15 +47,13 @@ public class PlaylistView extends StageView {
 	
 	private void initAttachAction() {
 		setAttachAction(pos -> {
-//			openerX = opener.getX();
-			openerY = pos.getY();
 			double heightDist1 = getHeight() - opener.getHeight();
 			double heightDist2 = heightDist1 - SimpleSkin.LYRIC_HEIGHT - SimpleSkin.LYRIC_PADDING_Y;
 //			double paddingY = lyricOn ? 18 : 88;
 			double paddingY = lyricOn ? heightDist2 / 2 : heightDist1 / 2;
 			
 			setX(pos.getX() + opener.getWidth() + SimpleSkin.PLAYLIST_PADDING_X);
-			setY(openerY - paddingY);
+			setY(pos.getY() - paddingY);
 			
 			//TODO fix a UI bug
 			listView.layout();
@@ -76,7 +74,7 @@ public class PlaylistView extends StageView {
 	
 	private void initEvents() {
 		setOnShowing(e -> {
-			attach();
+//			attach();
 			highlightCurrentPlaying();
 		});
 //		setOnHiding(e -> {
@@ -224,7 +222,7 @@ public class PlaylistView extends StageView {
 
 	@Override
 	public void attach() {
-		attach(this.lyricOn);
+		attach(lyricOn);
 	}
 	
 	public void attach(boolean lyricOn) {

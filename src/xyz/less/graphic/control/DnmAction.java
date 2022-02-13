@@ -36,7 +36,7 @@ public final class DnmAction  {
 	private void setupTrigger(Stage stage, Node trigger, Consumer<Pos> action) {
 		trigger.setOnMousePressed(e -> {
 			e.consume();
-			if(!this.enabled) {
+			if(!enabled) {
 				return ;
 			}
 			alwaysOnTop = stage.isAlwaysOnTop();
@@ -59,11 +59,14 @@ public final class DnmAction  {
 			stage.setY(toY);
 
 			if(action != null) {
-				action.accept(new Pos(toX, toY));
+				action.accept(new Pos(stage.getX(), stage.getY()));
 			}
 		});
 		
 		trigger.setOnMouseReleased(e -> {
+			if(action != null) {
+				action.accept(new Pos(stage.getX(), stage.getY()));
+			}
 			if(dragged) {
 				stage.setAlwaysOnTop(alwaysOnTop);
 				dragged = false;
