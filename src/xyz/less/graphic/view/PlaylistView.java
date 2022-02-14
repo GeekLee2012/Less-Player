@@ -39,7 +39,6 @@ public class PlaylistView extends StageView {
 	
 	public PlaylistView(Stage opener, double width, double height) {
 		super(opener, width, height);
-		this.openerSizeToScene = true;
 		this.mediaService = AppContext.get().getMediaService();
 		initAttachAction();
 		initGraph();

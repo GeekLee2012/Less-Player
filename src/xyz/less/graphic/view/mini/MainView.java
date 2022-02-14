@@ -124,6 +124,7 @@ public final class MainView extends PlayerView {
 		
 		Guis.setGraphic(Images.CLOSE, closeBtn);
 		Guis.addStyleClass("label-btn", closeBtn);
+		Guis.toggleStyleClass(Guis.isMacOS(), "close_btn_macos", closeBtn);
 		Guis.addHoverStyleClass("label-hover-red", closeBtn);
 		Guis.addStyleClass("label-logo", logoBtn);
 		Guis.addStyleClass("bottom-radius", mainPane);

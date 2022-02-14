@@ -156,6 +156,7 @@ public final class RpcServer {
 		ByteBuffer buffer = ByteBuffer.allocate(10240);
 		int size = sc.read(buffer);
 		buffer.flip();	//切换为读操作
+		//TODO 代码待梳理
 		if(size > 0) {
 			cachedBuf.put(buffer);
 			cachedBuf.flip(); //切换为读操作

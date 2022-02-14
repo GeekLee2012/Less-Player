@@ -347,7 +347,15 @@ public final class Guis {
 	public static void addShutdownHook(Runnable action) {
 		Runtime.getRuntime().addShutdownHook(new Thread(action));
 	}
-	
+
+	public static String getOSName() {
+		return System.getProperty("os.name");
+	}
+
+	public static boolean isMacOS() {
+		return getOSName().toLowerCase().startsWith("mac os");
+	}
+
 	//TODO Nothing Relative with GUI
 	public static <T> void ifPresent(T t, Consumer<T> consumer) {
 		if(t != null) {

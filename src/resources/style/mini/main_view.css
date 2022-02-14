@@ -84,6 +84,11 @@
 	-fx-border-radius: 100;
 }
 
+/* MacOS */
+.close_btn_macos {
+	-fx-padding: 1 1.5 !important;
+}
+
 #logo_mask {
 	-fx-background-color: #4646467F;
 	-fx-border-width: 0;
