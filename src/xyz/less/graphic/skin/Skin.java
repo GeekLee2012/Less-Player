@@ -1,6 +1,7 @@
 package xyz.less.graphic.skin;
 
 import javafx.scene.Scene;
+import xyz.less.bean.Resources;
 
 //TODO 
 //此Skin并非彼Skin啦，仅是个名字而已(吐个槽)
@@ -10,6 +11,7 @@ public abstract class Skin {
 	private String name;
 	private boolean init;
 	protected Scene scene;
+	public final static String COMMON_STYLE = Resources.css("common");
 	
 	public Skin(String name) {
 		this.name = name;

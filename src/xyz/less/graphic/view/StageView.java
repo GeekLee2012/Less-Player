@@ -2,18 +2,16 @@ package xyz.less.graphic.view;
 
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import xyz.less.graphic.Guis;
+import xyz.less.graphic.skin.Skin;
 
 public abstract class StageView extends Stage implements Attachable {
 	protected Stage opener;
 	private int counter;
 	protected boolean attach = true;
-	
-	public StageView(Stage opener) {
-		this(opener, -1, -1);
-	}
 	
 	public StageView(Stage opener, double width, double height) {
 		this.opener = opener;
@@ -35,10 +33,17 @@ public abstract class StageView extends Stage implements Attachable {
 	
 	public void setSceneRoot(Parent parent) {
 		setScene(new Scene(parent));
+		initCommonStyle();
 	}
-	
-	public void setSceneTransparent() {
-		getScene().setFill(null);
+
+	//TODO
+	private void initCommonStyle() {
+		addStyle(Skin.COMMON_STYLE);
+		Parent root = getScene().getRoot();
+		if(root instanceof Region) {
+			Region rootRegion = (Region)root;
+			rootRegion.getStyleClass().add("theme-bg");
+		}
 	}
 	
 	public void addStyle(String stylesheet) {

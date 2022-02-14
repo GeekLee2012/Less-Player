@@ -122,6 +122,7 @@ public class LyricView extends StageView {
 	
 	public boolean loadLyric(String uri) {
 		try {
+			//TODO
 			lyricRenderer.reset();
 			int index = uri.lastIndexOf(".");
 			uri = uri.substring(0, index) + ".lrc";
