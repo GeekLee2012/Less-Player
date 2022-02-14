@@ -56,4 +56,4 @@ PS: A -> B, 表示: A 依赖 B
 * 主模块 -> Less-Player-Api
 
 #### 其他
-* Release版本中所使用的.exe文件打包工具: exe4j  
+
