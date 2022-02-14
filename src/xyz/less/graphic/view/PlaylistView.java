@@ -231,7 +231,7 @@ public class PlaylistView extends StageView {
 	}
 
 	@Override
-	public void locate2Opener() {
+	public void doAttach() {
 		if(attachAction != null) {
 			attachAction.accept(new DnmAction.Pos(opener.getX(), opener.getY()));
 		}

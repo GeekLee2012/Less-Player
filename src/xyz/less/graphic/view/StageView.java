@@ -92,11 +92,11 @@ public abstract class StageView extends Stage implements Attachable {
 			if(Guis.isMacOS()) {
 				opener.sizeToScene(); //Fix a bug, also create another same bug
 			}
-			locate2Opener();
+			doAttach();
 		}
 	}
 
-	protected void locate2Opener() {
+	protected void doAttach() {
 		//TODO
 	}
 }
