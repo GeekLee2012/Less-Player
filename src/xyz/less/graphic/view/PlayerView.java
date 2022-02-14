@@ -405,6 +405,7 @@ public abstract class PlayerView extends StackPane implements IMediaPlayerListen
 				getMediaService().play();
 				updatePlaylist();
 				updateFuture = getMediaService().syncMetadatas();
+				AsyncServices.submitFxTaskOnFutureDone(updateFuture, () -> updatePlaylist());
 				onDndAudioFileSuccess();
 			}, null, () -> dndHandle.getContext().setSuccess(false));
 		}

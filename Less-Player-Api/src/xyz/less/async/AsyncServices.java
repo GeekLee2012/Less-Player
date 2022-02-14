@@ -49,6 +49,7 @@ public final class AsyncServices {
 				future.get(TIMEOUT, TimeUnit.SECONDS);
 				doInvoke(task);
 			} catch(CancellationException e1) {
+				e1.printStackTrace();
 				doInvoke(onCancelledTask);
 			} catch(Exception e2) {
 				e2.printStackTrace();

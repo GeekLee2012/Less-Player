@@ -95,11 +95,7 @@ public class PlaylistView extends StageView {
 
 	public void setTopVisible(boolean visible) {
 		BorderPane pane = byId("playlist_view");
-		if(visible) {
-			pane.setTop(topPane);
-		} else {
-			pane.setTop(null);
-		}
+		pane.setTop(visible ? topPane : null);
 	}
 	
 	private void initTop() {
