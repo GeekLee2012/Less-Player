@@ -12,7 +12,7 @@
 * 腾讯QQ音乐（迷你模式）
 
 #### 开发环境
-* OS: Windows 7或以上
+* OS: Windows 7、macOS Big Sur
 * JDK版本: 1.8.0_291
 * IDE: IntelliJ IDEA 2021.3.2 CE、Eclipse 2021-09 (4.21.0)
 * libs（第三方依赖库）: Jaudiotagger、jFlac、JAAD、Jorbis
