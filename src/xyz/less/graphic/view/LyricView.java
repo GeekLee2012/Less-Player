@@ -90,8 +90,6 @@ public class LyricView extends StageView {
 		});
 		
 		closeBtn.setOnMouseClicked(e -> hide());
-		//TODO
-		Guis.addHoverStyleClass("theme-bg", getScene().getRoot());
 	}
 
 	private void initCenter() {
