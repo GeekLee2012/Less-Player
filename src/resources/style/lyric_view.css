@@ -13,6 +13,7 @@
 
 #top_nav {
 	-fx-pref-height: 20;
+	-fx-padding: 0 0 15 0;
 }
 
 .lyric-line {
