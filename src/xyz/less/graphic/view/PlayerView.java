@@ -123,9 +123,17 @@ public abstract class PlayerView extends StackPane implements IMediaPlayerListen
 	
 	private void updateAudioDuration(double duration) {
 		Audio audio = getCurrent();
-		if(audio != null && audio.getDuration() <= 0) {
+		if(audio != null && audio.getDuration() <= 0 && duration < 100) {
 			audio.setDuration(duration);
 		}
+	}
+
+	private double getAdjustDuration(double duration) {
+		Audio audio = getCurrent();
+		if(audio != null && audio.getDuration() > 0) {
+			duration = duration < 100 ? duration : audio.getDuration();
+		}
+		return  duration;
 	}
 	
 	/**
@@ -170,7 +178,6 @@ public abstract class PlayerView extends StackPane implements IMediaPlayerListen
 	public void setAppTitle() {
 		getMainStage().setTitle(Constants.APP_NAME);
 	}
-	
 	
 	public void restore() {
 		initDatas();
@@ -258,7 +265,7 @@ public abstract class PlayerView extends StackPane implements IMediaPlayerListen
 	@Override
 	public void onCurrentChanged(double currentMinutes, double durationMinutes) {
 		updateAudioDuration(durationMinutes);
-		updateProgress(currentMinutes, durationMinutes);
+		updateProgress(currentMinutes, getAdjustDuration(durationMinutes));
 	}
 	
 	@Override

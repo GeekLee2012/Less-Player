@@ -537,7 +537,7 @@ public final class MainView extends PlayerView {
 	
 	public void updateProgressBar(double current, double duration) {
 		progressBar.setSeekable(getMediaService().isSeekable());
-		double percent = duration > 0 ? (current/duration) : 0;
+		double percent = duration > 0.01 ? (current/duration) : 0;
 		progressBar.updateProgress(percent);
 	}
 	
@@ -551,7 +551,7 @@ public final class MainView extends PlayerView {
 //				StringUtil.toMmss(current),
 //				StringUtil.toMmss(duration)));
 	}
-	
+
 	@Override
 	protected void doUpdateOnNoMetadata() {
 		audioTitleLbl.setText(Constants.UNKOWN_AUDIO);

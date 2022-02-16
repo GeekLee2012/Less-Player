@@ -51,8 +51,21 @@ public final class DefaultFxPlayer implements IMediaPlayer {
 
 	@Override
 	public void seek(double percent) {
-		Duration duration = player.getMedia().getDuration();
+		Duration duration = getAdjustDuration();
 		player.seek(duration.multiply(percent));
+	}
+
+	private Duration getAdjustDuration() {
+		Duration duration = player.getMedia().getDuration();
+		try {
+			double value = audio.getDuration();
+			if (value > 0) {
+				duration = duration.toMinutes() < 100 ? duration : Duration.minutes(value);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return duration;
 	}
 
 	@Override
@@ -113,7 +126,7 @@ public final class DefaultFxPlayer implements IMediaPlayer {
 				listenersMgr.onSpectrumDataUpdate(timestamp, duration, magnitudes, phases));
 			
 			player.currentTimeProperty().addListener((o,ov,nv) -> {
-				Duration duration = media.getDuration();
+				Duration duration = getAdjustDuration();
 				listenersMgr.onCurrentChanged(nv.toMinutes(), duration.toMinutes());
 			});
 
