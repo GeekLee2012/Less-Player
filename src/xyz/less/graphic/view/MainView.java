@@ -144,7 +144,7 @@ public final class MainView extends PlayerView {
 		});
 		
 		miniSkinBtn.setOnMouseClicked(e -> {
-			toggleLyricView(false);
+			Guis.setVisible(false, lyricView);
 			switchToSkin(MiniSkin.NAME);
 		});
 		
@@ -653,16 +653,6 @@ public final class MainView extends PlayerView {
 	@Override
 	public void onNoPlayableMedia() {
 		updateNoMediaText();
-	}
-	
-	private void toggleLyricView(boolean visible) {
-		Guis.ifPresent(lyricView, t -> {
-				if(visible) {
-					lyricView.show();
-				} else {
-					lyricView.hide();
-				}
-			});
 	}
 	
 	private void loadLyric(Audio audio) {

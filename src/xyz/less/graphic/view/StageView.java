@@ -83,11 +83,7 @@ public abstract class StageView extends Stage implements Attachable {
 	protected abstract void initGraph();
 	
 	public boolean toggle() {
-		if(isShowing()) {
-			hide();
-		} else {
-			show();
-		}
+		Guis.setVisible(!isShowing(), this);
 		return isShowing();
 	}
 

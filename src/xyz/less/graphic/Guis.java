@@ -356,6 +356,16 @@ public final class Guis {
 		return getOSName().toLowerCase().startsWith("mac os");
 	}
 
+	public static void setVisible(boolean visible, Stage... stages) {
+		applyStages(stage -> {
+			if(visible) {
+				stage.show();
+			} else {
+				stage.hide();
+			}
+		}, stages);
+	}
+
 	//TODO Nothing Relative with GUI
 	public static <T> void ifPresent(T t, Consumer<T> consumer) {
 		if(t != null) {
