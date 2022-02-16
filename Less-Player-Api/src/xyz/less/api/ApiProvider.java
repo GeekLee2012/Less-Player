@@ -59,24 +59,14 @@ public final class ApiProvider {
 		return client;
 	}
 	
-	private static void startClient(RpcClient client) {
-		AsyncServices.submit(()-> {
-			try {
-				client.start();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		});
-	}
-	
 	private static class ApiHandler<T extends IApi> implements InvocationHandler {
 		private RpcInvoker<T> rpcInvoker;
 		private RpcClient rpcClient;
 		
 		public ApiHandler(Class<T> apiClass) {
 			rpcClient = getRpcClient(apiClass);
-			startClient(rpcClient);
 			rpcInvoker = new RpcInvoker<>(rpcClient, apiClass);
+			rpcClient.startAsync();
 		}
 
 		@Override

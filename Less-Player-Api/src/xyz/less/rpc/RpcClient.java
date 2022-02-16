@@ -17,6 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import xyz.less.async.AsyncServices;
 import xyz.less.util.NioUtil;
 import xyz.less.util.SerializationUtil;
 
@@ -54,6 +55,16 @@ public final class RpcClient {
 	public void start() throws Exception {
 		doConnect();
 		doService();
+	}
+
+	public void startAsync() {
+		AsyncServices.submit(()-> {
+			try {
+				start();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
 	}
 	
 	private void doConnect() {
