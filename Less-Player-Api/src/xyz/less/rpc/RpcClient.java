@@ -30,6 +30,7 @@ public final class RpcClient {
 	private SocketAddress addr;
 	private BlockingQueue<RpcMessage> sendingQueue;
 	private Map<String, CompletableFuture<RpcResult>> futureMap;
+	private final Object lock = new Object();
 	
 	public RpcClient(int port) {
 		try {
@@ -59,6 +60,7 @@ public final class RpcClient {
 		try {
 			if(chann.isConnected() || chann.connect(addr)) {
 				NioUtil.registerReadOp(selector, chann);
+				notifyConnected();
 			} else {
 				NioUtil.registerConnectOp(selector, chann);
 			}
@@ -98,6 +100,7 @@ public final class RpcClient {
 		if(key.isConnectable()) {
 			if(sc.finishConnect()) {
 				key.interestOps(SelectionKey.OP_READ | SelectionKey.OP_WRITE);
+				notifyConnected();
 //				NioUtil.registerWriteOp(selector, sc);
 			}
 		} else if(key.isReadable()) {
@@ -134,9 +137,7 @@ public final class RpcClient {
 	}
 
 	public Future<RpcResult> send(RpcRequest request) throws Exception {
-		while (!chann.isConnected()) {
-			//TODO
-		}
+		checkAndWaitConnected();
 		CompletableFuture<RpcResult> future = new CompletableFuture<>();
 		RpcMessage msg = new RpcMessage(request);
 		sendingQueue.offer(msg);
@@ -144,7 +145,26 @@ public final class RpcClient {
 		NioUtil.registerWriteOp(selector, chann);
 		return future;
 	}
-	
+
+	private void checkAndWaitConnected() {
+		try {
+			synchronized (lock) {
+				while (!chann.isConnected()) {
+					lock.wait();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void notifyConnected() {
+		synchronized (lock) {
+			lock.notifyAll();
+			System.out.println("Client Connected!");
+		}
+	}
+
 	private void doSend(SocketChannel sc, RpcMessage msg) throws Exception {
 		ByteBuffer buffer = ByteBuffer.allocate(40 + msg.getSize());
 		buffer.put(RpcMessage.MAGIC_CODE.getBytes()); //4bytes 
