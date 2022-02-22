@@ -13,8 +13,8 @@
 }
 
 #playlist_top {
-	-fx-pref-height: 32;
-	/* -fx-border-width: 0 0 1 0;
+	/*-fx-pref-height: 32;
+	-fx-border-width: 0 0 1 0;
 	-fx-border-color: #1b1b1b;
 	-fx-border-color: transparent;*/
 }
