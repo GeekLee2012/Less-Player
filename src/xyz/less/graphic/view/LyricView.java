@@ -141,7 +141,11 @@ public class LyricView extends StageView {
 
 	@Override
 	public void doAttach() {
+		double y = opener.getY() + opener.getHeight() + SimpleSkin.LYRIC_PADDING_Y;
 		setX(opener.getX());
-		setY(opener.getY() + opener.getHeight() + SimpleSkin.LYRIC_PADDING_Y);
+		setY(y);
+		if (Guis.isMacOS()) {
+			sizeToScene();
+		}
 	}
 }

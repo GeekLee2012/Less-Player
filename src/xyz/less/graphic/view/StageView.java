@@ -43,6 +43,7 @@ public abstract class StageView extends Stage implements Attachable {
 		if(root instanceof Region) {
 			Region rootRegion = (Region)root;
 			rootRegion.getStyleClass().add("theme-bg");
+			rootRegion.setPrefSize(getWidth(), getHeight());
 		}
 	}
 	
