@@ -22,7 +22,7 @@ public final class SerializationUtil {
 		return (T)getObject(bytes);
 	}
 	
-	public static byte[] toByteArray(Object obj) {
+	public static byte[] getBytes(Object obj) {
 		try (ByteArrayOutputStream bao = new ByteArrayOutputStream();
 				ObjectOutputStream out = new ObjectOutputStream(bao)){
 			out.writeObject(obj);

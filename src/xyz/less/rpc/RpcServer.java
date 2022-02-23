@@ -207,7 +207,7 @@ public final class RpcServer {
 
 	public void doResponse(SelectionKey key, RpcResult result) throws Exception {
 		SocketChannel sc = (SocketChannel) key.channel();
-		ByteBuffer buffer = ByteBuffer.wrap(SerializationUtil.toByteArray(result));
+		ByteBuffer buffer = ByteBuffer.wrap(SerializationUtil.getBytes(result));
 		sc.write(buffer);
 		NioUtil.registerReadOp(selector, sc);
 	}

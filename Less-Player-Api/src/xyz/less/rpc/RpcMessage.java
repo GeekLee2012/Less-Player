@@ -36,7 +36,7 @@ public final class RpcMessage {
 	}
 	
 	public RpcMessage(RpcRequest request) {
-		this(StringUtil.uuid(true), SerializationUtil.toByteArray(request));
+		this(StringUtil.uuid(true), SerializationUtil.getBytes(request));
 	}
 	
 	public RpcMessage(String id, byte[] body) {
