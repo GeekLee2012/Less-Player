@@ -51,8 +51,7 @@ public class LyricView extends StageView {
 		setSceneRoot(Guis.loadFxml(SimpleSkin.LYRIC_VIEW_FXML));
 		addStyle(SimpleSkin.LYRIC_VIEW_STYLE);
 //		setSceneTransparent();
-		setAlwaysOnTop(true);
-		
+
 		initTop();
 		initCenter();
 	}
@@ -64,20 +63,26 @@ public class LyricView extends StageView {
 	private void initTop() {
 		topNavBox = byId("top_nav");
 		lockBtn = byId("lock_btn");
+		Label pinBtn = byId("pin_btn");
 		Label attachBtn = byId("attach_btn");
 		Label closeBtn = byId("close_btn");
-		
+
+		Guis.setGraphic(Images.PIN[1], pinBtn);
 		Guis.setGraphic(Images.ATTACH[1], attachBtn);
 		Guis.setGraphic(Images.LOCK[0], lockBtn);
 		Guis.setGraphic(Images.CLOSE, closeBtn);
 		Guis.addStyleClass("label-btn", lockBtn, attachBtn, closeBtn);
 		Guis.addHoverStyleClass("label-hover-red", closeBtn);
-		Guis.setPickOnBounds(true, lockBtn, attachBtn, closeBtn);
-		
-		Guis.setUserData(1, attachBtn);
-		
-		dnmAction = Guis.addDnmAction(this, topNavBox, closeBtn);
-		
+		Guis.setPickOnBounds(true, pinBtn, lockBtn, attachBtn, closeBtn);
+
+		Guis.setAlwaysOnTop(true, this);
+		Guis.setUserData(1, pinBtn, attachBtn);
+
+		pinBtn.setOnMouseClicked(e -> {
+			boolean alwaysOnTop = (Guis.toggleImage(pinBtn, Images.PIN) == 1);
+			Guis.setAlwaysOnTop(alwaysOnTop, this);
+		});
+
 		attachBtn.setOnMouseClicked(e -> {
 			attach = !attach;
 			Guis.toggleImage(attachBtn, Images.ATTACH);
@@ -90,6 +95,8 @@ public class LyricView extends StageView {
 		});
 		
 		closeBtn.setOnMouseClicked(e -> hide());
+
+		dnmAction = Guis.addDnmAction(this, topNavBox, pinBtn, attachBtn, lockBtn, closeBtn);
 	}
 
 	private void initCenter() {

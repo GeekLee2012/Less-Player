@@ -21,6 +21,7 @@
 				
 				<ImageView fx:id="size_down_btn" />
 				<ImageView fx:id="size_up_btn" />-->
+				<Label fx:id="pin_btn" />
 				<Label fx:id="attach_btn" />
 				<Label fx:id="lock_btn" />
 				<Label fx:id="close_btn" />
