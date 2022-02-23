@@ -34,7 +34,7 @@ public class PlaylistView extends StageView {
 	private boolean autoTarget = true;
 	private double rowWidth = 335;
 	public double durationWidth = 72;
-	
+
 	private Consumer<DnmAction.Pos> attachAction;
 	
 	public PlaylistView(Stage opener, double width, double height) {
@@ -59,10 +59,6 @@ public class PlaylistView extends StageView {
 			listView.layout();
 		});
 	}
-
-	private void setAttach(boolean attach) {
-		this.attach = attach;
-	}
 	
 	public void setAttachAction(Consumer<DnmAction.Pos> attachAction) {
 		this.attachAction = attachAction;
@@ -74,12 +70,8 @@ public class PlaylistView extends StageView {
 	
 	private void initEvents() {
 		setOnShowing(e -> {
-//			attach();
 			highlightCurrentPlaying();
 		});
-//		setOnHiding(e -> {
-//			opener.setX(openerX);
-//		});
 	}
 
 	protected void initGraph() {
@@ -134,7 +126,7 @@ public class PlaylistView extends StageView {
 		Guis.addDnmAction(this, topPane, winBtnsBox);
 		
 		attachBtn.setOnMouseClicked(e -> {
-			setAttach(!attach);
+			toggleAttach();
 			Guis.toggleImage(attachBtn, Images.ATTACH);
 		});
 		
@@ -216,14 +208,9 @@ public class PlaylistView extends StageView {
 		logoSizeLbl.setText(text);
 	}
 
-	@Override
-	public void attach() {
-		attach(lyricOn);
-	}
-	
 	public void attach(boolean lyricOn) {
 		this.lyricOn = lyricOn;
-		super.attach();
+		attach();
 	}
 
 	@Override

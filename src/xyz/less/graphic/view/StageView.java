@@ -11,7 +11,7 @@ import xyz.less.graphic.skin.Skin;
 public abstract class StageView extends Stage implements Attachable {
 	protected Stage opener;
 	private int counter;
-	protected boolean attach = true;
+	private boolean attach = true;
 	
 	public StageView(Stage opener, double width, double height) {
 		this.opener = opener;
@@ -19,7 +19,7 @@ public abstract class StageView extends Stage implements Attachable {
 		setMaxWidth(width);
 		setHeight(height);
 		setMaxHeight(height);
-		initOwner(opener);
+//		initOwner(opener);
 		initStyle(StageStyle.TRANSPARENT);
 	}
 	
@@ -88,12 +88,24 @@ public abstract class StageView extends Stage implements Attachable {
 		return isShowing();
 	}
 
+	public void setAttach(boolean attach) {
+		this.attach = attach;
+	}
+
+	public void toggleAttach() {
+		setAttach(!attach);
+	}
+
+	public  boolean isAttach() {
+		return this.attach;
+	}
+
 	@Override
 	public void attach() {
-		if(attach) {
-			if(Guis.isMacOS()) {
-				opener.sizeToScene(); //Fix a bug, also create another same bug
-			}
+		if(isAttach()) {
+//			if(Guis.isMacOS()) {
+//				opener.sizeToScene(); //Fix a bug, also create another same bug
+//			}
 			doAttach();
 		}
 	}

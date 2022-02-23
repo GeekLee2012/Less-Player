@@ -131,7 +131,10 @@ public final class MainView extends PlayerView {
 		Guis.addDnmAction(getMainStage(), pane, arg -> {
 			Guis.applyStages(stage -> {
 				if(stage instanceof Attachable) {
-					((Attachable)stage).attach();
+					Attachable attachStage = (Attachable)stage;
+					if (attachStage.isAttach()) {
+						attachStage.attach();
+					}
 				}
 			}, playlistView, lyricView);
 		}, logoBtn, winBtnsBox);
@@ -144,7 +147,7 @@ public final class MainView extends PlayerView {
 		});
 		
 		miniSkinBtn.setOnMouseClicked(e -> {
-			Guis.setVisible(false, lyricView);
+			Guis.setVisible(false, playlistView, lyricView);
 			switchToSkin(MiniSkin.NAME);
 		});
 		

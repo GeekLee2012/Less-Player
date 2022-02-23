@@ -176,6 +176,7 @@ public final class MainView extends PlayerView {
 		
 		//TODO 易造成误操作
 		Guis.setOnMouseClicked(e -> {
+			Guis.setVisible(false, playlistView);
 			switchToSkin(SimpleSkin.NAME);
 		}, logoBtn, logoMask);
 		

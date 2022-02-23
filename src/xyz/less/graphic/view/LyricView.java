@@ -84,7 +84,7 @@ public class LyricView extends StageView {
 		});
 
 		attachBtn.setOnMouseClicked(e -> {
-			attach = !attach;
+			toggleAttach();
 			Guis.toggleImage(attachBtn, Images.ATTACH);
 		});
 		
@@ -151,8 +151,8 @@ public class LyricView extends StageView {
 		double y = opener.getY() + opener.getHeight() + SimpleSkin.LYRIC_PADDING_Y;
 		setX(opener.getX());
 		setY(y);
-		if (Guis.isMacOS()) {
-			sizeToScene();
-		}
+//		if (Guis.isMacOS()) {
+//			sizeToScene();
+//		}
 	}
 }
