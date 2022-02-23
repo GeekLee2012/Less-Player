@@ -51,8 +51,10 @@ public final class DefaultFxPlayer implements IMediaPlayer {
 
 	@Override
 	public void seek(double percent) {
-		Duration duration = getAdjustDuration();
-		player.seek(duration.multiply(percent));
+		if (isSeekable()) {
+			Duration duration = getAdjustDuration();
+			player.seek(duration.multiply(percent));
+		}
 	}
 
 	private Duration getAdjustDuration() {

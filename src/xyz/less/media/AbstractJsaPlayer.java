@@ -186,9 +186,15 @@ public abstract class AbstractJsaPlayer extends Service<Audio> implements IMedia
 	
 	@Override
 	public void seek(double percent) {
+		if (isSeekable()) {
+			doSeek(percent);
+		}
+	}
+
+	protected void doSeek(double percent) {
 		//由子类实现
 	}
-	
+
 	@Override
 	public boolean isPlaying() {
 		return audio != null && isLineActive();
@@ -277,7 +283,7 @@ public abstract class AbstractJsaPlayer extends Service<Audio> implements IMedia
 			}
 		};
 	}
-	
+
 	protected abstract void changeAudio(Audio audio) throws Exception;
 	
 	protected abstract AudioFormat getAudioFormat() throws Exception;
