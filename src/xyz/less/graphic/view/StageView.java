@@ -14,6 +14,7 @@ public abstract class StageView extends Stage implements Attachable {
 	private int counter;
 	private boolean attached = true;
 	private boolean markShowing = false;
+	private boolean markAlwaysOnTop = false;
 	
 	public StageView(Stage opener, double width, double height) {
 		this.opener = opener;
@@ -127,7 +128,10 @@ public abstract class StageView extends Stage implements Attachable {
 //			if(Guis.isMacOS()) {
 //				opener.sizeToScene(); //Fix a bug, also create another same bug
 //			}
+			markAlwaysOnTop = isAlwaysOnTop();
+			setAlwaysOnTop(true);
 			doAttach();
+			setAlwaysOnTop(markAlwaysOnTop);
 		}
 	}
 
