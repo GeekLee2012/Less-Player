@@ -312,7 +312,20 @@ public final class MainView extends PlayerView {
 		
 		exportApis();
 	}
-	
+
+	@Override
+	protected void initEvents() {
+		super.initEvents();
+		getMainStage().iconifiedProperty().addListener((o, ov, nv) -> {
+			if(nv) {
+				playlistView.markShowing(playlistView.isShowing());
+				playlistView.hide();
+			} else if (playlistView.isMarkShowing()) {
+				playlistView.show();
+			}
+		});
+	}
+
 	private void updatePlayModeBtn() {
 		PlayMode playMode = getMediaService().getPlayMode();
 		shuffleMode = (playMode == PlayMode.SHUFFLE);

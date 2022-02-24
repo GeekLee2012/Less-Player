@@ -9,9 +9,11 @@ import xyz.less.graphic.Guis;
 import xyz.less.graphic.skin.Skin;
 
 public abstract class StageView extends Stage implements Attachable {
+	private static Stage owner4HiddenTaskBarIcon;
 	protected Stage opener;
 	private int counter;
 	private boolean attach = true;
+	private boolean markShowing = false;
 	
 	public StageView(Stage opener, double width, double height) {
 		this.opener = opener;
@@ -19,8 +21,19 @@ public abstract class StageView extends Stage implements Attachable {
 		setMaxWidth(width);
 		setHeight(height);
 		setMaxHeight(height);
-//		initOwner(opener);
+		hideTaskBarIcon();
 		initStyle(StageStyle.TRANSPARENT);
+	}
+
+	private void hideTaskBarIcon() {
+		//TODO a bug
+		if (owner4HiddenTaskBarIcon == null) {
+			owner4HiddenTaskBarIcon = new Stage();
+			owner4HiddenTaskBarIcon.initStyle(StageStyle.UTILITY);
+			owner4HiddenTaskBarIcon.setOpacity(0);
+			owner4HiddenTaskBarIcon.show();
+		}
+		initOwner(owner4HiddenTaskBarIcon);
 	}
 	
 	public <T> T byId(String id) {
@@ -50,7 +63,15 @@ public abstract class StageView extends Stage implements Attachable {
 	public void addStyle(String stylesheet) {
 		Guis.addStylesheet(stylesheet, this);
 	}
-	
+
+	public boolean isMarkShowing() {
+		return markShowing;
+	}
+
+	public void markShowing(boolean value) {
+		this.markShowing = value;
+	}
+
 	/** Counter: start from 0 */
 	protected void startCount() {
 		startCount(0);

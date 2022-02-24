@@ -142,8 +142,8 @@ public abstract class PlayerView extends StackPane implements IMediaPlayerListen
 	public void initGraph() {
 		initStyles();
 		doInitGraph();
-		initEvents();
 		initDatas();
+		initEvents();
 	}
 
 	protected void initStyles() {

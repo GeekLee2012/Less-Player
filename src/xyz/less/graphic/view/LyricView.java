@@ -13,7 +13,6 @@ import xyz.less.graphic.skin.SimpleSkin;
 import xyz.less.media.LyricParser;
 
 public class LyricView extends StageView {
-	private Stage owner;
 //	private double openerX;
 //	private double openerY;
 	private Pane topNavBox;
@@ -28,22 +27,12 @@ public class LyricView extends StageView {
 	
 	public LyricView(Stage opener, double width, double height) {
 		super(opener, width, height);
-		hideTaskBarIcon();
 		initGraph();
 		initEvents();
 	}
 	
 	public void setCurrentAudio(Audio currentAudio) {
 		this.currentAudio = currentAudio;
-	}
-
-	private void hideTaskBarIcon() {
-		//TODO a bug
-		owner = new Stage();
-		owner.initStyle(StageStyle.UTILITY);
-		owner.setOpacity(0);
-		owner.show();
-		initOwner(owner);
 	}
 
 	@Override
