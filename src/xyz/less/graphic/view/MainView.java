@@ -131,10 +131,7 @@ public final class MainView extends PlayerView {
 		Guis.addDnmAction(getMainStage(), pane, arg -> {
 			Guis.applyStages(stage -> {
 				if(stage instanceof Attachable) {
-					Attachable attachStage = (Attachable)stage;
-					if (attachStage.isAttach()) {
-						attachStage.attach();
-					}
+					((Attachable)stage).attach();
 				}
 			}, playlistView, lyricView);
 		}, logoBtn, winBtnsBox);

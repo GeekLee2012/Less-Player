@@ -12,7 +12,7 @@ public abstract class StageView extends Stage implements Attachable {
 	private static Stage owner4HiddenTaskBarIcon;
 	protected Stage opener;
 	private int counter;
-	private boolean attach = true;
+	private boolean attached = true;
 	private boolean markShowing = false;
 	
 	public StageView(Stage opener, double width, double height) {
@@ -109,21 +109,21 @@ public abstract class StageView extends Stage implements Attachable {
 		return isShowing();
 	}
 
-	public void setAttach(boolean attach) {
-		this.attach = attach;
+	public void setAttached(boolean attached) {
+		this.attached = attached;
 	}
 
 	public void toggleAttach() {
-		setAttach(!attach);
+		setAttached(!attached);
 	}
 
-	public  boolean isAttach() {
-		return this.attach;
+	public  boolean isAttached() {
+		return this.attached;
 	}
 
 	@Override
 	public void attach() {
-		if(isAttach()) {
+		if(isAttached()) {
 //			if(Guis.isMacOS()) {
 //				opener.sizeToScene(); //Fix a bug, also create another same bug
 //			}
