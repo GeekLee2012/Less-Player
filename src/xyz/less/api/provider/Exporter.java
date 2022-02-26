@@ -1,41 +1,46 @@
 package xyz.less.api.provider;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 import xyz.less.api.IApi;
 import xyz.less.util.ReflectUtil;
 
 public final class Exporter {
 	/** [ ApiClsName, ApiProviderCls ] */
-	private static final HashMap<String, Class<?>> exportedMap = new HashMap<>();
-	private static final HashMap<Class<?>, Object> cachedProviders = new HashMap<>();
+	private static final HashMap<String, Class<? extends IApi>> exportedMap = new HashMap<>();
+	private static final HashMap<Class<? extends IApi>, Object> cachedProviders = new HashMap<>();
 	
-	public static void export(Class<?> providerClass) {
-		boolean found = false;
-		//TODO 仅支持两级接口继承关系: provider实现的接口及其接口的父接口
+	public static void export(Class<? extends IApi> providerClass) {
 		try {
-			//provider实现的接口
-			for(Class<?> cls : providerClass.getInterfaces()) { 
-				//接口的父接口
-				for(Class<?> pCls : cls.getInterfaces()) {
-					if(pCls == IApi.class) {
-						found = true;
-						break ;
-					}
-				}
-				if(found) {
-					doExport(cls, providerClass);
-					found = false;
-				}
-			}
+			getApiInterfaces(providerClass).forEach(cls -> doExport(cls, providerClass));
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
-	private static void doExport(Class<?> type, Class<?> providerClass) {
+
+	/** 获取IApi接口的所有直接子接口 */
+	private static Set<Class<? extends IApi>> getApiInterfaces(Class<? extends IApi> providerClass) {
+		Set<Class<? extends IApi>> result = new HashSet<>();
+		Class<?> superCls = providerClass.getSuperclass();
+		if (superCls != null && IApi.class.isAssignableFrom(superCls)) {
+			result.addAll(getApiInterfaces((Class<? extends IApi>) superCls));
+		}
+		Class<?>[] interfaces = providerClass.getInterfaces();
+		if(interfaces != null) {
+			for (Class<?> cls : interfaces) {
+				if (IApi.class.isAssignableFrom(cls)) {
+					if(cls == IApi.class) {	//递归出口
+						result.add(providerClass);
+					} else {
+						result.addAll(getApiInterfaces((Class<? extends IApi>) cls));
+					}
+				}
+			}
+		}
+		return result;
+	}
+
+	private static void doExport(Class<? extends  IApi> type, Class<? extends IApi> providerClass) {
 		try {
 			Object cachedProvider = cachedProviders.get(providerClass);
 			if(cachedProvider == null) {
@@ -46,11 +51,11 @@ public final class Exporter {
 			e.printStackTrace();
 		}
 	}
-	
-	public static void export(Class<?> type, Object provider) {
+
+	public static void export(Class<? extends  IApi> type, Object provider) {
 		try {
 			String exportedKey = type.getName();
-			Class<?> providerClass = provider.getClass();
+			Class<? extends IApi> providerClass = (Class<? extends IApi>) provider.getClass();
 			exportedMap.put(exportedKey, providerClass);
 			cachedProviders.put(providerClass, provider);
 		} catch (Exception e) {
@@ -58,7 +63,7 @@ public final class Exporter {
 		}
 	}
 	
-	public static void exportObjectsFor(Class<?> providerClass, Object... objs) {
+	public static void exportObjectsFor(Class<? extends IApi> providerClass, Object... objs) {
 		export(providerClass);
 		Object provider = getProvider(providerClass);
 		if(objs != null) {
@@ -68,7 +73,7 @@ public final class Exporter {
 		}
 	}
 	
-	public static void exportObjectForField(Class<?> providerClass, String fieldName, Object obj) {
+	public static void exportObjectForField(Class<? extends IApi> providerClass, String fieldName, Object obj) {
 		export(providerClass);
 		Object provider = getProvider(providerClass);
 		ReflectUtil.setField(provider, fieldName, obj);
@@ -80,7 +85,7 @@ public final class Exporter {
 	
 	public static Object getProvider(String exportedKey) {
 		try {
-			Class<?> cachedProviderClass = exportedMap.get(exportedKey);
+			Class<? extends IApi> cachedProviderClass = exportedMap.get(exportedKey);
 			return getProvider(cachedProviderClass);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -88,7 +93,7 @@ public final class Exporter {
 		return null;
 	}
 	
-	public static Object getProvider(Class<?> providerClass) {
+	public static Object getProvider(Class<? extends IApi> providerClass) {
 		try {
 			return cachedProviders.get(providerClass);
 		} catch (Exception e) {
@@ -102,7 +107,7 @@ public final class Exporter {
 		cachedProviders.clear();
 	}
 	
-	public static void unexport(Class<?>... providerClasses) {
+	public static void unexport(Class<? extends IApi>... providerClasses) {
 		try {
 			for(Class<?> providerCls : providerClasses) {
 				doUnexport(providerCls);
