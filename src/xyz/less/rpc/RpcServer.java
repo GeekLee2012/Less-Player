@@ -32,9 +32,8 @@ public final class RpcServer {
 	}
 	
 	private void doInit(int port) {
-		boolean retry = false;
+		int retry = 0;
 		do {
-			retry = false;
 			try {
 				InetSocketAddress addr = new InetSocketAddress(port++);
 				
@@ -48,14 +47,15 @@ public final class RpcServer {
 				ApiProvider.setRpcPort(addr.getPort());
 				
 				System.out.println("[Server] bind @" + addr.getPort());
+				retry = 0;
 			} catch (BindException e) {
 				e.printStackTrace();
-				retry = true;
+				retry = (retry < NioUtil.MAX_RETRY) ? ++retry : 0;
 			} catch (Exception e) {
 				e.printStackTrace();
 				break;
 			}
-		} while(retry);
+		} while(retry > 0);
 	}
 
 	public void start() {

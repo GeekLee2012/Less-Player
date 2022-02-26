@@ -8,7 +8,8 @@ import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 
 public final class NioUtil {
-	
+	public static final int MAX_RETRY = 3;
+
 	public static void registerAcceptOp(Selector selector, SelectableChannel sc) throws Exception {
 		doRegisterOp(selector, sc, SelectionKey.OP_ACCEPT);
 	}
