@@ -83,6 +83,8 @@ public abstract class AbstractJsaPlayer extends Service<Audio> implements IMedia
 	protected void closeLine() {
 		if(line != null) {
 			line.drain();
+		}
+		if(line != null) {
 			line.close();
 			line = null;
 			if(end) {
@@ -90,6 +92,13 @@ public abstract class AbstractJsaPlayer extends Service<Audio> implements IMedia
 				end = false;
 			}
 		}
+	}
+
+	protected int writeLine(byte[] buffer, int offset, int len) {
+		if (line != null) {
+			return line.write(buffer, offset, len);
+		}
+		return 0;
 	}
 	
 	public Audio getCurrent() {
@@ -115,7 +124,7 @@ public abstract class AbstractJsaPlayer extends Service<Audio> implements IMedia
 			}
 			totalWriteBytes += srcBytes.length;
 			double current = AudioUtil.bytes2Minutes(totalWriteBytes, audioFormat);
-			int writeBytes = line.write(srcBytes, 0, srcBytes.length);
+			int writeBytes = writeLine(srcBytes, 0, srcBytes.length);
 			if(writeBytes > 0) {
 				listenersMgr.onCurrentChanged(current, audio.getDuration());
 			}

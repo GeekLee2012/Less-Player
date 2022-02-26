@@ -222,7 +222,7 @@ public final class OggPlayer extends AbstractJsaPlayer {
 									int len = 2 * jorbisInfo.channels * bout;
 									totalWriteBytes += len;
 									
-									line.write(convbuffer, 0, len);
+									writeLine(convbuffer, 0, len);
 									jorbisDspState.synthesis_read(bout);
 									
 									//TODO
