@@ -18,10 +18,10 @@ public interface IMediaService extends IMediaPlayer {
 	void setPlayMode(PlayMode mode);
 	void addAll(Audio... audios);
 	void addAll(Collection<Audio> audios);
-	Future<?> loadFrom(File file);
 	List<Audio> getPlaylist();
 	void removeAll(boolean notify);
 	int getCurrentIndex();
 	Map<String, Object> getCurrentMetadata();
+	Future<?> loadFrom(String url);
 	Future<?> syncMetadatas();
 }

@@ -402,7 +402,7 @@ public abstract class PlayerView extends StackPane implements IMediaPlayerListen
 		private void handleDndAudioFile(File dndFile) {
 			onDndWaiting();
 			AsyncServices.cancel(loadFuture, updateFuture);
-			loadFuture = getMediaService().loadFrom(dndFile);
+			loadFuture = getMediaService().loadFrom(FileUtil.toExternalForm(dndFile ));
 			AsyncServices.submitFxTaskOnFutureDone(loadFuture, () ->{
 				onDndAudioFileDone();
 				if(getMediaService().getPlaylist().isEmpty()) {
