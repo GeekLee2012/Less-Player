@@ -1,16 +1,10 @@
 package xyz.less.graphic.view.mini;
 
-import java.util.function.Consumer;
-
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Circle;
@@ -25,7 +19,6 @@ import xyz.less.bean.Resources.Images;
 import xyz.less.graphic.Guis;
 import xyz.less.graphic.TwoLinesLyricRenderer;
 import xyz.less.graphic.anim.RotateAnimation;
-import xyz.less.graphic.control.DnmAction;
 import xyz.less.graphic.skin.MiniSkin;
 import xyz.less.graphic.skin.SimpleSkin;
 import xyz.less.graphic.view.Attachable;
@@ -34,6 +27,8 @@ import xyz.less.graphic.view.PlaylistView;
 import xyz.less.media.LyricParser;
 import xyz.less.media.PlaybackQueue.PlayMode;
 import xyz.less.util.StringUtil;
+
+import java.util.function.Consumer;
 
 /**
  * Mini风格
