@@ -1,26 +1,14 @@
 package xyz.less.service;
 
-import java.io.File;
-import java.net.URI;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.Future;
-
 import javafx.scene.media.MediaView;
 import xyz.less.bean.Audio;
-import xyz.less.bean.Resources;
-import xyz.less.media.IMediaPlayer;
-import xyz.less.media.IMediaPlayerListener;
-import xyz.less.media.MediaListenerManager;
-import xyz.less.media.MediaPlayerManager;
-import xyz.less.media.PlaybackQueue;
+import xyz.less.media.*;
 import xyz.less.media.PlaybackQueue.PlayMode;
 import xyz.less.util.FileUtil;
+
+import java.io.File;
+import java.util.*;
+import java.util.concurrent.Future;
 
 public final class DefaultMediaService implements IMediaService, IMediaPlayerListener {
 	private PlaybackQueue playbackQueue = new PlaybackQueue();
@@ -78,6 +66,7 @@ public final class DefaultMediaService implements IMediaService, IMediaPlayerLis
 		delegate.addListener(this);
 		delegate.setVolume(volume);
 		System.out.println("[Delegate Player] " + delegate.getClass());
+		System.out.println("[Audio Changed] " + audio.getSource());
 		return delegate;
 	}
 
