@@ -9,7 +9,7 @@ import xyz.less.graphic.Guis;
 import xyz.less.graphic.skin.Skin;
 
 public abstract class StageView extends Stage implements Attachable {
-	private static Stage owner4HiddenTaskBarIcon;
+	private Stage owner4HiddenTaskBarIcon;
 	protected Stage opener;
 	private int counter;
 	private boolean attached = true;
@@ -28,12 +28,11 @@ public abstract class StageView extends Stage implements Attachable {
 
 	private void hideTaskBarIcon() {
 		//TODO a bug
-		if (owner4HiddenTaskBarIcon == null) {
-			owner4HiddenTaskBarIcon = new Stage();
-			owner4HiddenTaskBarIcon.initStyle(StageStyle.UTILITY);
-			owner4HiddenTaskBarIcon.setOpacity(0);
-			owner4HiddenTaskBarIcon.show();
-		}
+		owner4HiddenTaskBarIcon = new Stage();
+		owner4HiddenTaskBarIcon.initStyle(StageStyle.UTILITY);
+		owner4HiddenTaskBarIcon.setOpacity(0);
+		owner4HiddenTaskBarIcon.setAlwaysOnTop(true);
+		owner4HiddenTaskBarIcon.show();
 		initOwner(owner4HiddenTaskBarIcon);
 	}
 	

@@ -15,8 +15,7 @@ public final class Main extends Application {
 		mainStage.initStyle(StageStyle.TRANSPARENT);
 		mainStage.setOnCloseRequest(e -> Guis.exitApplication());
 		AppContext context = AppContext.get();
-		context.setMainStage(mainStage)
-				.switchToSkin(context.getSkinName());
+		context.setMainStage(mainStage).switchToSkin(context.getSkinName());
 		PluginsService.start();
 	}
 	
