@@ -13,7 +13,7 @@
 
 #### 开发环境
 * OS: Windows 7、macOS Big Sur
-* JDK版本（x86版本，即32bit版本）: 1.8.0_301
+* JDK版本: 1.8.0_301
 * IDE: IntelliJ IDEA 2021.3.2 CE、Eclipse 2021-09 (4.21.0)
 * libs（第三方依赖库）: Jaudiotagger、jFlac、JAAD、Jorbis
 
