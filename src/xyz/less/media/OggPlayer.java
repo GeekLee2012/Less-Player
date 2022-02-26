@@ -253,7 +253,7 @@ public final class OggPlayer extends AbstractJsaPlayer {
 				}
 			}
 
-			closeLine();
+//			closeLine();
 			joggStreamState.clear();
 			jorbisBlock.clear();
 			jorbisDspState.clear();
@@ -268,6 +268,7 @@ public final class OggPlayer extends AbstractJsaPlayer {
 		
 		joggSyncState.clear();
 		doClose();
+		closeLine();
 		listenersMgr.onEndOfMedia();
 	}
 

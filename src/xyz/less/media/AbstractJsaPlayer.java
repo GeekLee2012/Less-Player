@@ -216,12 +216,16 @@ public abstract class AbstractJsaPlayer extends Service<Audio> implements IMedia
 
 	@Override
 	public void reset(boolean notify) {
-		stopped = true;
-		paused = false;
-		stopLine();
-		closeLine();
-		if(notify) {
-			listenersMgr.onReset();
+		try {
+			stopped = true;
+			paused = false;
+			stopLine();
+			closeLine();
+			if(notify) {
+				listenersMgr.onReset();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 	
