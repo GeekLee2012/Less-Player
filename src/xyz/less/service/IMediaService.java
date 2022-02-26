@@ -1,14 +1,13 @@
 package xyz.less.service;
 
-import java.io.File;
+import xyz.less.bean.Audio;
+import xyz.less.media.IMediaPlayer;
+import xyz.less.media.PlaybackQueue.PlayMode;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
-
-import xyz.less.bean.Audio;
-import xyz.less.media.IMediaPlayer;
-import xyz.less.media.PlaybackQueue.PlayMode;
 
 public interface IMediaService extends IMediaPlayer {
 	boolean isInit();

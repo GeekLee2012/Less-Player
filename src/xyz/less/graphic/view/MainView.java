@@ -1,7 +1,5 @@
 package xyz.less.graphic.view;
 
-import java.util.function.Consumer;
-
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -11,7 +9,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 import xyz.less.api.provider.Exporter;
 import xyz.less.api.provider.GraphicApiProvider;
 import xyz.less.api.provider.MediaPlayerApiProvider;
@@ -19,7 +16,6 @@ import xyz.less.bean.Audio;
 import xyz.less.bean.Constants;
 import xyz.less.bean.Resources.Images;
 import xyz.less.graphic.Guis;
-import xyz.less.graphic.control.DnmAction;
 import xyz.less.graphic.control.ProgressBar;
 import xyz.less.graphic.control.SliderBar;
 import xyz.less.graphic.skin.MiniSkin;
@@ -28,6 +24,8 @@ import xyz.less.graphic.visualization.ISpectrum;
 import xyz.less.graphic.visualization.SpectrumManager;
 import xyz.less.media.PlaybackQueue.PlayMode;
 import xyz.less.util.StringUtil;
+
+import java.util.function.Consumer;
 
 /**
  * 普通风格
@@ -57,7 +55,7 @@ public final class MainView extends PlayerView {
 	private LyricView lyricView;
 	
 	private boolean alwaysOnTop;
-	private PlayMode[] repeatModes = { PlayMode.NO_REPEAT, PlayMode.REPEAT_ALL, PlayMode.REPEAT_SELF };
+	private final PlayMode[] repeatModes = { PlayMode.NO_REPEAT, PlayMode.REPEAT_ALL, PlayMode.REPEAT_SELF };
 	private PlayMode repeatMode = repeatModes[0];
 	private boolean shuffleMode = true;
 	private double currentMinutes;

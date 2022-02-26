@@ -3,7 +3,6 @@ package xyz.less.graphic.view;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import xyz.less.bean.Audio;
 import xyz.less.bean.Resources.Images;
 import xyz.less.graphic.Guis;
