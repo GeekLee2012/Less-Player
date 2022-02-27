@@ -11,8 +11,8 @@ public final class SpectrumManager {
 	private int index = -1;
 	
 	static {
-		CLS_LIST.add(RectangleSpectrum.class);
 		CLS_LIST.add(GridSpectrum.class);
+		CLS_LIST.add(RectangleSpectrum.class);
 		CLS_LIST.add(PolyLineSpectrum.class);
 		CLS_LIST.add(CircleSpectrum.class);
 	}
@@ -43,14 +43,17 @@ public final class SpectrumManager {
 
 	//TODO 不够灵活
 	private ISpectrum getInstance(Class<? extends ISpectrum> cls) {
-		if(cls == GridSpectrum.class) {
+		if (cls == RectangleSpectrum.class) {
+			return new RectangleSpectrum(66);
+		} else if(cls == GridSpectrum.class) {
 			return new GridSpectrum(32, 28);
 		} else if(cls == PolyLineSpectrum.class){
 			return new PolyLineSpectrum(66, 405); 
 		} else if(cls == CircleSpectrum.class){
 			return new CircleSpectrum(50, 36); 
 		}
-		return new RectangleSpectrum(66);
+//		return new RectangleSpectrum(66);
+		return new GridSpectrum(32, 28);
 	}
 	
 }
