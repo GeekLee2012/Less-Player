@@ -56,7 +56,8 @@ public final class SkinManager {
 	}
 	
 	private boolean reloadMainStage(Skin skin) {
-		Stage mainStage = AppContext.get().getMainStage();
+		AppContext context = AppContext.get();
+		Stage mainStage = context.getMainStage();
 		boolean isReload = (mainStage.getScene() != null);
 		if(isReload) {
 			mainStage.hide();
@@ -64,7 +65,7 @@ public final class SkinManager {
 		mainStage.setScene(skin.getRootScene());
 		mainStage.centerOnScreen();
 		mainStage.show();
-		AppContext.get().setSkinName(skin.getName());
+		context.setSkinName(skin.getName());
 		return isReload;
 	}
 }
