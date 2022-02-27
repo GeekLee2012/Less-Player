@@ -6,6 +6,8 @@ import java.util.Set;
 
 import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import xyz.less.graphic.Guis;
 import xyz.less.graphic.skin.MiniSkin;
 import xyz.less.graphic.skin.Skin;
 import xyz.less.graphic.skin.SkinManager;
@@ -32,7 +34,17 @@ public final class AppContext {
 	public static AppContext get(Stage mainStage) {
 		return get().setMainStage(mainStage);
 	}
-	
+
+	public static AppContext init(String[] args) {
+		return get().setConfiguration(Configuration.parseFrom(args));
+	}
+
+	public AppContext initMainStage(Stage mainStage) {
+		mainStage.initStyle(StageStyle.TRANSPARENT);
+		mainStage.setOnCloseRequest(e -> Guis.exitApplication());
+		return setMainStage(mainStage);
+	}
+
 	public AppContext setMainStage(Stage stage) {
 		this.mainStage = stage;
 		return this;

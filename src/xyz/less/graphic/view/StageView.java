@@ -27,6 +27,7 @@ public abstract class StageView extends Stage implements Attachable {
 	}
 
 	private void hideTaskBarIcon() {
+		if(Guis.isMacOS()) return ;
 		//TODO a bug
 		owner4HiddenTaskBarIcon = new Stage();
 		owner4HiddenTaskBarIcon.initStyle(StageStyle.UTILITY);

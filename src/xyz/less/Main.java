@@ -12,19 +12,13 @@ public final class Main extends Application {
 	
 	@Override
 	public void start(Stage mainStage) throws Exception {
-		mainStage.initStyle(StageStyle.TRANSPARENT);
-		mainStage.setOnCloseRequest(e -> Guis.exitApplication());
 		AppContext context = AppContext.get();
-		context.setMainStage(mainStage).switchToSkin(context.getSkinName());
+		context.initMainStage(mainStage).switchToSkin(context.getSkinName());
 		PluginsService.start();
 	}
 	
-	private static void initContext(String[] args) {
-		AppContext.get().setConfiguration(Configuration.parseFrom(args));
-	}
-	
 	public static void main(String[] args) {
-		initContext(args);
+		AppContext.init(args);
 		launch(args);
 	}
 
