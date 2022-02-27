@@ -12,8 +12,8 @@ public final class Main extends Application {
 	
 	@Override
 	public void start(Stage mainStage) throws Exception {
-		AppContext context = AppContext.get();
-		context.initMainStage(mainStage).switchToSkin(context.getSkinName());
+		AppContext context = AppContext.get().initMainStage(mainStage);
+		context.switchToSkin(context.getSkinName());
 		PluginsService.start();
 	}
 	

@@ -30,10 +30,6 @@ public final class AppContext {
 	public static AppContext get() {
 		return CONTEXT;
 	}
-	
-	public static AppContext get(Stage mainStage) {
-		return get().setMainStage(mainStage);
-	}
 
 	public static AppContext init(String[] args) {
 		return get().setConfiguration(Configuration.parseFrom(args));
