@@ -29,6 +29,11 @@
 	-fx-padding-right: 0;*/
 }
 
+#playlist_view .list-view .list-cell:empty:hover {
+	-fx-background-color: transparent;
+	/*-fx-background-color: #009dae; */
+}
+
 #playlist_view .list-view .list-cell:hover {
 	-fx-background-color: #464646; 
 	/*-fx-background-color: #009dae; */

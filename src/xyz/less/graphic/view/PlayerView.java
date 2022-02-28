@@ -300,6 +300,11 @@ public abstract class PlayerView extends StackPane implements IMediaPlayerListen
 		//由子类重写
 	}
 
+	@Override
+	public void onPlaylistUpdated() {
+		updatePlaylist();
+	}
+
 	public void togglePlay() {
 		if(isPlaying()) {
 			getMediaService().pause();

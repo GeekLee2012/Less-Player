@@ -15,4 +15,5 @@ public interface IMediaPlayerListener {
 	void onReset();
 	void onNoMedia();
 	void onNoPlayableMedia();
+	void onPlaylistUpdated();
 }

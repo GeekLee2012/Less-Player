@@ -76,4 +76,8 @@ public final class MediaListenerManager {
 	public void onNoPlayableMedia() {
 		notifyAll(e -> e.onNoPlayableMedia());
 	}
+
+    public void onPlaylistUpdated() {
+		notifyAll(e -> e.onPlaylistUpdated());
+    }
 }

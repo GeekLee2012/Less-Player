@@ -22,15 +22,12 @@ import xyz.less.service.IMediaService;
 
 public class PlaylistView extends StageView {
 	private IMediaService mediaService;
-	
-//	private double openerX;
-//	private double openerY;
-	
+
 	private Label logoSizeLbl;
 	private AnchorPane topPane;
 	private ListView<Audio> listView;
 
-	private boolean lyricOn = false;
+	private boolean lyricOn = false; //TODO 歌词是否显示，并不能完全作为依据
 	private boolean autoTarget = true;
 	private double rowWidth = 335;
 	public double durationWidth = 72;
@@ -55,7 +52,7 @@ public class PlaylistView extends StageView {
 			setX(pos.getX() + opener.getWidth() + SimpleSkin.PLAYLIST_PADDING_X);
 			setY(pos.getY() - paddingY);
 			
-			//TODO fix a UI bug
+			//fix a UI bug
 			listView.layout();
 		});
 	}
@@ -148,7 +145,7 @@ public class PlaylistView extends StageView {
 			item.setTitleWidth(rowWidth - durationWidth - 10);
 			item.setDurationWidth(durationWidth);
 			item.setOnMouseClicked(e -> {
-				if(e.getClickCount() > 1) {
+				if(e.getClickCount() > 1 && item.getItem() != null) {
 					mediaService.setCurrent(item.getItem());
 					mediaService.play();
 				}
@@ -186,7 +183,7 @@ public class PlaylistView extends StageView {
 	}
 	
 	public void resetGraph(boolean hide) {
-		if(size() > 0) {
+		if (size() > 0) {
 			listView.getItems().remove(0, size());
 		}
 		updateLogoSizeLabelText();

@@ -4,6 +4,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import xyz.less.bean.Audio;
+import xyz.less.bean.Resources;
 import xyz.less.bean.Resources.Images;
 import xyz.less.graphic.Guis;
 import xyz.less.graphic.TwoLinesLyricRenderer;
@@ -12,8 +13,6 @@ import xyz.less.graphic.skin.SimpleSkin;
 import xyz.less.media.LyricParser;
 
 public class LyricView extends StageView {
-//	private double openerX;
-//	private double openerY;
 	private Pane topNavBox;
 	private Label line1;
 	private Label line2;
@@ -38,7 +37,6 @@ public class LyricView extends StageView {
 	protected void initGraph() {
 		setSceneRoot(Guis.loadFxml(SimpleSkin.LYRIC_VIEW_FXML));
 		addStyle(SimpleSkin.LYRIC_VIEW_STYLE);
-//		setSceneTransparent();
 
 		initTop();
 		initCenter();
@@ -117,6 +115,9 @@ public class LyricView extends StageView {
 		try {
 			//TODO
 			lyricRenderer.reset();
+			if (!uri.startsWith(Resources.FILE_PREFIX)) {
+				return false;
+			}
 			int index = uri.lastIndexOf(".");
 			uri = uri.substring(0, index) + ".lrc";
 			return lyricRenderer.setLyric(lyricParser.parse(uri));
@@ -139,8 +140,5 @@ public class LyricView extends StageView {
 		double y = opener.getY() + opener.getHeight() + SimpleSkin.LYRIC_PADDING_Y;
 		setX(opener.getX());
 		setY(y);
-//		if (Guis.isMacOS()) {
-//			sizeToScene();
-//		}
 	}
 }

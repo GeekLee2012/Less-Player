@@ -16,7 +16,7 @@ public class Audio implements Comparable<Audio>, Serializable {
 	private double duration;
 	private transient byte[] coverArt;
 	private String source;
-	private transient BooleanProperty playing = new SimpleBooleanProperty(false);
+	private transient BooleanProperty playing;
 	
 	public Audio() {
 		
@@ -75,12 +75,15 @@ public class Audio implements Comparable<Audio>, Serializable {
 	}
 
 	public boolean isPlaying() {
-		return playing.get();
+		return playingProperty().get();
 	}
 	public void setPlaying(boolean playing) {
-		this.playing.set(playing);;
+		this.playingProperty().set(playing);;
 	}
 	public BooleanProperty playingProperty() {
+		if (playing == null) {
+			playing = new SimpleBooleanProperty(false);
+		}
 		return playing;
 	}
 	

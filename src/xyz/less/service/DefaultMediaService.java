@@ -38,7 +38,6 @@ public final class DefaultMediaService implements IMediaService, IMediaPlayerLis
 	
 	@Override
 	public void play() {
-		//TODO 拆分: New->Play->Pause->Play
 		if(!playbackQueue.isEnable()) {
 			return ;
 		}
@@ -162,6 +161,7 @@ public final class DefaultMediaService implements IMediaService, IMediaPlayerLis
 	public void addAll(Collection<Audio> audios) {
 		if(audios != null) {
 			playbackQueue.getPlaylist().addAll(audios);
+			onPlaylistUpdated();
 		}
 	}
 	
@@ -309,4 +309,8 @@ public final class DefaultMediaService implements IMediaService, IMediaPlayerLis
 		listenersMgr.onNoPlayableMedia();
 	}
 
+	@Override
+	public void onPlaylistUpdated() {
+		listenersMgr.onPlaylistUpdated();
+	}
 }
