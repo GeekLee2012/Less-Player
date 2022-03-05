@@ -153,6 +153,12 @@ public final class Guis {
 			}
 		}, nodes);
 	}
+
+	public static void addStyleClass(Node node, String... styleClasses) {
+		if(node != null && styleClasses != null) {
+			node.getStyleClass().addAll(styleClasses);
+		}
+	}
 	
 	public static void removeStyleClass(String styleClass, Node... nodes) {
 		applyNodes(node -> {
@@ -161,11 +167,25 @@ public final class Guis {
 			}
 		}, nodes);
 	}
+
+	public static void removeStyleClass(Node node, String... styleClasses) {
+		if(node != null && styleClasses != null) {
+			node.getStyleClass().removeAll(styleClasses);
+		}
+	}
 	
 	public static void addHoverStyleClass(String styleClass, Node... nodes) {
 		addHoverAction(node -> addStyleClass(styleClass, node), 
 				node -> removeStyleClass(styleClass, node), 
 				nodes);
+	}
+
+	public static void addHoverStyleClass(Node node, String... styleClasses) {
+		if(node != null && styleClasses != null) {
+			addHoverAction(e -> addStyleClass(e, styleClasses),
+					e -> removeStyleClass(e, styleClasses),
+					node);
+		}
 	}
 	
 	public static void addHoverAction(Consumer<? super Node> enterAction, Consumer<? super Node> exitAction, Node... nodes) {
