@@ -10,7 +10,7 @@ import xyz.less.bean.Audio;
 public final class PlaybackQueue {
 	private Playlist playlist;
 	private SecureRandom random = new SecureRandom();
-	private PlayMode playMode;
+	private PlayMode playMode = PlayMode.REPEAT_ALL;
 	private static final int DEFAULT_CURRENT_INDEX = -1;
 	private int currentIndex = DEFAULT_CURRENT_INDEX;
 	private boolean nextAction = true;
@@ -45,8 +45,8 @@ public final class PlaybackQueue {
 	}
 
 	public int setCurrent(int index) {
-		index = index < playlist.size() ? index : playlist.size() - 1;
-		currentIndex = index > 0 ? index : 0;
+		index = index > 0 ? index : 0;
+		currentIndex = index < playlist.size() ? index : (playlist.size() - 1);
 		setIndexChanged(true);
 		return currentIndex;
 	}
@@ -66,6 +66,7 @@ public final class PlaybackQueue {
 				break;
 			case REPEAT_ALL:
 				index = --currentIndex % playlist.size();
+				index = index < 0 ? (playlist.size() - 1) : index;
 				break;
 			case NO_REPEAT:
 				index = --currentIndex;
@@ -104,7 +105,7 @@ public final class PlaybackQueue {
 		if (!isEnable()) {
 			return null;
 		}
-		if(currentIndex < 0) {
+		while(currentIndex < 0) {
 			next();
 		}
 		return playlist.get(currentIndex);
@@ -142,8 +143,12 @@ public final class PlaybackQueue {
 	public Future<?> loadFrom(File file) throws IOException {
 		return playlist.loadFrom(file);
 	}
-	
-	public static enum PlayMode {
+
+    public Audio get(int index) {
+		return isEnable() ? getPlaylist().get(index) : null;
+    }
+
+    public static enum PlayMode {
 		NO_REPEAT, REPEAT_ALL, REPEAT_SELF, SHUFFLE;
 		
 		public static PlayMode valueOf(int index) {

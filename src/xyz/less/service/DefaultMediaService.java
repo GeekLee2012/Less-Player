@@ -16,8 +16,8 @@ public final class DefaultMediaService implements IMediaService, IMediaPlayerLis
 	private MediaPlayerManager playerMgr = new MediaPlayerManager();
 	private IMediaPlayer delegate;
 	private MediaView mediaView;
-	private double volume;
-	private boolean playNextAction = true;
+	private double volume = 1.0;
+//	private boolean playNextAction = true;
 	private Map<String, Object> cachedMetadata;
 	private Set<Integer> retrySet = new HashSet<>();
 	
@@ -78,16 +78,16 @@ public final class DefaultMediaService implements IMediaService, IMediaPlayerLis
 	
 	@Override
 	public void playNext() {
-		playNextAction = true;
-		if(playbackQueue.next() > 0) {
+//		playNextAction = true;
+		if(playbackQueue.next() >= 0) {
 			play();
 		}
 	}
 	
 	@Override
 	public void playPrev() {
-		playNextAction = false;
-		if(playbackQueue.prev() > 0) {
+//		playNextAction = false;
+		if(playbackQueue.prev() >= 0) {
 			play();
 		}
 	}
@@ -245,7 +245,7 @@ public final class DefaultMediaService implements IMediaService, IMediaPlayerLis
 			onNoPlayableMedia();
 			return ;
 		}
-		if(playNextAction) {
+		if(playbackQueue.isNextAction()) {
 			playNext();
 		} else {
 			playPrev();
