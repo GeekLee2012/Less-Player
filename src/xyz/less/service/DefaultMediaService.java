@@ -210,7 +210,9 @@ public final class DefaultMediaService implements IMediaService, IMediaPlayerLis
 
 	@Override
 	public List<Audio> getPlaylist() {
-		return playbackQueue.getPlaylist().sort().get();
+//		return playbackQueue.getPlaylist().sort().get();
+		//暂时不排序，排序规则由上层调用方决定
+		return playbackQueue.getPlaylist().get();
 	}
 
 	@Override
