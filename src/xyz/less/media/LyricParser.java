@@ -59,7 +59,11 @@ public final class LyricParser {
 	}
 	
 	public Lyric parseText(String text) {
-		return parseTextLines(text.split("\r"));
+		return parseText(text, "\r");
+	}
+
+	public Lyric parseText(String text, String lineSeparator) {
+		return parseTextLines(text.split(lineSeparator));
 	}
 	
 	public Lyric parseTextLines(String[] lines) {

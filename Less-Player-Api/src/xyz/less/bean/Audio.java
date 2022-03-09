@@ -2,6 +2,7 @@ package xyz.less.bean;
 
 import java.io.ByteArrayInputStream;
 import java.io.Serializable;
+import java.util.HashMap;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -18,6 +19,7 @@ public class Audio implements Comparable<Audio>, Serializable {
 	private transient byte[] coverArt;
 	private String source;
 	private transient BooleanProperty playing;
+	private transient HashMap<String, Object> extraMap;
 	
 	public Audio() {
 		
@@ -112,5 +114,25 @@ public class Audio implements Comparable<Audio>, Serializable {
 		}
 		//排序规则: 目录优先, 名称次之（不区分大小写）
 		return this.source.compareToIgnoreCase(o.getSource());
+	}
+
+	public Audio putExtra(String key, Object value) {
+		if (extraMap == null) {
+			extraMap = new HashMap<>();
+		}
+		extraMap.put(key, value);
+		return this;
+	}
+
+	public String getStringExtra(String key) {
+		return (String) extraMap.get(key);
+	}
+
+	public int getIntExtra(String key) {
+		return (int) extraMap.get(key);
+	}
+
+	public long getLongExtra(String key) {
+		return (long) extraMap.get(key);
 	}
 }
