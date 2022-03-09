@@ -61,8 +61,11 @@ public final class DefaultFxPlayer implements IMediaPlayer {
 		Duration duration = player.getMedia().getDuration();
 		try {
 			double value = audio.getDuration();
-			if (value > 0) {
-				duration = duration.toMinutes() < 100 ? duration : Duration.minutes(value);
+			if (value > 0 && duration.toMinutes() > 0) {
+				double minDuration = Math.min(value, duration.toMinutes());
+				if(minDuration >= 0.5 && minDuration < 100) {
+					duration = Duration.minutes(minDuration);
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

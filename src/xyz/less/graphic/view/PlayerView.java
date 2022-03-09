@@ -414,6 +414,7 @@ public abstract class PlayerView extends StackPane implements IMediaPlayerListen
 					dndHandle.getContext().setSuccess(false);
 					return ;
 				}
+				getMediaService().getPlaylist().sort((o1, o2)-> o1.compareTo(o2));
 				getMediaService().play();
 				updatePlaylist();
 				updateFuture = getMediaService().syncMetadatas();

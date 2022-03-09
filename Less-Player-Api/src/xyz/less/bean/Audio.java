@@ -14,6 +14,7 @@ public class Audio implements Comparable<Audio>, Serializable {
 	private String artist;
 	private String album;
 	private double duration;
+	private String coverArtUrl;
 	private transient byte[] coverArt;
 	private String source;
 	private transient BooleanProperty playing;
@@ -55,8 +56,16 @@ public class Audio implements Comparable<Audio>, Serializable {
 		return coverArt;
 	}
 	public Image getCoverArtImage() {
-		return coverArt == null ? null : 
-			new Image(new ByteArrayInputStream(coverArt));
+		//TODO 优先级: 内容 > URL
+		if(coverArt != null) {
+			return new Image(new ByteArrayInputStream(coverArt));
+		}
+		try {
+			return coverArtUrl != null ? new Image(coverArtUrl) : null;
+		} catch (Exception e) {
+//				e.printStackTrace();
+		}
+		return null;
 	}
 	public void setCoverArt(byte[] coverArt) {
 		this.coverArt = coverArt;
@@ -86,7 +95,11 @@ public class Audio implements Comparable<Audio>, Serializable {
 		}
 		return playing;
 	}
-	
+
+	public void setCoverArtUrl(String coverArtUrl) {
+		this.coverArtUrl = coverArtUrl;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		return compareTo((Audio)o) == 0;
