@@ -120,6 +120,9 @@ public class Audio implements Comparable<Audio>, Serializable {
 		if(o == null || StringUtil.isEmpty(o.getSource())) {
 			return 1;
 		}
+		if(StringUtil.isBlank(this.source)) {
+			return 1;
+		}
 		//TODO 目前排序规则: 目录优先, 名称次之（不区分大小写）
 		return this.source.compareToIgnoreCase(o.getSource());
 	}
