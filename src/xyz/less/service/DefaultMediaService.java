@@ -17,7 +17,6 @@ public final class DefaultMediaService implements IMediaService, IMediaPlayerLis
 	private IMediaPlayer delegate;
 	private MediaView mediaView;
 	private double volume = 1.0;
-//	private boolean playNextAction = true;
 	private Map<String, Object> cachedMetadata;
 	private Set<Integer> retrySet = new HashSet<>();
 	
@@ -42,7 +41,9 @@ public final class DefaultMediaService implements IMediaService, IMediaPlayerLis
 			return ;
 		}
 		if(!isInit() || isAudioChanged()) {
-			delegate = selectDelegate(getCurrent());
+			Audio audio = getCurrent();
+			onInit(audio); //TODO
+			delegate = selectDelegate(audio);
 			setAudioChanged(false);
 		}
 		delegate.play();
@@ -65,7 +66,7 @@ public final class DefaultMediaService implements IMediaService, IMediaPlayerLis
 		delegate.addListener(this);
 		delegate.setVolume(volume);
 		System.out.println("[Delegate Player] " + delegate.getClass());
-		System.out.println("[Audio Changed] " + audio.getSource());
+		System.out.println("[Audio Changed] " + audio.getTitle() + ", Source: " + audio.getSource());
 		return delegate;
 	}
 
@@ -254,7 +255,12 @@ public final class DefaultMediaService implements IMediaService, IMediaPlayerLis
 		}
 		retrySet.add(getCurrentIndex());
 	}
-	
+
+	@Override
+	public void onInit(Audio audio) {
+		listenersMgr.onInit(audio);
+	}
+
 	/* Listeners */
 	@Override
 	public void onReady(Audio audio, Map<String, Object> metadata) {

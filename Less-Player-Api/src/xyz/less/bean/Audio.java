@@ -63,7 +63,7 @@ public class Audio implements Comparable<Audio>, Serializable {
 			return new Image(new ByteArrayInputStream(coverArt));
 		}
 		try {
-			return coverArtUrl != null ? new Image(coverArtUrl) : null;
+			return coverArtUrl != null ? new Image(coverArtUrl, true) : null;
 		} catch (Exception e) {
 //				e.printStackTrace();
 		}
@@ -98,12 +98,20 @@ public class Audio implements Comparable<Audio>, Serializable {
 		return playing;
 	}
 
-	public void setCoverArtUrl(String coverArtUrl) {
+	public String getCoverArtUrl() {
+		return coverArtUrl;
+	}
+
+	public Audio setCoverArtUrl(String coverArtUrl) {
 		this.coverArtUrl = coverArtUrl;
+		return this;
 	}
 
 	@Override
 	public boolean equals(Object o) {
+		if(this == o) {
+			return true;
+		}
 		return compareTo((Audio)o) == 0;
 	} 
 	
@@ -112,27 +120,48 @@ public class Audio implements Comparable<Audio>, Serializable {
 		if(o == null || StringUtil.isEmpty(o.getSource())) {
 			return 1;
 		}
-		//排序规则: 目录优先, 名称次之（不区分大小写）
+		//TODO 目前排序规则: 目录优先, 名称次之（不区分大小写）
 		return this.source.compareToIgnoreCase(o.getSource());
 	}
 
+	public boolean existsExtra(String key) {
+		return getExtraMap().containsKey(key);
+	}
+
 	public Audio putExtra(String key, Object value) {
-		if (extraMap == null) {
-			extraMap = new HashMap<>();
-		}
-		extraMap.put(key, value);
+		getExtraMap().put(key, value);
 		return this;
 	}
 
+	private HashMap<String, Object> getExtraMap() {
+		if (extraMap == null) {
+			extraMap = new HashMap<>();
+		}
+		return  extraMap;
+	}
+
 	public String getStringExtra(String key) {
-		return (String) extraMap.get(key);
+		return (String) getExtraMap().get(key);
 	}
 
 	public int getIntExtra(String key) {
-		return (int) extraMap.get(key);
+		return (int) getExtraMap().get(key);
 	}
 
 	public long getLongExtra(String key) {
-		return (long) extraMap.get(key);
+		return (long) getExtraMap().get(key);
+	}
+
+	@Override
+	public String toString() {
+		return "Audio{" +
+				"title='" + title + '\'' +
+				", artist='" + artist + '\'' +
+				", album='" + album + '\'' +
+				", duration=" + duration +
+				", coverArtUrl='" + coverArtUrl + '\'' +
+				", source='" + source + '\'' +
+				", extraMap=" + extraMap +
+				'}';
 	}
 }

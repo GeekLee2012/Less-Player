@@ -206,7 +206,12 @@ public abstract class PlayerView extends StackPane implements IMediaPlayerListen
 	protected void highlightPlaylist() {
 		//由子类重写
 	}
-	
+
+	@Override
+	public void onInit(Audio audio) {
+
+	}
+
 	/**
 	 * @param audio 其部分元数据字段从文件解析而来
 	 * @param metadata 由播放器获取的元数据

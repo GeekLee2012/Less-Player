@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import javafx.application.Platform;
 import xyz.less.async.AsyncServices;
 import xyz.less.bean.Audio;
 
@@ -28,15 +29,28 @@ public final class MediaListenerManager {
 			}
 		}
 	}
-	
+
 	private void notifyAll(Consumer<? super IMediaPlayerListener> action) {
+		notifyAll(action, true);
+	}
+
+	private void notifyAll(Consumer<? super IMediaPlayerListener> action, boolean needFxThread) {
 		try {
-			AsyncServices.runLater(() -> listeners.forEach(action));
+			if(!needFxThread || Platform.isFxApplicationThread()) {
+				listeners.forEach(action);
+			} else {
+				//TODO 无法保证马上执行，毕竟名字就是runLater（放到待执行任务队列）
+				AsyncServices.runLater(() -> listeners.forEach(action));
+			}
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
+	public void onInit(Audio audio) {
+		notifyAll(e -> e.onInit(audio), false);
+	}
+
 	public void onReady(Audio audio, Map<String, Object> metadata) {
 		notifyAll(e -> e.onReady(audio, metadata));
 	}
