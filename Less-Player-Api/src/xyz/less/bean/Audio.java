@@ -19,11 +19,9 @@ public class Audio implements Comparable<Audio>, Serializable {
 	private transient byte[] coverArt;
 	private String source;
 	private transient BooleanProperty playing;
-	private transient HashMap<String, Object> extraMap;
+	private transient ExtraData extra = new ExtraData();
 	
-	public Audio() {
-		
-	}
+	public Audio() { }
 	
 	public Audio(String title, String artist, String album, 
 			double duration, byte[] coverArt, String source) {
@@ -127,32 +125,8 @@ public class Audio implements Comparable<Audio>, Serializable {
 		return this.source.compareToIgnoreCase(o.getSource());
 	}
 
-	public boolean existsExtra(String key) {
-		return getExtraMap().containsKey(key);
-	}
-
-	public Audio putExtra(String key, Object value) {
-		getExtraMap().put(key, value);
-		return this;
-	}
-
-	private HashMap<String, Object> getExtraMap() {
-		if (extraMap == null) {
-			extraMap = new HashMap<>();
-		}
-		return  extraMap;
-	}
-
-	public String getStringExtra(String key) {
-		return (String) getExtraMap().get(key);
-	}
-
-	public int getIntExtra(String key) {
-		return (int) getExtraMap().get(key);
-	}
-
-	public long getLongExtra(String key) {
-		return (long) getExtraMap().get(key);
+	public ExtraData getExtra() {
+		return extra;
 	}
 
 	@Override
@@ -164,7 +138,7 @@ public class Audio implements Comparable<Audio>, Serializable {
 				", duration=" + duration +
 				", coverArtUrl='" + coverArtUrl + '\'' +
 				", source='" + source + '\'' +
-				", extraMap=" + extraMap +
+				", extra=" + extra +
 				'}';
 	}
 }

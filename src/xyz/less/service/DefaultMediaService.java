@@ -265,13 +265,14 @@ public final class DefaultMediaService implements IMediaService, IMediaPlayerLis
 	@Override
 	public void onReady(Audio audio, Map<String, Object> metadata) {
 		this.cachedMetadata = metadata;
-		this.retrySet.clear();
+//		this.retrySet.clear();
 		listenersMgr.onReady(audio, metadata);
 		System.out.println("[Current Playing]" + audio.getTitle() + ", Source：" + audio.getSource());
 	}
 
 	@Override
 	public void onPlaying() {
+		this.retrySet.clear();
 		listenersMgr.onPlaying();
 	}
 
