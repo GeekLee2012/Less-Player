@@ -22,6 +22,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import xyz.less.graphic.control.AutoDrawerAction;
 import xyz.less.graphic.control.DndAction;
@@ -384,6 +385,13 @@ public final class Guis {
 				stage.hide();
 			}
 		}, stages);
+	}
+
+	public static void setRectangleClip(Node node, double arcWidth, double arcHeight) {
+		Rectangle rect = new Rectangle(node.prefWidth(-1), node.prefHeight(-1));
+		rect.setArcWidth(arcWidth);
+		rect.setArcHeight(arcHeight);
+		node.setClip(rect);
 	}
 
 	//TODO Nothing Relative with GUI
