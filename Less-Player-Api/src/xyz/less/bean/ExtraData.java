@@ -23,7 +23,7 @@ public class ExtraData {
     }
 
     public Object getValue(String key) {
-        return getDatas().get(key);
+        return exists(key) ? getDatas().get(key) : null;
     }
 
     public String getString(String key) {

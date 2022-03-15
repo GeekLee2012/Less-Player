@@ -248,12 +248,12 @@ public final class DefaultMediaService implements IMediaService, IMediaPlayerLis
 			onNoPlayableMedia();
 			return ;
 		}
+		retrySet.add(getCurrentIndex());
 		if(playbackQueue.isNextAction()) {
 			playNext();
 		} else {
 			playPrev();
 		}
-		retrySet.add(getCurrentIndex());
 	}
 
 	@Override
