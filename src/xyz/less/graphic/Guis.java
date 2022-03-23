@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import javafx.application.Platform;
@@ -199,6 +200,17 @@ public final class Guis {
 			});
 			node.setOnMouseExited(e -> {
 				exitAction.accept(node);
+			});
+		}, nodes);
+	}
+
+	public static void addHoverAction(BiConsumer<? super Node, ? super MouseEvent> enterAction, BiConsumer<? super Node, ? super MouseEvent> exitAction, Node... nodes) {
+		applyNodes(node -> {
+			node.setOnMouseEntered(e -> {
+				enterAction.accept(node, e);
+			});
+			node.setOnMouseExited(e -> {
+				exitAction.accept(node, e);
 			});
 		}, nodes);
 	}
