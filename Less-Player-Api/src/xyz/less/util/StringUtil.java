@@ -2,6 +2,7 @@ package xyz.less.util;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -161,5 +162,14 @@ public final class StringUtil {
 		String uuid = UUID.randomUUID().toString();
 		return noDelim ? uuid.replaceAll("-", "") : uuid;
 	}
-	
+
+	public static String encodeURL(String text) {
+		try {
+			return URLEncoder.encode(text, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 }

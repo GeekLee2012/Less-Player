@@ -16,12 +16,15 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import xyz.less.graphic.control.AutoDrawerAction;
@@ -392,6 +395,15 @@ public final class Guis {
 		rect.setArcWidth(arcWidth);
 		rect.setArcHeight(arcHeight);
 		node.setClip(rect);
+	}
+
+	public static void snapshotAndResetClip(ImageView imgView) {
+		SnapshotParameters param = new SnapshotParameters();
+		param.setFill(Color.TRANSPARENT);
+		WritableImage image = imgView.snapshot(param, null);
+
+		imgView.setClip(null);
+		imgView.setImage(image);
 	}
 
 	//TODO Nothing Relative with GUI

@@ -19,7 +19,7 @@ public class Audio implements Comparable<Audio>, Serializable {
 	private transient byte[] coverArt;
 	private String source;
 	private transient BooleanProperty playing;
-	private transient ExtraData extra = new ExtraData();
+	private transient ExtraData extra;
 	
 	public Audio() { }
 	
@@ -126,6 +126,9 @@ public class Audio implements Comparable<Audio>, Serializable {
 	}
 
 	public ExtraData getExtra() {
+		if (extra == null) {
+			extra = new ExtraData();
+		}
 		return extra;
 	}
 

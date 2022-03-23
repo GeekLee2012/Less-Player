@@ -16,6 +16,7 @@ public final class MediaPlayerManager {
 		add(new DefaultJsaPlayer());
 		add(new FlacPlayer());
 		add(new OggPlayer());
+//		add(new Mp3Player());
 	}
 	
 	public MediaPlayerManager add(IMediaPlayer player) {

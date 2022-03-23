@@ -1,5 +1,6 @@
 package xyz.less.bean;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,6 +41,15 @@ public class ExtraData {
 
     public ExtraData sync(String key, ExtraData from) {
         put(key, from.getValue(key));
+        return this;
+    }
+
+    public ExtraData remove(String... keys) {
+        if (keys != null) {
+            Arrays.asList(keys).forEach(e -> {
+                getDatas().remove(e);
+            });
+        }
         return this;
     }
 

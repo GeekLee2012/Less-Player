@@ -63,7 +63,7 @@ public final class Playlist {
 				AppContext.get().getSuffixes()));
 	}
 	
-	private void addFromFile(File file) {
+	public void addFromFile(File file) {
 		if(!AppContext.get().isFileSupported(file)) {
 			return ;
 		}

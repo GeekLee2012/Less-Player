@@ -33,9 +33,13 @@ public final class Jaudiotagger {
 			String title = tag.getFirst(FieldKey.TITLE);
 			String artist = tag.getFirst(FieldKey.ARTIST);
 			String album = tag.getFirst(FieldKey.ALBUM);
-			Metadatas.putTitle(metadata, StringUtil.iso88591ToUtf8(title));
-			Metadatas.putArtist(metadata, StringUtil.iso88591ToUtf8(artist));
-			Metadatas.putAlbum(metadata, StringUtil.iso88591ToUtf8(album));
+//			Metadatas.putTitle(metadata, StringUtil.iso88591ToUtf8(title));
+//			Metadatas.putArtist(metadata, StringUtil.iso88591ToUtf8(artist));
+//			Metadatas.putAlbum(metadata, StringUtil.iso88591ToUtf8(album));
+
+			Metadatas.putTitle(metadata, title);
+			Metadatas.putArtist(metadata, artist);
+			Metadatas.putAlbum(metadata, album);
 			
 			byte[] imageData = null;
 			try {
