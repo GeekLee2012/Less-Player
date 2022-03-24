@@ -227,13 +227,13 @@ public final class DefaultMediaService implements IMediaService, IMediaPlayerLis
 		boolean isCurrent = (getCurrent() == audio);
 		playbackQueue.getPlaylist().remove(audio);
 		if (playbackQueue.isEnable()) {
+			int index = getCurrentIndex() - 1;
+			if (index >= 0) {
+				playbackQueue.setCurrent(index);
+			} else {
+				playbackQueue.resetIndex();
+			}
 			if (isCurrent) {
-				int index = getCurrentIndex() - 1;
-				if (index >= 0) {
-					playbackQueue.setCurrent(index);
-				} else {
-					playbackQueue.resetIndex();
-				}
 				playNext();
 			}
 		} else {
