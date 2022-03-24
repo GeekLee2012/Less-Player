@@ -18,6 +18,7 @@ public interface IMediaService extends IMediaPlayer {
 	void addAll(Audio... audios);
 	void addAll(Collection<Audio> audios);
 	List<Audio> getPlaylist();
+	void remove(Audio audio);
 	void removeAll(boolean notify);
 	int getCurrentIndex();
 	Map<String, Object> getCurrentMetadata();

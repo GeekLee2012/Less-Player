@@ -133,9 +133,13 @@ public final class PlaybackQueue {
 	
 	public void reset() {
 		playlist.clear();
+		resetIndex();
+	}
+
+	public void resetIndex() {
 		currentIndex = DEFAULT_CURRENT_INDEX;
 	}
-	
+
 	public boolean isNextAction() {
 		return nextAction;
 	}

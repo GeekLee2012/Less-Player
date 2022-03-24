@@ -34,14 +34,21 @@ public final class Playlist {
 	
 	//TODO 暂时不去重
 	public void add(Audio t) {
-		audioList.add(t);
-		sizeProp.set(size());
+		addUnique(t);
 	}
 	
 	//TODO 暂时不去重
 	public void addAll(Collection<Audio> c) {
-		audioList.addAll(c);
+		c.forEach(e -> addUnique(e));
+//		audioList.addAll(c);
 		sizeProp.set(size());
+	}
+
+	private void addUnique(Audio t) {
+		if(!audioList.contains(t)) {
+			audioList.add(t);
+			sizeProp.set(size());
+		}
 	}
 	
 	public Future<?> loadFrom(File file) throws IOException {
@@ -125,6 +132,12 @@ public final class Playlist {
 
 	public void remove(int index) {
 		audioList.remove(index);
+		sizeProp.set(audioList.size());
+	}
+
+	public void remove(Audio audio) {
+		audioList.remove(audio);
+		sizeProp.set(audioList.size());
 	}
 
 }

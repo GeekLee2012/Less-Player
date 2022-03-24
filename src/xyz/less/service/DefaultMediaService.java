@@ -222,16 +222,41 @@ public final class DefaultMediaService implements IMediaService, IMediaPlayerLis
 	}
 
 	@Override
+	public void remove(Audio audio) {
+		//TODO
+		boolean isCurrent = (getCurrent() == audio);
+		playbackQueue.getPlaylist().remove(audio);
+		if (playbackQueue.isEnable()) {
+			if (isCurrent) {
+				int index = getCurrentIndex() - 1;
+				if (index >= 0) {
+					playbackQueue.setCurrent(index);
+				} else {
+					playbackQueue.resetIndex();
+				}
+				playNext();
+			}
+		} else {
+			if(isInit()) {
+				delegate.reset(true);
+				delegate = null;
+			}
+			onNoMedia();
+		}
+
+	}
+
+	@Override
 	public void removeAll(boolean notify) {
 		do {
 			playbackQueue.reset();
 		} while(playbackQueue.isEnable());
-		if(notify) {
-			onNoMedia();
-		}
 		if(isInit()) {
 			delegate.reset(true);
 			delegate = null;
+		}
+		if(notify) {
+			onNoMedia();
 		}
 	}
 	
@@ -272,7 +297,7 @@ public final class DefaultMediaService implements IMediaService, IMediaPlayerLis
 
 	@Override
 	public void onPlaying() {
-		this.retrySet.clear();
+//		this.retrySet.clear();
 		listenersMgr.onPlaying();
 	}
 
@@ -293,6 +318,7 @@ public final class DefaultMediaService implements IMediaService, IMediaPlayerLis
 
 	@Override
 	public void onEndOfMedia() {
+		this.retrySet.clear();
 		listenersMgr.onEndOfMedia();
 		playNext();
 	}
