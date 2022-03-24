@@ -224,19 +224,22 @@ public final class DefaultMediaService implements IMediaService, IMediaPlayerLis
 	@Override
 	public void remove(Audio audio) {
 		//TODO
+		//是否正在播放
 		boolean isCurrent = (getCurrent() == audio);
 		playbackQueue.getPlaylist().remove(audio);
 		if (playbackQueue.isEnable()) {
+			//更新索引
 			int index = getCurrentIndex() - 1;
 			if (index >= 0) {
 				playbackQueue.setCurrent(index);
 			} else {
 				playbackQueue.resetIndex();
 			}
+			//当正在播放歌曲被删除时，自动切到下一曲
 			if (isCurrent) {
 				playNext();
 			}
-		} else {
+		} else { //当前播放列表为空
 			if(isInit()) {
 				delegate.reset(true);
 				delegate = null;
