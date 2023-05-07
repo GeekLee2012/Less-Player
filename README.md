@@ -1,8 +1,13 @@
-## Less Player 是一款基于JavaFX开发的“轻量级本地”音乐播放器  
+# Less Player 
+一款基于JavaFX开发的“轻量级本地”音乐播放器。  
+  
+<b>项目目前已停止更新</b>，原因：Java现有音频库，无法很好满足播放需求。
 
-## 基于Electron + Vue3开发的“全新实用同名款”：[Less-Player-Desktop](https://github.com/GeekLee2012/Less-Player-Desktop)  
-
-### 欢迎喜欢GUI开发的朋友一起学习和交流
+如果你也平时工作生活中，喜欢听听音乐、广播，  
+欢迎体验，我的另一款在线播放器：  
+基于Electron + Vue3开发的“同名款”：[Less-Player-Desktop](https://github.com/GeekLee2012/Less-Player-Desktop)  
+  
+### 欢迎喜欢GUI开发的朋友一起学习、交流
 
 #### 界面参考
 * Dopamine 3 （开源）  
